@@ -11,19 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lecturers', function (Blueprint $table) {
+        Schema::create('assignments', function (Blueprint $table) {
             $table->id();
-            $table->string("phoneNo");
-            $table->foreignId('faculty_id')->references('id')->on('faculties');
-            
+            $table->text('text');
+            $table->string('file_path');
+            $table->foreignId('subject_id')->constrained();
+            // Add other assignment attributes as needed
+            $table->timestamps();
         });
     }
-
+    
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('lecturers');
+        Schema::dropIfExists('assignments');
     }
 };

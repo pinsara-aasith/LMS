@@ -5,20 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Subject extends Model
+class Lecturer extends Model
 {
     use HasFactory;
+    
+    protected $fillable = [
+        'phoneNo'
+    ];
 
-    protected $fillable = ['name', 'department_id'];
-
-    public function department()
+    public function faculty()
     {
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(Faculty::class);
     }
 
-    public function students()
+    public function user()
     {
-        return $this->belongsToMany(Student::class);
+        return $this->morphOne(User::class, 'userable');
     }
 
     public function assignments()
