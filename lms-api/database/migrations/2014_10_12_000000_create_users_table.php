@@ -20,7 +20,7 @@ return new class extends Migration
             
             $table->enum('role', ['student', 'lecturer', 'admin']);
             $table->morphs('userable');
-
+            
             $table->rememberToken();
             $table->timestamps();
         });

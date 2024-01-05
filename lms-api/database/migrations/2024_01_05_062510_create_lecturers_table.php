@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('lecturers', function (Blueprint $table) {
             $table->id();
-            $table->string("phoneNo");
+            $table->string("phone_number");
             $table->foreignId('faculty_id')->references('id')->on('faculties');
-            
+
+            $table->timestamps();
         });
     }
 

@@ -10,7 +10,7 @@ class Lecturer extends Model
     use HasFactory;
     
     protected $fillable = [
-        'phoneNo'
+        'phone_number'
     ];
 
     public function faculty()
