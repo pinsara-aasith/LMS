@@ -41,8 +41,8 @@ export const items = [
 
   },
   {
-    title: 'Stores',
-    path: '/stores',
+    title: 'Subjects',
+    path: '/subjects',
 
   },
   {
