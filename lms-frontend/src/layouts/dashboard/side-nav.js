@@ -61,12 +61,12 @@ export const SideNav = (props) => {
               >
                 Admin Panel
               </Typography>
-              <Typography
+              {/* <Typography
                 color="neutral.400"
                 variant="caption"
               >
                 Developed by Group 36
-              </Typography>
+              </Typography> */}
             </div>
           </Box>
         </Box>
@@ -105,7 +105,7 @@ export const SideNav = (props) => {
             })}
           </Stack>
         </Box>
-        <Divider sx={{ borderColor: 'neutral.700' }} />
+        {/* <Divider sx={{ borderColor: 'neutral.700' }} />
         <Box>
           <Box
             sx={{
@@ -123,7 +123,7 @@ export const SideNav = (props) => {
               src="/assets/auth-illustration.svg"
             />
           </Box>
-        </Box>
+        </Box> */}
       </Box>
     </Scrollbar>
   );
