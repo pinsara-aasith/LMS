@@ -54,20 +54,7 @@ export const SideNav = (props) => {
               p: '12px'
             }}
           >
-            <div>
-              <Typography
-                color="inherit"
-                variant="subtitle2"
-              >
-                Admin Panel
-              </Typography>
-              {/* <Typography
-                color="neutral.400"
-                variant="caption"
-              >
-                Developed by Group 36
-              </Typography> */}
-            </div>
+
           </Box>
         </Box>
         <Divider sx={{ borderColor: 'neutral.700' }} />
@@ -105,25 +92,7 @@ export const SideNav = (props) => {
             })}
           </Stack>
         </Box>
-        {/* <Divider sx={{ borderColor: 'neutral.700' }} />
-        <Box>
-          <Box
-            sx={{
-              display: 'flex',
-              mt: 2,
-              mx: 'auto',
-              width: '260px',
-              '& img': {
-                width: '100%'
-              }
-            }}
-          >
-            <img
-              alt="Go to pro"
-              src="/assets/auth-illustration.svg"
-            />
-          </Box>
-        </Box> */}
+
       </Box>
     </Scrollbar>
   );
