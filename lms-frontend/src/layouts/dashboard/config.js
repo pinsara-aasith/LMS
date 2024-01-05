@@ -20,7 +20,7 @@ export const items = [
     path: '/',
     icon: (
       <SvgIcon fontSize="small">
-        <ChartBarIcon />
+        {/* <ChartBarIcon /> */}
       </SvgIcon>
     )
   },
@@ -29,7 +29,7 @@ export const items = [
     path: '/customers',
     icon: (
       <SvgIcon fontSize="small">
-        <UserGroupIcon />
+        {/* <UserGroupIcon /> */}
       </SvgIcon>
     )
   },
@@ -38,16 +38,16 @@ export const items = [
     path: '/employees',
     icon: (
       <SvgIcon fontSize="small">
-        <UsersIcon />
+        {/* <UsersIcon /> */}
       </SvgIcon>
     )
   },
   {
-    title: 'Trucks',
-    path: '/trucks',
+    title: 'Faculties',
+    path: '/faculties',
     icon: (
       <SvgIcon fontSize="small">
-        <TruckIcon />
+        {/* <TruckIcon /> */}
       </SvgIcon>
     )
   },
@@ -56,7 +56,7 @@ export const items = [
     path: '/orders',
     icon: (
       <SvgIcon fontSize="small">
-        <ShoppingCartIcon />
+        {/* <ShoppingCartIcon /> */}
       </SvgIcon>
     )
   },
@@ -65,7 +65,7 @@ export const items = [
     path: '/stores',
     icon: (
       <SvgIcon fontSize="small">
-        <BuildingStorefrontIcon />
+        {/* <BuildingStorefrontIcon /> */}
       </SvgIcon>
     )
   },
@@ -74,7 +74,7 @@ export const items = [
     path: '/products',
     icon: (
       <SvgIcon fontSize="small">
-        <ShoppingBagIcon />
+        {/* <ShoppingBagIcon /> */}
       </SvgIcon>
     )
   },
@@ -83,7 +83,7 @@ export const items = [
     path: '/transportation_train_trips',
     icon: (
       <SvgIcon fontSize="small">
-        <TicketIcon />
+        {/* <TicketIcon /> */}
       </SvgIcon>
     )
   },
@@ -92,7 +92,7 @@ export const items = [
     path: '/routes',
     icon: (
       <SvgIcon fontSize="small">
-        <ArrowTrendingUpIcon />
+        {/* <ArrowTrendingUpIcon /> */}
       </SvgIcon>
     )
   },
