@@ -18,127 +18,42 @@ export const items = [
   {
     title: 'Dashboard',
     path: '/',
-    icon: (
-      <SvgIcon fontSize="small">
-        {/* <ChartBarIcon /> */}
-      </SvgIcon>
-    )
+
   },
   {
-    title: 'Customers',
-    path: '/customers',
-    icon: (
-      <SvgIcon fontSize="small">
-        {/* <UserGroupIcon /> */}
-      </SvgIcon>
-    )
+    title: 'Lecturers',
+    path: '/lecturers',
+
   },
   {
-    title: 'Employees',
-    path: '/employees',
-    icon: (
-      <SvgIcon fontSize="small">
-        {/* <UsersIcon /> */}
-      </SvgIcon>
-    )
+    title: 'Students',
+    path: '/students',
+
   },
   {
     title: 'Faculties',
     path: '/faculties',
-    icon: (
-      <SvgIcon fontSize="small">
-        {/* <TruckIcon /> */}
-      </SvgIcon>
-    )
+
   },
   {
-    title: 'Orders',
-    path: '/orders',
-    icon: (
-      <SvgIcon fontSize="small">
-        {/* <ShoppingCartIcon /> */}
-      </SvgIcon>
-    )
+    title: 'Departments',
+    path: '/departments',
+
   },
   {
     title: 'Stores',
     path: '/stores',
-    icon: (
-      <SvgIcon fontSize="small">
-        {/* <BuildingStorefrontIcon /> */}
-      </SvgIcon>
-    )
+
   },
   {
-    title: 'Products',
-    path: '/products',
-    icon: (
-      <SvgIcon fontSize="small">
-        {/* <ShoppingBagIcon /> */}
-      </SvgIcon>
-    )
+    title: 'Admin',
+    path: '/admin',
+
   },
-  {
-    title: 'Transportation train trips',
-    path: '/transportation_train_trips',
-    icon: (
-      <SvgIcon fontSize="small">
-        {/* <TicketIcon /> */}
-      </SvgIcon>
-    )
-  },
-  {
-    title: 'Routes',
-    path: '/routes',
-    icon: (
-      <SvgIcon fontSize="small">
-        {/* <ArrowTrendingUpIcon /> */}
-      </SvgIcon>
-    )
-  },
-  // {
-  //   title: 'Account',
-  //   path: '/account',
-  //   icon: (
-  //     <SvgIcon fontSize="small">
-  //       <UserIcon />
-  //     </SvgIcon>
-  //   )
-  // },
-  // {
-  //   title: 'Settings',
-  //   path: '/settings',
-  //   icon: (
-  //     <SvgIcon fontSize="small">
-  //       <CogIcon />
-  //     </SvgIcon>
-  //   )
-  // },
-  // {
-  //   title: 'Login',
-  //   path: '/auth/login',
-  //   icon: (
-  //     <SvgIcon fontSize="small">
-  //       <LockClosedIcon />
-  //     </SvgIcon>
-  //   )
-  // },
-  // {
-  //   title: 'Register',
-  //   path: '/auth/register',
-  //   icon: (
-  //     <SvgIcon fontSize="small">
-  //       <UserPlusIcon />
-  //     </SvgIcon>
-  //   )
-  // },
-  // {
-  //   title: 'Error',
-  //   path: '/404',
-  //   icon: (
-  //     <SvgIcon fontSize="small">
-  //       <XCircleIcon />
-  //     </SvgIcon>
-  //   )
-  // }
+  
+ 
 ];
+
+
+
+
