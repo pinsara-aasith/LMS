@@ -11,13 +11,13 @@ class LecturerController extends Controller
 {
     public function index()
     {
-        $lecturers = Lecturer::all();
+        $lecturers = Lecturer::with('user')->get();
         return response()->json(['data' => $lecturers]);
     }
 
     public function show(Lecturer $lecturer)
     {
-        return response()->json(['data' => $lecturer->with('user')]);
+        return response()->json(['data' => Lecturer::with('user')->find($lecturer->id)]);
     }
 
     public function store(Request $request)
@@ -27,6 +27,7 @@ class LecturerController extends Controller
             'email' => 'required|email|unique:users', // Assuming you have an 'email' field in your users table
             'password' => 'required|string|min:6',
             'phone_number' => 'required|string',
+            'faculty_id' => 'required',
         ]);
 
         $lecturer = Lecturer::create([
@@ -39,10 +40,6 @@ class LecturerController extends Controller
             'email' => $request->input('email'),
             'password' => Hash::make($request->password),
             'role' => 'lecturer',
-        ]);
-
-        $lecturer = $user->userable()->create([
-            'name' => $request->input('name'),
         ]);
 
         return response()->json(['message' => 'Ok', 'data' => $lecturer], 201);
