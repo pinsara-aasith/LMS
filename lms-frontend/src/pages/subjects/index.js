@@ -2,28 +2,25 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import Head from 'next/head';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
-import { AppBar, Box, Button, Container, LinearProgress, Stack, SvgIcon, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Button, Container, LinearProgress, Stack, SvgIcon, Typography } from '@mui/material';
+import { useSelection } from 'src/hooks/use-selection';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
+import { RoutesTable } from 'src/sections/routes/routes-table';
 import { BigSearch } from 'src/sections/big-search';
 import { applyPagination } from 'src/utils/apply-pagination';
 import NextLink from 'next/link';
 import { StyledBreadCrumbs } from 'src/components/breadcrumbs';
 import { useRouter } from 'next/navigation';
 import { useConfirm } from 'material-ui-confirm';
-import { deleteStore, getAllStores } from 'src/apis/stores';
+import { getAllRoutes } from 'src/apis/routes';
 import { searchObjects } from 'src/utils/search-objects';
-import { useSnackbar } from 'notistack';
-import { DriversTable } from 'src/sections/employee/drivers-table';
-import { DriverAssistantsTable } from 'src/sections/employee/driverAssistants-table';
-import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { getAllDrivers, getAllDriverAssistants} from 'src/apis/employees';
 
 
-const useDrivers = (data, page, rowsPerPage, search) => {
+const useRoutes = (data, page, rowsPerPage, search) => {
   return useMemo(
     () => {
       const filtered = searchObjects(data, search)
-      return applyPagination(filtered || [], page, rowsPerPage);
+      return applyPagination(filtered, page, rowsPerPage);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [page, rowsPerPage, data, search]
@@ -33,36 +30,20 @@ const useDrivers = (data, page, rowsPerPage, search) => {
 const Page = () => {
   const [page, setPage] = useState(0);
   const [search, setSearch] = useState('');
-
-  const [selectedTab, setSelectedTab] = useState('drivers');
-
-  useEffect(() => {
-    setPage(0);
-    setSearch('')
-  }, [selectedTab])
-
-  const [drivers, setDrivers] = useState([]);
-
-  const [driverAssistants, setDriverAssistants] = useState([]);
-
+  const [data, setData] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const paginatedDriverAssistants = useDrivers(driverAssistants, page, rowsPerPage, search);
-  const paginatedDrivers = useDrivers(drivers, page, rowsPerPage, search);
-
+  const routes = useRoutes(data, page, rowsPerPage, search);
 
   const [loading, setLoading] = useState(true)
 
   async function retrieveAndRefreshData() {
     setLoading(true)
     try {
-      await Promise.allSettled([
-        
-        getAllDrivers().then(c => setDrivers(c)),
-        getAllDriverAssistants().then(c => setDriverAssistants(c))
-      ])
-      console.log("Driver were fetched from the database")
-      // setData(drivers)
+      const routes = (await getAllRoutes()) || [];
+      console.log("Routes were fetched from the database", routes)
+      
+      setData(routes)
     } catch (e) {
       console.error(e)
     }
@@ -90,17 +71,10 @@ const Page = () => {
 
   const confirm = useConfirm()
 
-  const handleDelete = async (driver) => {
+  const handleDelete = (route) => {
     confirm({ description: `This will permanently delete the record` })
-      .then(async () => {
-        try {
-          setLoading(true)
-          await deleteDriver(driver.Id)
-          console.log("Record was successfully deleted...")
-
-        } catch (e) {
-          console.error(e)
-        }
+      .then(() => {
+        // TODO: Delete the data, api call
 
         retrieveAndRefreshData()
       })
@@ -108,10 +82,11 @@ const Page = () => {
   };
 
   return (
+
     <>
       <Head>
         <title>
-          Drivers | A Suppilers
+          Subjects
         </title>
       </Head>
       <Box
@@ -130,13 +105,13 @@ const Page = () => {
             >
               <Stack spacing={1}>
                 <Typography variant="h5">
-                  Drivers
+                  Subjects
                 </Typography>
 
                 <StyledBreadCrumbs sequence={[
                   {
-                    text: 'Drivers',
-                    linkUrl: '/drivers',
+                    text: 'subjects',
+                    linkUrl: '/subjects',
                     active: true
                   },
                 ]} />
@@ -165,42 +140,20 @@ const Page = () => {
             <BigSearch
               search={search}
               onSearch={setSearch}
-              placeholder={"Search drivers"}
+              placeholder={"Search subjects"}
             />
 
-            {loading && <LinearProgress />}
+            {loading && <LinearProgress />} 
 
-            <TabContext value={selectedTab}>
-              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <TabList onChange={(s, v) => setSelectedTab(v)} aria-label="lab API tabs example">
-                  <Tab label="Drivers" value="drivers" />
-                  <Tab label="Driver Assistants" value="driverAssistants" />
-                </TabList>
-              </Box>
-              <TabPanel value="drivers">
-                <DriversTable
-                  count={drivers.length}
-                  items={paginatedDrivers}
-                  onPageChange={handlePageChange}
-                  onRowsPerPageChange={handleRowsPerPageChange}
-                  page={page}
-                  rowsPerPage={rowsPerPage}
-                  handleDelete={handleDelete}
-                />
-              </TabPanel>
-              <TabPanel value="driverAssistants">
-                <DriverAssistantsTable
-                  count={paginatedDriverAssistants.length}
-                  items={driverAssistants}
-                  onPageChange={handlePageChange}
-                  onRowsPerPageChange={handleRowsPerPageChange}
-                  page={page}
-                  rowsPerPage={rowsPerPage}
-                  handleDelete={handleDelete}
-                />
-              </TabPanel>
-              
-            </TabContext>
+             <RoutesTable
+              count={data.length}
+              items={routes}
+              onPageChange={handlePageChange}
+              onRowsPerPageChange={handleRowsPerPageChange}
+              page={page}
+              rowsPerPage={rowsPerPage}
+              handleDelete={handleDelete}
+            /> 
           </Stack>
         </Container>
       </Box>

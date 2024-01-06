@@ -8,18 +8,22 @@ import { BigSearch } from 'src/sections/big-search';
 import { applyPagination } from 'src/utils/apply-pagination';
 import NextLink from 'next/link';
 import { StyledBreadCrumbs } from 'src/components/breadcrumbs';
+import { useRouter } from 'next/navigation';
+import { useConfirm } from 'material-ui-confirm';
+import { deleteStore, getAllStores } from 'src/apis/stores';
 import { searchObjects } from 'src/utils/search-objects';
 import { useSnackbar } from 'notistack';
-import { CustomersTable } from 'src/sections/customer/customers-table';
+import { DriversTable } from 'src/sections/employee/drivers-table';
+import { DriverAssistantsTable } from 'src/sections/employee/driverAssistants-table';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { getAllEndCustomers, getAllRetailers, getAllWholesalers } from 'src/apis/customers';
+import { getAllDrivers, getAllDriverAssistants} from 'src/apis/employees';
 
 
-const useCustomers = (data, page, rowsPerPage, search) => {
+const useDrivers = (data, page, rowsPerPage, search) => {
   return useMemo(
     () => {
       const filtered = searchObjects(data, search)
-      return applyPagination(filtered, page, rowsPerPage);
+      return applyPagination(filtered || [], page, rowsPerPage);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [page, rowsPerPage, data, search]
@@ -30,22 +34,22 @@ const Page = () => {
   const [page, setPage] = useState(0);
   const [search, setSearch] = useState('');
 
-  const [selectedTab, setSelectedTab] = useState('retailers');
+  const [selectedTab, setSelectedTab] = useState('drivers');
 
   useEffect(() => {
     setPage(0);
     setSearch('')
   }, [selectedTab])
 
-  const [retailers, setRetailers] = useState([]);
-  const [endCustomers, setEndCustomers] = useState([]);
-  const [wholesalers, setWholesalers] = useState([]);
+  const [drivers, setDrivers] = useState([]);
+
+  const [driverAssistants, setDriverAssistants] = useState([]);
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const paginatedWholeSalers = useCustomers(wholesalers, page, rowsPerPage, search);
-  const paginatedRetailers = useCustomers(retailers, page, rowsPerPage, search);
-  const paginatedEndCustomers = useCustomers(endCustomers, page, rowsPerPage, search);
+  const paginatedDriverAssistants = useDrivers(driverAssistants, page, rowsPerPage, search);
+  const paginatedDrivers = useDrivers(drivers, page, rowsPerPage, search);
+
 
   const [loading, setLoading] = useState(true)
 
@@ -53,17 +57,18 @@ const Page = () => {
     setLoading(true)
     try {
       await Promise.allSettled([
-        getAllEndCustomers().then(c => setEndCustomers(c)),
-        getAllRetailers().then(c => setRetailers(c)),
-        getAllWholesalers().then(c => setWholesalers(c))
+        
+        getAllDrivers().then(c => setDrivers(c)),
+        getAllDriverAssistants().then(c => setDriverAssistants(c))
       ])
-      console.log("Customer were fetched from the database")
-      // setData(customers)
+      console.log("Driver were fetched from the database")
+      // setData(drivers)
     } catch (e) {
       console.error(e)
     }
     setLoading(false)
   }
+
 
   useEffect(() => {
     retrieveAndRefreshData()
@@ -83,11 +88,30 @@ const Page = () => {
     []
   );
 
+  const confirm = useConfirm()
+
+  const handleDelete = async (driver) => {
+    confirm({ description: `This will permanently delete the record` })
+      .then(async () => {
+        try {
+          setLoading(true)
+          await deleteDriver(driver.Id)
+          console.log("Record was successfully deleted...")
+
+        } catch (e) {
+          console.error(e)
+        }
+
+        retrieveAndRefreshData()
+      })
+      .catch(() => console.log("Deletion cancelled."));
+  };
+
   return (
     <>
       <Head>
         <title>
-          Customers | A Suppilers
+          Students
         </title>
       </Head>
       <Box
@@ -106,13 +130,13 @@ const Page = () => {
             >
               <Stack spacing={1}>
                 <Typography variant="h5">
-                  Customers
+                  Students
                 </Typography>
 
                 <StyledBreadCrumbs sequence={[
                   {
-                    text: 'Customers',
-                    linkUrl: '/customers',
+                    text: 'Students',
+                    linkUrl: '/students',
                     active: true
                   },
                 ]} />
@@ -123,18 +147,7 @@ const Page = () => {
                   spacing={1}
                   direction={'row'}
                 >
-                  <Button
-                    startIcon={(
-                      <SvgIcon fontSize="small">
-                        <PlusIcon />
-                      </SvgIcon>
-                    )}
-                    variant="contained"
-                    href={'/customers/create'}
-                    LinkComponent={NextLink}
-                  >
-                    Add New
-                  </Button>
+                  
                   <Button
                     startIcon={(
                       <SvgIcon fontSize="small">
@@ -152,7 +165,7 @@ const Page = () => {
             <BigSearch
               search={search}
               onSearch={setSearch}
-              placeholder={"Search customers"}
+              placeholder={"Search students"}
             />
 
             {loading && <LinearProgress />}
@@ -160,41 +173,33 @@ const Page = () => {
             <TabContext value={selectedTab}>
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <TabList onChange={(s, v) => setSelectedTab(v)} aria-label="lab API tabs example">
-                  <Tab label="Retailer Customers" value="retailers" />
-                  <Tab label="Wholesalers" value="wholesalers" />
-                  <Tab label="End Customers" value="endcustomers" />
+                  <Tab label="Drivers" value="drivers" />
+                  <Tab label="Driver Assistants" value="driverAssistants" />
                 </TabList>
               </Box>
-              <TabPanel value="retailers">
-                <CustomersTable
-                  count={retailers.length}
-                  items={paginatedRetailers}
+              <TabPanel value="drivers">
+                <DriversTable
+                  count={drivers.length}
+                  items={paginatedDrivers}
                   onPageChange={handlePageChange}
                   onRowsPerPageChange={handleRowsPerPageChange}
                   page={page}
                   rowsPerPage={rowsPerPage}
+                  handleDelete={handleDelete}
                 />
               </TabPanel>
-              <TabPanel value="wholesalers">
-                <CustomersTable
-                  count={paginatedWholeSalers.length}
-                  items={wholesalers}
+              <TabPanel value="driverAssistants">
+                <DriverAssistantsTable
+                  count={paginatedDriverAssistants.length}
+                  items={driverAssistants}
                   onPageChange={handlePageChange}
                   onRowsPerPageChange={handleRowsPerPageChange}
                   page={page}
                   rowsPerPage={rowsPerPage}
+                  handleDelete={handleDelete}
                 />
               </TabPanel>
-              <TabPanel value="endcustomers">
-                <CustomersTable
-                  count={endCustomers.length}
-                  items={paginatedEndCustomers}
-                  onPageChange={handlePageChange}
-                  onRowsPerPageChange={handleRowsPerPageChange}
-                  page={page}
-                  rowsPerPage={rowsPerPage}
-                />
-              </TabPanel>
+              
             </TabContext>
           </Stack>
         </Container>
