@@ -111,8 +111,8 @@ const Page = () => {
 
                 <StyledBreadCrumbs sequence={[
                   {
-                    text: 'Customers',
-                    linkUrl: '/customers',
+                    text: 'Lecturers',
+                    linkUrl: '/lecturers',
                     active: true
                   },
                 ]} />
@@ -152,7 +152,7 @@ const Page = () => {
             <BigSearch
               search={search}
               onSearch={setSearch}
-              placeholder={"Search customers"}
+              placeholder={"Search lecturers"}
             />
 
             {loading && <LinearProgress />}
