@@ -62,7 +62,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Orders | A Suppilers
+          Department
         </title>
       </Head>
       <Box
@@ -81,13 +81,13 @@ const Page = () => {
             >
               <Stack spacing={1}>
                 <Typography variant="h5">
-                  Orders
+                  Departments
                 </Typography>
 
                 <StyledBreadCrumbs sequence={[
                   {
-                    text: 'Orders',
-                    linkUrl: '/orders',
+                    text: 'department',
+                    linkUrl: '/department',
                     active: true
                   },
                 ]} />

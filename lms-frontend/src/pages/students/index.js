@@ -111,7 +111,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Drivers | A Suppilers
+          Students
         </title>
       </Head>
       <Box
@@ -130,13 +130,13 @@ const Page = () => {
             >
               <Stack spacing={1}>
                 <Typography variant="h5">
-                  Drivers
+                  Students
                 </Typography>
 
                 <StyledBreadCrumbs sequence={[
                   {
-                    text: 'Drivers',
-                    linkUrl: '/drivers',
+                    text: 'Students',
+                    linkUrl: '/students',
                     active: true
                   },
                 ]} />
@@ -165,7 +165,7 @@ const Page = () => {
             <BigSearch
               search={search}
               onSearch={setSearch}
-              placeholder={"Search drivers"}
+              placeholder={"Search students"}
             />
 
             {loading && <LinearProgress />}

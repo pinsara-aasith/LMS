@@ -87,7 +87,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Customers | A Suppilers
+          Lecturers
         </title>
       </Head>
       <Box
@@ -106,7 +106,7 @@ const Page = () => {
             >
               <Stack spacing={1}>
                 <Typography variant="h5">
-                  Customers
+                  Lecturers
                 </Typography>
 
                 <StyledBreadCrumbs sequence={[
