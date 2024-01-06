@@ -185,7 +185,7 @@ export const OrdersOnTrainForStore = ({ storeId }) => {
         try {
           setLoading(true)
 
-          await axios.get(`${BACKEND_URL}/api/admin/orders/${orderId}/unloadFromTrain`)
+          await axios.get(`${BACKEND_URL}/api/orders/${orderId}/unloadFromTrain`)
 
         } catch (e) {
           console.error(e)

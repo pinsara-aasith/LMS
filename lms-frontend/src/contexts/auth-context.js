@@ -133,7 +133,7 @@ export const AuthProvider = (props) => {
 
     console.log(email, password)
     try {
-      let { data } = await axios.post(`${BACKEND_URL}/api/admin/auth/users/login`, { email, password })
+      let { data } = await axios.post(`${BACKEND_URL}/api/auth/users/login`, { email, password })
       if (!data.success) {
         throw new Error("Please check the password again!")
       }

@@ -1,51 +1,68 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Head from 'next/head';
-import { Autocomplete, Box, Button, Card, CardContent, CardHeader, Container, FormControl, InputLabel, MenuItem, Select, Snackbar, Stack, SvgIcon, TextField, Typography } from '@mui/material';
+import { Autocomplete, Box, Button, Card, CardContent, CardHeader, Container, FormControl, InputLabel, MenuItem, NativeSelect, OutlinedInput, Select, Snackbar, Stack, SvgIcon, TextField, Typography } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { StyledBreadCrumbs } from 'src/components/breadcrumbs';
-import _cities from "src/pages/cities.json";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
-import { insertStore } from 'src/apis/stores';
+import axios from 'axios';
+import { BACKEND_URL } from 'src/apis/consts';
+import { getAllFaculties } from '../faculties';
+
+export function insertDepartment(data) {
+
+  console.log(data);
+
+  return axios.post(`${BACKEND_URL}/api/departments`, {
+    name: data?.name,
+    faculty_id: data?.faculty_id
+  })
+}
 
 const Page = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
+  const [faculties, setFaculties] = useState([]);
+
+  useEffect(() => {
+    getAllFaculties().then(d => setFaculties(d));
+  }, [])
+
   const formik = useFormik({
     initialValues: {
-      Capacity: 0,
-      City: '',
+      faculty_id: null,
+      name: '',
       submit: null
     },
     validationSchema: Yup.object({
-      City: Yup
+      name: Yup
         .string()
-        .required('City is required'),
-      Capacity: Yup
-        .number()
-        .max(10000)
-        .required('Capacity is required')
+        .required('name is required'),
+      faculty_id: Yup.
+        number()
+        .required('faculty is required')
     }),
     onSubmit: async (values, helpers) => {
       try {
-        await insertStore(formik.values)
-        
-        enqueueSnackbar('Store was added successfully!', {
+        await insertDepartment(formik.values)
+
+        enqueueSnackbar('Department was added successfully!', {
           variant: 'success',
           anchorOrigin: {
             vertical: 'bottom',
             horizontal: 'right',
-            
+
           },
           autoHideDuration: 2000
         })
 
-        setTimeout(() => router.push('/stores'), 400)
-        
+        setTimeout(() => router.push('/departments'), 400)
+
       } catch (err) {
+        console.error(err);
         enqueueSnackbar('Error occured!', {
           variant: 'error',
           anchorOrigin: {
@@ -66,7 +83,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Stores | A Suppilers
+          Departments | A Suppilers
         </title>
       </Head>
       <Box
@@ -85,17 +102,17 @@ const Page = () => {
             >
               <Stack spacing={1}>
                 <Typography variant="h5">
-                  Stores
+                  Departments
                 </Typography>
 
                 <StyledBreadCrumbs sequence={[
                   {
-                    text: 'Stores',
-                    linkUrl: '/stores',
+                    text: 'Departments',
+                    linkUrl: '/departments',
                   },
                   {
                     text: 'Add New',
-                    linkUrl: '/stores/create',
+                    linkUrl: '/departments/create',
                     active: true
                   },
                 ]} />
@@ -104,11 +121,11 @@ const Page = () => {
 
             </Stack>
             <Card sx={{ overflow: 'visible' }}>
-              <CardHeader title="Add New Store" />
+              <CardHeader title="Add New Department" />
               <CardContent>
                 <form onSubmit={formik.handleSubmit}>
                   <Stack
-                    direction="row"
+                    direction="column"
                     justifyContent="space-between"
                     spacing={5}
                     sx={{ mb: 3 }}
@@ -118,39 +135,48 @@ const Page = () => {
                       fullWidth
 
                     >
-                      <Autocomplete
-                        disablePortal
-                        disableClearable
-                        options={_cities.map(c => c.city)}
-                        renderInput={
-                          (params) =>
-                            <TextField
-                              {...params}
-                              error={!!(formik.touched.City && formik.errors.City)}
-                              helperText={formik.touched.City && formik.errors.City}
-                              onBlur={(e) => { formik.handleBlur(e) }}
-                              label="Select City"
-                            />
-                        }
-                        onChange={(_, newValue) => formik.setFieldValue("City", newValue)}
-                        name="City"
-                        value={formik.values.City}
+                      <TextField
+                        fullWidth
+                        type="text"
+                        label="Name"
+                        name="name"
+                        error={!!(formik.touched.name && formik.errors.name)}
+                        helperText={formik.touched.name && formik.errors.name}
+                        value={formik.values.name}
+                        onChange={formik.handleChange}
                       />
                     </FormControl>
                     <FormControl
                       variant="filled"
                       fullWidth
                     >
+
                       <TextField
                         fullWidth
-                        label="Capacity"
-                        type="number"
-                        name="Capacity"
-                        error={!!(formik.touched.Capacity && formik.errors.Capacity)}
-                        helperText={formik.touched.Capacity && formik.errors.Capacity}
-                        value={formik.values.Capacity}
+                        label="Select Faculty"
+                        name="faculty_id"
+                        required
+                        select
+                        SelectProps={{ native: true }}
+                        error={!!(formik.touched.faculty_id && formik.errors.faculty_id)}
+                        helperText={formik.touched.faculty_id && formik.errors.faculty_id}
+                        value={formik.values.faculty_id}
                         onChange={formik.handleChange}
-                      />
+                      >
+                        <option
+                          key={''}
+                          value={null}
+                        >
+                        </option>
+                        {faculties.map((f) => (
+                          <option
+                            key={f.id}
+                            value={f.id}
+                          >
+                            {f.name}
+                          </option>
+                        ))}
+                      </TextField>
                     </FormControl>
                   </Stack>
                   <Stack

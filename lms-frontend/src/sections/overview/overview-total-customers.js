@@ -13,7 +13,7 @@ export const OverviewTotalCustomers = (props) => {
   const [value, setValue] = useState(0)
 
   async function refresh() {
-    const { data } = await axios.get(`${BACKEND_URL}/api/admin/reports/itemsInWarehouse`)
+    const { data } = await axios.get(`${BACKEND_URL}/api/reports/itemsInWarehouse`)
     setValue(data?.data?.[0].Count)
   }
 

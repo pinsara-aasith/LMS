@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Department;
 use App\Models\Faculty;
 use App\Models\Lecturer;
 use Illuminate\Database\Seeder;
@@ -22,13 +23,24 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         $faculty = Faculty::create([
-            'name' => 'Facalty of Engineering',
-            'description' => ''
+            'name' => 'Faculty of Engineering',
+            'description' => 'Faculty of Engineering: Nurturing innovation and excellence in engineering education, research, and application to prepare future leaders and problem solvers in the technological landscape.'
         ]);
 
-        $lecturerCount = 5;
+        $faculty2 = Faculty::create([
+            'name' => 'Faculty of Fashion Design',
+            'description' => 'Fashion development encompasses the dynamic process of conceptualizing, designing, producing, and promoting clothing and accessories to meet the evolving trends and preferences of consumers. '
+        ]);
 
-        // Creating lecturers with associated users
+        $faculty3 = Faculty::create([
+            'name' => 'Faculty of Textiles',
+            'description' => 'Pioneering innovation in textile engineering, weaving creativity with technical expertise for diverse applications'
+        ]);
+
+        Department::create(['name' => 'Department of Computer Science Engineering', 'faculty_id' => $faculty->id]);
+
+        $lecturerCount = 5;
+                // Creating lecturers with associated users
         Lecturer::factory($lecturerCount)->create(['phone_number' => '+94 78 632 23 98', 'faculty_id' => $faculty->id])->each(function ($lecturer) {
             $lecturer->user()->create([
                 'name' => '',

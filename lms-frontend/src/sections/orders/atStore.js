@@ -193,7 +193,7 @@ export const OrdersOnTrainForStore = ({ storeId }) => {
                 try {
                     setLoading(true)
 
-                    await axios.get(`${BACKEND_URL}/api/admin/orders/${orderId}/unloadFromTrain`)
+                    await axios.get(`${BACKEND_URL}/api/orders/${orderId}/unloadFromTrain`)
 
                 } catch (e) {
                     console.error(e)
@@ -287,7 +287,7 @@ export const OrdersOnTrainForStore = ({ storeId }) => {
                 .catch((error) => {
                     console.error('Error:', error);
                 });
-            await fetch(`${BACKEND_URL2}/api/admin/truck`, {
+            await fetch(`${BACKEND_URL2}/api/truck`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

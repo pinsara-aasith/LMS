@@ -6,6 +6,11 @@ import ChevronUpDownIcon from '@heroicons/react/24/solid/ChevronUpDownIcon';
 import {
   Box,
   Button,
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia,
   Divider,
   Drawer,
   Stack,
@@ -34,6 +39,8 @@ export const SideNav = (props) => {
         }
       }}
     >
+
+
       <Box
         sx={{
           display: 'flex',
@@ -45,17 +52,36 @@ export const SideNav = (props) => {
           <Box
             sx={{
               alignItems: 'center',
-              backgroundColor: 'rgba(255, 255, 255, 0.04)',
+              backgroundColor: 'rgba(255, 255, 255)',
+              color: 'black',
               borderRadius: 1,
               cursor: 'pointer',
-              display: 'flex',
-              justifyContent: 'space-between',
               mt: 2,
               p: '12px'
             }}
           >
-
+            <Card sx={{ maxWidth: 345, marginBottom: '20px' }}>
+              <CardActionArea>
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image="/assets/auth-illustration.jpg"
+                  alt="green iguana"
+                />
+              </CardActionArea>
+            </Card>
+            <Typography
+              align="center"
+              variant="h6">
+              LMS
+            </Typography>
+            <Typography
+              align="center"
+              variant="subtitle2">
+              Learning Management System
+            </Typography>
           </Box>
+
         </Box>
         <Divider sx={{ borderColor: 'neutral.700' }} />
         <Box

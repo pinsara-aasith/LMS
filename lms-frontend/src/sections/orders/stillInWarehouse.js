@@ -215,7 +215,7 @@ export const OrdersStillInWarehouseTable = ({ search }) => {
               variant="outlined"
               onClick={async () => {
                 setLoading(true);
-                await axios.post(`${BACKEND_URL}/api/admin/orders/distributeOrdersByTrain`, {
+                await axios.post(`${BACKEND_URL}/api/orders/distributeOrdersByTrain`, {
                   orderDistributions: (ordersSelection?.selected || []).map((oId) => {
                     let so = searchOrder(oId)
                     return {

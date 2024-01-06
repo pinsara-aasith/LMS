@@ -21,6 +21,12 @@ export const items = [
 
   },
   {
+    title: 'Admins',
+    path: '/admin',
+
+  },
+  
+  {
     title: 'Lecturers',
     path: '/lecturers',
 
@@ -40,17 +46,6 @@ export const items = [
     path: '/departments',
 
   },
-  {
-    title: 'Stores',
-    path: '/stores',
-
-  },
-  {
-    title: 'Admin',
-    path: '/admin',
-
-  },
-  
  
 ];
 

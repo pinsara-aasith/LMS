@@ -19,17 +19,17 @@ import { BACKEND_URL, truncate } from 'src/apis/consts';
 import PencilIcon from '@heroicons/react/24/solid/PencilIcon';
 import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 
-export function deleteFaculty(facultyId) {
-  return axios.delete(`${BACKEND_URL}/api/faculties/${facultyId}`)
+export function deleteDepartment(departmentId) {
+  return axios.delete(`${BACKEND_URL}/api/departments/${departmentId}`)
 }
 
-export async function getAllFaculties() {
-  const response = await axios.get(`${BACKEND_URL}/api/faculties`)
+export async function getAllDepartments() {
+  const response = await axios.get(`${BACKEND_URL}/api/departments`)
   return response.data?.['data']
 }
 
 
-const useFaculties = (data, page, rowsPerPage, search) => {
+const useDepartments = (data, page, rowsPerPage, search) => {
   return useMemo(
     () => {
       const filtered = searchObjects(data, search)
@@ -46,7 +46,7 @@ const Page = () => {
   const [data, setData] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const faculties = useFaculties(data, page, rowsPerPage, search);
+  const departments = useDepartments(data, page, rowsPerPage, search);
 
   const [loading, setLoading] = useState(true)
 
@@ -54,10 +54,10 @@ const Page = () => {
   async function retrieveAndRefreshData() {
     setLoading(true)
     try {
-      const faculties = (await getAllFaculties()) || [];
-      console.log("Faculties were fetched from the database", faculties)
+      const departments = (await getAllDepartments()) || [];
+      console.log("Departments were fetched from the database", departments)
 
-      setData(faculties)
+      setData(departments)
     } catch (e) {
       enqueueSnackbar('Error occured!', {
         variant: 'error',
@@ -94,12 +94,12 @@ const Page = () => {
 
   const confirm = useConfirm()
 
-  const handleDelete = (faculty) => {
+  const handleDelete = (department) => {
     confirm({ description: `This will permanently delete the record` })
       .then(async () => {
         try {
           setLoading(true)
-          await deleteFaculty(faculty.id)
+          await deleteDepartment(department.id)
           console.log("Record was successfully deleted...")
 
         } catch (e) {
@@ -127,7 +127,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Faculties
+          Departments
         </title>
       </Head>
       <Box
@@ -147,13 +147,13 @@ const Page = () => {
 
               <Stack spacing={1}>
                 <Typography variant="h5">
-                  Faculties
+                  Departments
                 </Typography>
 
                 <StyledBreadCrumbs sequence={[
                   {
-                    text: 'Faculties',
-                    linkUrl: '/faculties',
+                    text: 'Departments',
+                    linkUrl: '/departments',
                     active: true
                   },
                 ]} />
@@ -171,7 +171,7 @@ const Page = () => {
                       </SvgIcon>
                     )}
                     variant="contained"
-                    href={'/faculties/create'}
+                    href={'/departments/create'}
                     LinkComponent={NextLink}
                   >
                     Add New
@@ -193,14 +193,14 @@ const Page = () => {
             <BigSearch
               search={search}
               onSearch={setSearch}
-              placeholder={"Search Faculties"}
+              placeholder={"Search Departments"}
             />
 
             {loading && <LinearProgress />}
 
-            <FacultiesTable
+            <DepartmentsTable
               count={data.length}
-              items={faculties}
+              items={departments}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
               page={page}
@@ -214,7 +214,7 @@ const Page = () => {
   );
 };
 
-export const FacultiesTable = (props) => {
+export const DepartmentsTable = (props) => {
   const {
     count = 0,
     items = [],
@@ -233,7 +233,7 @@ export const FacultiesTable = (props) => {
             <TableHead>
               <TableRow>
                 <TableCell width={170}>
-                  Faculty ID
+                  Department ID
                 </TableCell>
 
                 <TableCell>
@@ -241,7 +241,7 @@ export const FacultiesTable = (props) => {
                 </TableCell>
 
                 <TableCell>
-                  Description
+                  Faculty
                 </TableCell>
 
                 <TableCell>
@@ -250,32 +250,32 @@ export const FacultiesTable = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((faculty) => {
+              {items.map((department) => {
                 return (
                   <TableRow
                     hover
-                    key={faculty.id}
+                    key={department.id}
                   >
                     <TableCell>
                       <Typography variant="subtitle2">
-                        {faculty.id}
+                        {department.id}
                       </Typography>
                     </TableCell>
                     <TableCell>
 
                       <Typography variant="subtitle2">
-                        {faculty.name}
+                        {department.name}
                       </Typography>
                     </TableCell>
                     <TableCell>
-                      {truncate(faculty.description, 50)}
+                      {department.faculty.name}
                     </TableCell>
 
                     <TableCell>
                       <IconButton
                         color="primary"
                         aria-label="edit"
-                        href={`/faculties/edit/${faculty.id}`}
+                        href={`/departments/edit/${department.id}`}
                         LinkComponent={NextLink}
                       >
                         <SvgIcon>
@@ -286,7 +286,7 @@ export const FacultiesTable = (props) => {
                       <IconButton
                         color="primary"
                         aria-label="remove"
-                        onClick={() => handleDelete(faculty)}
+                        onClick={() => handleDelete(department)}
                         LinkComponent={NextLink}
                       >
                         <SvgIcon>

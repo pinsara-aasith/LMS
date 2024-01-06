@@ -33,7 +33,7 @@ export const OverviewLatestOrders = (props) => {
 
 const [orders, setOrders] = useState([])
   async function refresh() {
-    const {data} = await axios.get(`${BACKEND_URL}/api/admin/reports/mostSoldProducts`)
+    const {data} = await axios.get(`${BACKEND_URL}/api/reports/mostSoldProducts`)
     setOrders(data?.data[0] || [])
     
   }

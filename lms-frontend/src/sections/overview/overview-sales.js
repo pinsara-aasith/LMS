@@ -107,7 +107,7 @@ export const OverviewSales = (props) => {
   const [sales, setSales] = useState([0,0,0,0])
 
   async function refresh() {
-    const {data} = await axios.get(`${BACKEND_URL}/api/admin/reports/quartelySales/${year}`)
+    const {data} = await axios.get(`${BACKEND_URL}/api/reports/quartelySales/${year}`)
     let report = data?.report?.[0]
     console.log(report, 'report')
     if(!!report) {

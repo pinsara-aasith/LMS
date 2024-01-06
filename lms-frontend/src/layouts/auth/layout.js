@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { Box, Typography, Unstable_Grid2 as Grid } from '@mui/material';
+import Image from 'next/image';
 
 export const Layout = (props) => {
   const { children } = props;
@@ -60,7 +61,7 @@ export const Layout = (props) => {
                 sx={{ color: '#15B79E' }}
                 target="_blank"
               >
-                A Suppliers
+                LMS
               </Box>
             </Typography>
             <Typography
@@ -68,11 +69,12 @@ export const Layout = (props) => {
               variant="subtitle2"
               sx={{mt:3}}
             >
-              We are Company A, headquartered in the enchanting city of Kandy, and we specialize in offering a wide variety of top-quality products to wholesalers, retailers, and end customers, all made accessible through our well-established railway supply chain for islandwide distribution.
+              Learning Management System (LMS) is a digital platform that enables efficient administration, documentation, tracking, and delivery of educational courses or training programs. It serves as a centralized hub for educators to create, organize, and distribute content, as well as monitor and assess the progress of learners. LMSs are widely used in academic institutions, corporate settings, and various organizations to streamline learning processes and enhance overall education management.
             </Typography>
             <img
+            style={{marginTop: '50px'}}
               alt=""
-              src="/assets/auth-illustration.svg"
+              src="/assets/auth-illustration.jpg"
             />
           </Box>
         </Grid>

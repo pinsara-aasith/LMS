@@ -4,40 +4,48 @@ import Head from 'next/head';
 import { Autocomplete, Backdrop, Box, Button, Card, CardContent, CardHeader, CircularProgress, Container, FormControl, InputLabel, LinearProgress, MenuItem, Select, Snackbar, Stack, SvgIcon, TextField, Typography } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { StyledBreadCrumbs } from 'src/components/breadcrumbs';
-import _cities from "src/pages/cities.json";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { LoadingButton } from '@mui/lab';
+import axios from 'axios';
+import { BACKEND_URL } from 'src/apis/consts';
+
+export function updateFaculty(id, data) {
+  return axios.put(`${BACKEND_URL}/api/faculties/${id}`, {
+    name: data?.name,
+    description: data?.description
+  })
+}
+
 
 const Page = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const storeId = router.query.id
+  const facultyId = router.query.id
   const [loading, setLoading] = useState(true);
+
 
   const formik = useFormik({
     initialValues: {
-      City: '',
-      Capacity: ''
+      name: '',
+      description: ''
     },
     enableReinitialize: true,
     validationSchema: Yup.object({
-      City: Yup
+      name: Yup
         .string()
-        .required('City is required'),
-      Capacity: Yup
-        .number()
-        .max(10000)
-        .required('Capacity is required')
+        .required('name is required'),
+      description: Yup
+        .string()
+        .required('description is required')
     }),
     onSubmit: async (values, helpers) => {
       try {
-        // TODO: Connect with backend
-        // Use axios Do the Post request and update the info
+        updateFaculty(facultyId, values);
 
-        enqueueSnackbar('Store was edited successfully!', {
+        enqueueSnackbar('Faculty was edited successfully!', {
           variant: 'success',
           anchorOrigin: {
             vertical: 'bottom',
@@ -47,7 +55,7 @@ const Page = () => {
           autoHideDuration: 2000
         })
 
-        setTimeout(() => router.push('/stores'), 400)
+        setTimeout(() => router.push('/faculties'), 400)
 
       } catch (err) {
         enqueueSnackbar('Error occured!', {
@@ -67,26 +75,25 @@ const Page = () => {
   });
 
   useEffect(() => {
-    setLoading(true)
-    // TODO: Connect with backend
-    // Use axios Do the get request and update the info
-    // Replace below with actual data from api
-    formik.setValues({
-      City: 'Moratuwa',
-      Capacity: 10
+    setLoading(true);
+
+    axios.get(`${BACKEND_URL}/api/faculties/${facultyId}`).then((res) => {
+      formik.setValues({
+        name: res.data?.data['name'] ?? '',
+        description: res.data?.data['description'] ?? '',
+      })
+
+      setLoading(false)
     })
 
-    setLoading(false)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [storeId])
-
-  const __cities = useMemo(() => _cities.map(c => c.city),[])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [facultyId])
 
   return (
     <>
       <Head>
         <title>
-          Stores | A Suppilers
+          Faculties | A Suppilers
         </title>
       </Head>
       <Box
@@ -105,17 +112,17 @@ const Page = () => {
             >
               <Stack spacing={1}>
                 <Typography variant="h5">
-                  Stores
+                  Faculties
                 </Typography>
 
                 <StyledBreadCrumbs sequence={[
                   {
-                    text: 'Stores',
-                    linkUrl: '/stores',
+                    text: 'Faculties',
+                    linkUrl: '/faculties',
                   },
                   {
                     text: 'Edit',
-                    linkUrl: '/stores/edit/',
+                    linkUrl: '/faculties/edit/',
                     active: true
                   },
                 ]} />
@@ -126,12 +133,12 @@ const Page = () => {
             {loading && <LinearProgress />}
 
             <Card sx={{ overflow: 'visible' }}>
-              <CardHeader title="Edit Store" />
+              <CardHeader title="Edit Faculty" />
 
               <CardContent>
                 <form onSubmit={formik.handleSubmit}>
                   <Stack
-                    direction="row"
+                    direction="column"
                     justifyContent="space-between"
                     spacing={5}
                     sx={{ mb: 3 }}
@@ -141,23 +148,15 @@ const Page = () => {
                       fullWidth
 
                     >
-                      <Autocomplete
-                        disablePortal
-                        disableClearable
-                        options={__cities}
-                        renderInput={
-                          (params) =>
-                            <TextField
-                              {...params}
-                              error={!!(formik.touched.City && formik.errors.City)}
-                              helperText={formik.touched.City && formik.errors.City}
-                              onBlur={(e) => { formik.handleBlur(e) }}
-                              label="Select City"
-                            />
-                        }
-                        onChange={(_, newValue) => formik.setFieldValue("City", newValue)}
-                        name="City"
-                        value={formik.values.City}
+                      <TextField
+                        fullWidth
+                        type="text"
+                        label="Name"
+                        name="name"
+                        error={!!(formik.touched.name && formik.errors.name)}
+                        helperText={formik.touched.name && formik.errors.name}
+                        value={formik.values.name}
+                        onChange={formik.handleChange}
                       />
                     </FormControl>
                     <FormControl
@@ -165,13 +164,15 @@ const Page = () => {
                       fullWidth
                     >
                       <TextField
+                        multiline
+                        rows={5}
                         fullWidth
-                        type="number"
-                        label="Capacity"
-                        name="Capacity"
-                        error={!!(formik.touched.Capacity && formik.errors.Capacity)}
-                        helperText={formik.touched.Capacity && formik.errors.Capacity}
-                        value={formik.values.Capacity}
+                        type="text"
+                        label="Description"
+                        name="description"
+                        error={!!(formik.touched.description && formik.errors.description)}
+                        helperText={formik.touched.description && formik.errors.description}
+                        value={formik.values.description}
                         onChange={formik.handleChange}
                       />
                     </FormControl>

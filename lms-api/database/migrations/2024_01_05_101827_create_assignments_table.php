@@ -13,14 +13,15 @@ return new class extends Migration
     {
         Schema::create('assignments', function (Blueprint $table) {
             $table->id();
-            $table->text('text');
+            $table->text('title');
+            $table->text('description');
             $table->string('file_path');
             $table->foreignId('subject_id')->constrained();
             // Add other assignment attributes as needed
             $table->timestamps();
         });
     }
-    
+
     /**
      * Reverse the migrations.
      */
