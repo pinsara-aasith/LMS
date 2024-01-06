@@ -12,9 +12,6 @@ import { BACKEND_URL } from 'src/apis/consts';
 import { getAllFaculties } from '../faculties';
 
 export function insertDepartment(data) {
-
-  console.log(data);
-
   return axios.post(`${BACKEND_URL}/api/departments`, {
     name: data?.name,
     faculty_id: data?.faculty_id

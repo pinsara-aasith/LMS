@@ -10,11 +10,12 @@ import { useSnackbar } from 'notistack';
 import { LoadingButton } from '@mui/lab';
 import axios from 'axios';
 import { BACKEND_URL } from 'src/apis/consts';
+import { getAllFaculties } from 'src/pages/faculties';
 
 export function updateDepartment(id, data) {
   return axios.put(`${BACKEND_URL}/api/departments/${id}`, {
     name: data?.name,
-    description: data?.description
+    faculty_id: data?.faculty_id
   })
 }
 
@@ -26,20 +27,26 @@ const Page = () => {
   const departmentId = router.query.id
   const [loading, setLoading] = useState(true);
 
+  const [faculties, setFaculties] = useState([]);
+
+  useEffect(() => {
+    getAllFaculties().then(d => setFaculties(d));
+  }, [])
+
 
   const formik = useFormik({
     initialValues: {
       name: '',
-      description: ''
+      faculty_id: ''
     },
     enableReinitialize: true,
     validationSchema: Yup.object({
       name: Yup
         .string()
         .required('name is required'),
-      description: Yup
-        .string()
-        .required('description is required')
+      faculty_id: Yup
+        .number()
+        .required('faculty_id is required')
     }),
     onSubmit: async (values, helpers) => {
       try {
@@ -80,7 +87,7 @@ const Page = () => {
     axios.get(`${BACKEND_URL}/api/departments/${departmentId}`).then((res) => {
       formik.setValues({
         name: res.data?.data['name'] ?? '',
-        description: res.data?.data['description'] ?? '',
+        faculty_id: res.data?.data['faculty_id'] ?? '',
       })
 
       setLoading(false)
@@ -163,18 +170,37 @@ const Page = () => {
                       variant="filled"
                       fullWidth
                     >
-                      <TextField
-                        multiline
-                        rows={5}
+                      <FormControl
+                        variant="filled"
                         fullWidth
-                        type="text"
-                        label="Description"
-                        name="description"
-                        error={!!(formik.touched.description && formik.errors.description)}
-                        helperText={formik.touched.description && formik.errors.description}
-                        value={formik.values.description}
-                        onChange={formik.handleChange}
-                      />
+                      >
+                        <TextField
+                          fullWidth
+                          label="Select Faculty"
+                          name="faculty_id"
+                          required
+                          select
+                          SelectProps={{ native: true }}
+                          error={!!(formik.touched.faculty_id && formik.errors.faculty_id)}
+                          helperText={formik.touched.faculty_id && formik.errors.faculty_id}
+                          value={formik.values.faculty_id}
+                          onChange={formik.handleChange}
+                        >
+                          <option
+                            key={''}
+                            value={null}
+                          >
+                          </option>
+                          {faculties.map((f) => (
+                            <option
+                              key={f.id}
+                              value={f.id}
+                            >
+                              {f.name}
+                            </option>
+                          ))}
+                        </TextField>
+                      </FormControl>
                     </FormControl>
                   </Stack>
                   <Stack
