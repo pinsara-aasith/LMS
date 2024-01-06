@@ -11,28 +11,30 @@ class SubjectController extends Controller
 {
     public function index()
     {
-        $subjects = Subject::with('faculty')->get();
+        $subjects = Subject::with('department')->get();
         return response()->json(['data' => $subjects]);
     }
 
     public function show(Subject $subject)
     {
-        return response()->json(['data' => Subject::with('faculty')->find($subject->id)]);
+        return response()->json(['data' => Subject::with('department')->find($subject->id)]);
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string',
-            'faculty_id' => 'required',
+            'code' => 'required|string',
+            'department_id' => 'required',
         ]);
 
         $subject = Subject::create([
             'name' => $request->input('name'),
-            'faculty_id' => $request->input('faculty_id'),
+            'code' => $request->input('code'),
+            'department_id' => $request->input('department_id'),
         ]);
 
-        return response()->json(['message' => 'Ok', 'data' => $subject], 201);
+        return response()->json(['message' => 'Ok', 'data' => $subject], 200);
     }
 
     public function update(Request $request, Subject $subject)
@@ -45,7 +47,7 @@ class SubjectController extends Controller
             'name' => $request->input('name'),
         ]);
 
-        return response()->json(['message' => 'Ok', 'data' => $subject->with('faculty')]);
+        return response()->json(['message' => 'Ok', 'data' => $subject->with('department')]);
     }
 
     public function destroy(Subject $subject)

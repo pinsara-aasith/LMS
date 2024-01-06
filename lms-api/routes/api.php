@@ -5,6 +5,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\LecturerController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SubjectController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -60,5 +61,13 @@ Route::prefix('departments')->group(function () {
     Route::post('/', [DepartmentController::class, 'store'])->name('departments.store');
     Route::put('/{department}', [DepartmentController::class, 'update'])->name('departments.update');
     Route::delete('/{department}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
+});
+
+Route::prefix('subjects')->group(function () {
+    Route::get('/', [SubjectController::class, 'index'])->name('subjects.index');
+    Route::get('/{subject}', [SubjectController::class, 'show'])->name('subjects.show');
+    Route::post('/', [SubjectController::class, 'store'])->name('subjects.store');
+    Route::put('/{subject}', [SubjectController::class, 'update'])->name('subjects.update');
+    Route::delete('/{subject}', [SubjectController::class, 'destroy'])->name('subjects.destroy');
 });
 

@@ -46,6 +46,11 @@ export const items = [
     path: '/departments',
 
   },
+  {
+    title: 'Subjects',
+    path: '/subjects',
+
+  },
  
 ];
 
