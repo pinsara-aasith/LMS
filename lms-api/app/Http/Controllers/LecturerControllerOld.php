@@ -11,7 +11,7 @@ class LecturerController extends Controller
 {
     public function index()
     {
-        $lecturers = Lecturer::with(['user', 'faculty'])->get();
+        $lecturers = Lecturer::with('user')->get();
         return response()->json(['data' => $lecturers]);
     }
 
@@ -23,35 +23,22 @@ class LecturerController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'email' => 'required|string',
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users', // Assuming you have an 'email' field in your users table
+            'password' => 'required|string|min:6',
             'contact_no' => 'required|string',
-            'nic_number' => 'required|string',
-            'dob' => 'required|date',
-            'faculty_id' => 'required|integer',
+            'faculty_id' => 'required',
         ]);
 
-      
-
-        $lecturer = new Lecturer([
-            'first_name' => $request->input('first_name'),
-            'last_name' => $request->input('last_name'),
-            'email' => $request->input('email'),
+        $lecturer = Lecturer::create([
             'contact_no' => $request->input('contact_no'),
-            'nic_number' => $request->input('nic_number'),
-            'dob' => $request->input('dob'),
-
             'faculty_id' => $request->input('faculty_id'),
         ]);
 
-        $lecturer->save();
-
-        $fullName = $request->input('first_name') . " " . $request->input('last_name');
-        $lecturer->user()->create([
-            'name' => $fullName,
+        $user = $lecturer->user()->create([
+            'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'password' => Hash::make('password'),
+            'password' => Hash::make($request->password),
             'role' => 'lecturer',
         ]);
 
@@ -67,8 +54,6 @@ class LecturerController extends Controller
 
         $lecturer->update([
             'contact_no' => $request->input('contact_no'),
-            'admission_date' => $request->input('admission_date'),
-            'batch' => $request->input('batch'),
         ]);
 
         $user = $lecturer->user;

@@ -9,6 +9,8 @@ class Student extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['first_name', 'last_name', 'nic_number', 'dob', 'contact_no','country', 'city', 'admission_date','email', 'batch', 'faculty_id', 'department_id'];
+
     public function user()
     {
         return $this->morphOne(User::class, 'userable');
@@ -22,6 +24,11 @@ class Student extends Model
     public function faculty()
     {
         return $this->belongsTo(Faculty::class);
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
     }
 
     public function submissions()

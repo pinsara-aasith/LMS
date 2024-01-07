@@ -33,8 +33,8 @@ export const OverviewLatestOrders = (props) => {
 
 const [orders, setOrders] = useState([])
   async function refresh() {
-    const {data} = await axios.get(`${BACKEND_URL}/api/reports/mostSoldProducts`)
-    setOrders(data?.data[0] || [])
+    // const {data} = await axios.get(`${BACKEND_URL}/api/reports/mostSoldProducts`)
+    // setOrders(data?.data[0] || [])
     
   }
 
@@ -45,7 +45,7 @@ const [orders, setOrders] = useState([])
 
   return (
     <Card sx={sx}>
-      <CardHeader title="Hot Products" />
+      {/* <CardHeader title="Hot Products" />
       <Scrollbar sx={{ flexGrow: 1 }}>
         <Box sx={{ minWidth: 800 }}>
           <Table>
@@ -99,7 +99,7 @@ const [orders, setOrders] = useState([])
         >
           View all
         </Button>
-      </CardActions>
+      </CardActions> */}
     </Card>
   );
 };

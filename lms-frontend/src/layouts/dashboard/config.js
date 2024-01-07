@@ -22,7 +22,7 @@ export const items = [
   },
   {
     title: 'Admins',
-    path: '/admin',
+    path: '/admins',
 
   },
   

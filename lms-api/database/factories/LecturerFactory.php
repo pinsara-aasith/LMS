@@ -15,7 +15,11 @@ use Illuminate\Database\Eloquent\Factories\Factory;
      public function definition()
      {
          return [
-             'phone_number' => $this->faker->phoneNumber,
+            'contact_no' => $this->faker->phoneNumber,
+            'first_name' => $this->faker->name(),
+            'last_name' => $this->faker->name,
+            'batch' => 2023,
+            'email' => $this->faker->email,
              // Add other lecturer fields as needed
          ];
      }

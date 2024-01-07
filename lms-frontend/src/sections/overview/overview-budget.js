@@ -14,19 +14,19 @@ export const OverviewBudget = (props) => {
   const [sales, setSales] = useState(0)
 
   async function refresh() {
-    const { data } = await axios.get(`${BACKEND_URL}/api/reports/quartelySales/${year}`)
-    let report = data?.report?.[0]
-    console.log(report, 'report')
+    // const { data } = await axios.get(`${BACKEND_URL}/api/reports/quartelySales/${year}`)
+    // let report = data?.report?.[0]
+    // console.log(report, 'report')
 
-    if (!!report) {
-      let _sales = 0
+    // if (!!report) {
+    //   let _sales = 0
 
-      report.forEach(r => {
-        _sales += r.Revenue
-      })
+    //   report.forEach(r => {
+    //     _sales += r.Revenue
+    //   })
 
-      setSales(_sales)
-    }
+    //   setSales(_sales)
+    // }
 
   }
 
@@ -49,10 +49,10 @@ export const OverviewBudget = (props) => {
               color="text.secondary"
               variant="overline"
             >
-              Total Revenue
+              Total Students
             </Typography>
             <Typography variant="h4">
-              Rs. {sales}.00
+              23
             </Typography>
           </Stack>
           <Avatar

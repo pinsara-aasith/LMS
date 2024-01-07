@@ -41,10 +41,10 @@ class DatabaseSeeder extends Seeder
 
         $lecturerCount = 5;
                 // Creating lecturers with associated users
-        Lecturer::factory($lecturerCount)->create(['phone_number' => '+94 78 632 23 98', 'faculty_id' => $faculty->id])->each(function ($lecturer) {
+        Lecturer::factory($lecturerCount)->create(['contact_no' => '+94 78 632 23 98', 'faculty_id' => $faculty->id])->each(function ($lecturer) {
             $lecturer->user()->create([
                 'name' => '',
-                'email' => 'lecturer' . $lecturer->id . '@example.com',
+                'email' => $lecturer->email,
                 'password' => bcrypt('password'), // You can change the default password
                 'role' => 'lecturer',
             ]);

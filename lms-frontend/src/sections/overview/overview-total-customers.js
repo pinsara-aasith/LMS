@@ -13,8 +13,8 @@ export const OverviewTotalCustomers = (props) => {
   const [value, setValue] = useState(0)
 
   async function refresh() {
-    const { data } = await axios.get(`${BACKEND_URL}/api/reports/itemsInWarehouse`)
-    setValue(data?.data?.[0].Count)
+    // const { data } = await axios.get(`${BACKEND_URL}/api/reports/itemsInWarehouse`)
+    // setValue(data?.data?.[0].Count)
   }
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export const OverviewTotalCustomers = (props) => {
               color="text.secondary"
               variant="overline"
             >
-              Total Orders In Warehouse
+              Total Lecturers
             </Typography>
             <Typography variant="h4">
               {value}

@@ -107,19 +107,19 @@ export const OverviewSales = (props) => {
   const [sales, setSales] = useState([0,0,0,0])
 
   async function refresh() {
-    const {data} = await axios.get(`${BACKEND_URL}/api/reports/quartelySales/${year}`)
-    let report = data?.report?.[0]
-    console.log(report, 'report')
-    if(!!report) {
-      const _sales = [0,0,0,0]
+    // const {data} = await axios.get(`${BACKEND_URL}/api/reports/quartelySales/${year}`)
+    // let report = data?.report?.[0]
+    // console.log(report, 'report')
+    // if(!!report) {
+    //   const _sales = [0,0,0,0]
 
-      report.forEach(r => {
-        _sales[r.Quarter - 1] += r.Revenue
-      })
+    //   report.forEach(r => {
+    //     _sales[r.Quarter - 1] += r.Revenue
+    //   })
 
-      setSales(_sales)
-      console.log(_sales, "sales")
-    }
+    //   setSales(_sales)
+    //   console.log(_sales, "sales")
+    // }
     
   }
 
@@ -136,7 +136,7 @@ export const OverviewSales = (props) => {
 
   return (
     <Card sx={sx}>
-      <CardHeader title="Quarterly sales report for a given year" />
+      <CardHeader title="Overrall students performance" />
       <CardContent>
         <Chart
           height={350}

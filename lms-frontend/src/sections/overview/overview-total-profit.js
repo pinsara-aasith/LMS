@@ -11,8 +11,8 @@ export const OverviewTotalProfit = (props) => {
   const [value, setValue] = useState(0)
 
   async function refresh() {
-    const { data } = await axios.get(`${BACKEND_URL}/api/reports/totalEmployees`)
-    setValue(data?.data?.[0].Count)
+    // const { data } = await axios.get(`${BACKEND_URL}/api/reports/totalEmployees`)
+    // setValue(data?.data?.[0].Count)
   }
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export const OverviewTotalProfit = (props) => {
               color="text.secondary"
               variant="overline"
             >
-              Total Employees
+              Total Assignments
             </Typography>
             <Typography variant="h4">
               {value}
