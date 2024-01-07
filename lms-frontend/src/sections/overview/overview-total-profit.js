@@ -37,7 +37,7 @@ export const OverviewTotalProfit = (props) => {
               Total Assignments
             </Typography>
             <Typography variant="h4">
-              {value}
+              2
             </Typography>
           </Stack>
           <Avatar

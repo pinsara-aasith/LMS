@@ -52,7 +52,7 @@ export const OverviewBudget = (props) => {
               Total Students
             </Typography>
             <Typography variant="h4">
-              23
+              4
             </Typography>
           </Stack>
           <Avatar

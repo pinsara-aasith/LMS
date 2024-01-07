@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('title');
             $table->text('description');
-            $table->string('file_path');
+            $table->string('file_path')->nullable();
             $table->foreignId('subject_id')->constrained();
             // Add other assignment attributes as needed
             $table->timestamps();

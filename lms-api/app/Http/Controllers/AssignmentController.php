@@ -29,8 +29,12 @@ class AssignmentController extends Controller
             'subject_id' => 'required',
         ]);
 
-        $file = $request->file('file');
-        $file_path = $file->store('assignments', 'public');
+        $file_path = null;
+
+        if($request->hasFile('file')) {
+            $file = $request->file('file');
+            $file_path = $file->store('assignments', 'public');    
+        }
 
         $assignment = new Assignment([
             'title' => $request->input('title'),

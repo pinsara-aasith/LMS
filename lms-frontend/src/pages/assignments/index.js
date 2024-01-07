@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import Head from 'next/head';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
-import { Box, Button, Card, Container, Grid, IconButton, LinearProgress, Stack, SvgIcon, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
+import { Avatar, Box, Button, Card, CardContent, Container, Divider, Grid, IconButton, LinearProgress, Stack, SvgIcon, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { BigSearch } from 'src/sections/big-search';
 import { applyPagination } from 'src/utils/apply-pagination';
@@ -16,6 +16,8 @@ import axios from 'axios';
 import { BACKEND_URL, truncate } from 'src/apis/consts';
 import PencilIcon from '@heroicons/react/24/solid/PencilIcon';
 import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
+import ClockIcon from '@heroicons/react/24/solid/ClockIcon';
+import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIcon';
 
 export function deleteAssignment(assignmentId) {
   return axios.delete(`${BACKEND_URL}/api/assignments/${assignmentId}`)
@@ -203,7 +205,8 @@ export const AssignmentCard = (props) => {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        height: '100%'
+        height: '100%',
+        margin: '10px'
       }}
     >
       <CardContent>
@@ -215,8 +218,9 @@ export const AssignmentCard = (props) => {
           }}
         >
           <Avatar
-            src={assignment.logo}
+            src="/assets/errors/error-401.png"
             variant="square"
+            sx={{height: '140px', width: '140px'}}
           />
         </Box>
         <Typography
@@ -258,7 +262,7 @@ export const AssignmentCard = (props) => {
             display="inline"
             variant="body2"
           >
-            Updated 2hr ago
+            {assignment.created_at}
           </Typography>
         </Stack>
         <Stack

@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Department;
 use App\Models\Faculty;
 use App\Models\Lecturer;
+use App\Models\Subject;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -36,6 +37,12 @@ class DatabaseSeeder extends Seeder
             'name' => 'Faculty of Textiles',
             'description' => 'Pioneering innovation in textile engineering, weaving creativity with technical expertise for diverse applications'
         ]);
+
+        $department = Department::create(['name' => 'Department of Computer Science Engineering', 'faculty_id' => $faculty->id]);
+
+        Subject::create(['name' => 'Thermodynamics', 'code' => 1223, 'department_id' => $department->id]);
+        Subject::create(['name' => 'Computer Hardware', 'code' => 1223, 'department_id' => $department->id]);
+        Subject::create(['name' => 'Networking and Cybersecurity', 'code' => 1223, 'department_id' => $department->id]);
 
         Department::create(['name' => 'Department of Computer Science Engineering', 'faculty_id' => $faculty->id]);
 
