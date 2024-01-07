@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\LecturerController;
@@ -69,5 +70,13 @@ Route::prefix('subjects')->group(function () {
     Route::post('/', [SubjectController::class, 'store'])->name('subjects.store');
     Route::put('/{subject}', [SubjectController::class, 'update'])->name('subjects.update');
     Route::delete('/{subject}', [SubjectController::class, 'destroy'])->name('subjects.destroy');
+});
+
+Route::prefix('assignments')->group(function () {
+    Route::get('/', [AssignmentController::class, 'index'])->name('assignments.index');
+    Route::get('/{assignment}', [AssignmentController::class, 'show'])->name('assignments.show');
+    Route::post('/', [AssignmentController::class, 'store'])->name('assignments.store');
+    Route::put('/{assignment}', [AssignmentController::class, 'update'])->name('assignments.update');
+    Route::delete('/{assignment}', [AssignmentController::class, 'destroy'])->name('assignments.destroy');
 });
 

@@ -26,7 +26,6 @@ class AssignmentController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'file' => 'required|mimes:pdf,doc,docx|max:2048',
             'subject_id' => 'required',
         ]);
 

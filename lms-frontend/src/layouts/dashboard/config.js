@@ -21,6 +21,11 @@ export const items = [
 
   },
   {
+    title: 'Assignments',
+    path: '/assignments',
+
+  },
+  {
     title: 'Admins',
     path: '/admins',
 
