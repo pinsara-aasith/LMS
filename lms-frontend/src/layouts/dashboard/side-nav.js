@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import ArrowTopRightOnSquareIcon from '@heroicons/react/24/solid/ArrowTopRightOnSquareIcon';
 import ChevronUpDownIcon from '@heroicons/react/24/solid/ChevronUpDownIcon';
 import {
+  Avatar,
   Box,
   Button,
   Card,
@@ -16,6 +17,7 @@ import {
   Stack,
   SvgIcon,
   Typography,
+  makeStyles,
   useMediaQuery
 } from '@mui/material';
 import { Scrollbar } from 'src/components/scrollbar';
@@ -60,7 +62,7 @@ export const SideNav = (props) => {
               p: '12px'
             }}
           >
-            <Card sx={{ maxWidth: 345, marginBottom: '20px' }}>
+            {/* <Card sx={{ maxWidth: 345, marginBottom: '20px' }}>
               <CardActionArea>
                 <CardMedia
                   component="img"
@@ -69,8 +71,31 @@ export const SideNav = (props) => {
                   alt="green iguana"
                 />
               </CardActionArea>
+            </Card> */}
+            <Card style={{
+              textAlign: 'center',
+            }}>
+              <Avatar style={{
+                width: 100,
+                height: 100,
+                margin: 'auto',
+                marginTop: 3,
+              }} alt="User Avatar" src="assets/avatars/avatar-marcus-finn.png" />
+
+              <CardContent sx={{p: 1}}>
+                <Typography variant="h6">
+                  Arshad Ameen 
+                </Typography>
+                <Typography color="textSecondary" variant="body2">
+                  Administrator
+                </Typography>
+                <Typography color="textSecondary" variant="body2">
+                  john.doe@example.com
+                </Typography>
+              </CardContent>
             </Card>
-            <Typography
+
+            <Typography sx={{marginTop: '10px'}}
               align="center"
               variant="h6">
               LMS
@@ -102,7 +127,12 @@ export const SideNav = (props) => {
             }}
           >
             {items.map((item) => {
-              const active = item.path ? (pathname === item.path) : false;
+              let active = false;
+              if(item.path == '/') {
+                active = (pathname === item.path);
+              } else {
+                active = item.path ? (pathname === item.path || pathname.startsWith(item.path)) : false;
+              }
 
               return (
                 <SideNavItem

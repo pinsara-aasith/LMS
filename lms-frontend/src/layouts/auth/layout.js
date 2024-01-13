@@ -48,7 +48,7 @@ export const Layout = (props) => {
               align="center"
               color="inherit"
               sx={{
-                fontSize: '24px',
+                fontSize: '39px',
                 lineHeight: '32px',
                 mb: 1,
                 mt: 4
@@ -64,18 +64,12 @@ export const Layout = (props) => {
                 LMS
               </Box>
             </Typography>
-            <Typography
-              align="center"
-              variant="subtitle2"
-              sx={{mt:3}}
-            >
-              Learning Management System (LMS) is a digital platform that enables efficient administration, documentation, tracking, and delivery of educational courses or training programs. It serves as a centralized hub for educators to create, organize, and distribute content, as well as monitor and assess the progress of learners. LMSs are widely used in academic institutions, corporate settings, and various organizations to streamline learning processes and enhance overall education management.
-            </Typography>
-            <img
+            
+            {/* <img
             style={{marginTop: '50px'}}
               alt=""
               src="/assets/auth-illustration.jpg"
-            />
+            /> */}
           </Box>
         </Grid>
       </Grid>

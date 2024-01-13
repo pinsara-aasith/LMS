@@ -8,7 +8,7 @@ const Page = () => (
   <>
     <Head>
       <title>
-        Account | A Suppilers
+        Account | LMS
       </title>
     </Head>
     <Box

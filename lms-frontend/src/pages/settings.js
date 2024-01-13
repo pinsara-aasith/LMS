@@ -8,7 +8,7 @@ const Page = () => (
   <>
     <Head>
       <title>
-        Settings | A Suppilers
+        Settings | LMS
       </title>
     </Head>
     <Box

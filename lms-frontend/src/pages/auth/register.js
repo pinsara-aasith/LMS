@@ -48,7 +48,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Register | A Suppilers
+          Register | LMS
         </title>
       </Head>
       <Box

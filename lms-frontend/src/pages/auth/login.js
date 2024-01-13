@@ -22,19 +22,18 @@ import { Layout as AuthLayout } from 'src/layouts/auth/layout';
 const Page = () => {
   const router = useRouter();
   const auth = useAuth();
-  const [method, setMethod] = useState('email');
+  const [method, setMethod] = useState('username');
   const formik = useFormik({
     initialValues: {
-      email: 'aasithp@gmail.com',
+      username: 'aasithp@gmail.com',
       password: 'demo',
       submit: null
     },
     validationSchema: Yup.object({
-      email: Yup
+      username: Yup
         .string()
-        .email('Must be a valid email')
         .max(255)
-        .required('Email is required'),
+        .required('User Name is required'),
       password: Yup
         .string()
         .max(255)
@@ -42,9 +41,9 @@ const Page = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        let a = await auth.signIn(values.email, values.password);
+        let a = await auth.signIn(values.username, values.password);
         if(a) {
-          router.push('/');
+          router.push('/admin-panel');
         } else {
           helpers.setErrors({ submit: "Please enter correct password" });
         }
@@ -76,7 +75,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Login | A Suppilers
+          Login | LMS
         </title>
       </Head>
       <Box
@@ -126,30 +125,27 @@ const Page = () => {
               value={method}
             >
               <Tab
-                label="Email"
-                value="email"
+                label="User Name"
+                value="username"
               />
-              <Tab
-                label="Phone Number"
-                value="phoneNumber"
-              />
+             
             </Tabs>
-            {method === 'email' && (
+            {method === 'username' && (
               <form
                 noValidate
                 onSubmit={formik.handleSubmit}
               >
                 <Stack spacing={3}>
                   <TextField
-                    error={!!(formik.touched.email && formik.errors.email)}
+                    error={!!(formik.touched.username && formik.errors.username)}
                     fullWidth
-                    helperText={formik.touched.email && formik.errors.email}
-                    label="Email Address"
-                    name="email"
+                    helperText={formik.touched.username && formik.errors.username}
+                    label="username"
+                    name="username"
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
-                    type="email"
-                    value={formik.values.email}
+                    type="username"
+                    value={formik.values.username}
                   />
                   <TextField
                     error={!!(formik.touched.password && formik.errors.password)}

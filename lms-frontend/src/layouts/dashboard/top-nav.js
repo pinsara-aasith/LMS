@@ -7,15 +7,23 @@ import {
   Avatar,
   Badge,
   Box,
+  Button,
   IconButton,
+  Menu,
+  MenuItem,
   Stack,
   SvgIcon,
+  Toolbar,
   Tooltip,
+  Typography,
   useMediaQuery
 } from '@mui/material';
-import { alpha } from '@mui/material/styles';
+import { alpha, darken } from '@mui/material/styles';
 import { usePopover } from 'src/hooks/use-popover';
 import { AccountPopover } from './account-popover';
+import React from 'react';
+import { items } from './config';
+import { usePathname } from 'next/navigation';
 
 const SIDE_NAV_WIDTH = 280;
 const TOP_NAV_HEIGHT = 64;
@@ -25,13 +33,33 @@ export const TopNav = (props) => {
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   const accountPopover = usePopover();
 
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
+  const pathname = usePathname();
+
   return (
     <>
       <Box
         component="header"
         sx={{
           backdropFilter: 'blur(6px)',
-          backgroundColor: (theme) => alpha(theme.palette.background.default, 0.8),
+          backgroundColor: (theme) => darken(theme.palette.primary.dark, 0.1),
           position: 'sticky',
           left: {
             lg: `${SIDE_NAV_WIDTH}px`
@@ -44,7 +72,6 @@ export const TopNav = (props) => {
         }}
       >
         <Stack
-          alignItems="center"
           direction="row"
           justifyContent="space-between"
           spacing={2}
@@ -54,7 +81,6 @@ export const TopNav = (props) => {
           }}
         >
           <Stack
-            alignItems="center"
             direction="row"
             spacing={2}
           >
@@ -66,8 +92,74 @@ export const TopNav = (props) => {
               </IconButton>
             )}
           </Stack>
+
+          <Toolbar sx={{ flexGrow: 1 }}>
+
+            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                color="inherit"
+              >
+                <SvgIcon fontSize="small">
+                  <Bars3Icon />
+                </SvgIcon>
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                sx={{
+                  display: { xs: 'block', md: 'none' },
+                }}
+              >
+                {items.map((page) => (
+                  <MenuItem key={page.title} onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center">{page.title}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+
+            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+              {items.filter(i => !i.disableFromTop).map((page) => {
+                let active = false;
+                if (page.path == '/') {
+                  active = (pathname === page.path);
+                } else {
+                  active = page.path ? (pathname === page.path || pathname.startsWith(page.path)) : false;
+                }
+                return (
+                  <Button
+                  href={page.path}
+                    key={page.title}
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, mx: 0.8, color: 'white', display: 'block', background: active && 'rgba(255,255,255,0.1)' }}
+                  >
+                    {page.title}
+                  </Button>
+                )
+              })}
+            </Box>
+
+
+          </Toolbar>
+
+
           <Stack
-            alignItems="center"
             direction="row"
             spacing={2}
           >

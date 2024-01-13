@@ -21,27 +21,6 @@ export const items = [
 
   },
   {
-    title: 'Assignments',
-    path: '/assignments',
-
-  },
-  {
-    title: 'Admins',
-    path: '/admins',
-
-  },
-  
-  {
-    title: 'Lecturers',
-    path: '/lecturers',
-
-  },
-  {
-    title: 'Students',
-    path: '/students',
-
-  },
-  {
     title: 'Faculties',
     path: '/faculties',
 
@@ -49,14 +28,37 @@ export const items = [
   {
     title: 'Departments',
     path: '/departments',
+    disableFromTop: true,
 
   },
   {
     title: 'Subjects',
     path: '/subjects',
-
+  },
+  {
+    title: 'Admins',
+    path: '/admins',
+    disableFromTop: true,
+  },
+  
+  {
+    title: 'Lecturers',
+    path: '/lecturers',
+  },
+  {
+    title: 'Students',
+    path: '/students',
   },
  
+  {
+    title: 'Assignments',
+    path: '/assignments',
+  },
+  {
+    title: 'Events',
+    path: '/events',
+    disableFromTop: true,
+  },
 ];
 
 
