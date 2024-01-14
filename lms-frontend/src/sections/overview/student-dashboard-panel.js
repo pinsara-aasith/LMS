@@ -236,9 +236,9 @@ export const StudentDashboardPanel = (props) => {
       course: 'Computer Science Engineering',
     },
     {
-      id: 2,
-      name: 'Database Management Systems',
-      code: 'CSE401',
+      id: 4,
+      name: 'Software Engineering',
+      code: 'CSE601',
       course: 'Computer Science Engineering',
     },
     {
@@ -247,12 +247,7 @@ export const StudentDashboardPanel = (props) => {
       code: 'CSE501',
       course: 'Computer Science Engineering',
     },
-    {
-      id: 4,
-      name: 'Software Engineering',
-      code: 'CSE601',
-      course: 'Computer Science Engineering',
-    },
+   
     {
       id: 5,
       name: 'Artificial Intelligence',
@@ -293,10 +288,8 @@ export const StudentDashboardPanel = (props) => {
     <Card sx={sx}>
       <CardContent>
         <Grid container spacing={3}>
-          <Grid item xs={6}>
-            <NoticeList />
-          </Grid>
-          <Grid item xs={6}>
+          
+          <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>
               Frequently Accessed Courses
             </Typography>
@@ -304,8 +297,8 @@ export const StudentDashboardPanel = (props) => {
             <Container>
               <Grid sx={{mt:3}} container spacing={3}>
                 {subjects.splice(0,3).map((subject, index) => (
-                  <Grid item xs={12} sm={12} md={12} key={index}>
-                    <Card>
+                  <Grid sx={{height: '100%'}} item xs={12} sm={4} md={4} key={index}>
+                    <Card sx={{mb: 3}}>
                       <CardContent>
                         <Link href={`/student-panel/subjects/view/${subject.id}`} color="inherit">
 
