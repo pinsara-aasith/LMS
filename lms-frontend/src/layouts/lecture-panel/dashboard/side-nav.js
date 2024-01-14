@@ -128,7 +128,7 @@ export const SideNav = (props) => {
           >
             {items.map((item) => {
               let active = false;
-              if(item.path == '/student-panel/') {
+              if(item.path == '/lecture-panel/') {
                 active = (pathname === item.path);
               } else {
                 active = item.path ? (pathname === item.path || pathname.startsWith(item.path)) : false;

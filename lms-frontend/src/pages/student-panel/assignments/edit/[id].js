@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { Autocomplete, Backdrop, Box, Button, Card, CardContent, CardHeader, CircularProgress, Container, FormControl, InputLabel, LinearProgress, MenuItem, Select, Snackbar, Stack, SvgIcon, TextField, Typography } from '@mui/material';
-import { Layout as DashboardLayout } from 'src/layouts/admin-panel/dashboard/layout';
+import { Layout as DashboardLayout } from 'src/layouts//dashboard/layout';
 import { StyledBreadCrumbs } from 'src/components/breadcrumbs';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -10,7 +10,7 @@ import { useSnackbar } from 'notistack';
 import { LoadingButton } from '@mui/lab';
 import axios from 'axios';
 import { BACKEND_URL } from 'src/apis/consts';
-import { getAllDepartments } from 'src/pages/admin-panel/departments';
+import { getAllDepartments } from 'src/pages//departments';
 
 export function updateSubject(id, data) {
   return axios.put(`${BACKEND_URL}/api/subjects/${id}`, {

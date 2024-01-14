@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { Box, Container, Unstable_Grid2 as Grid, Paper, Typography } from '@mui/material';
-import { Layout as DashboardLayout } from 'src/layouts/student-panel/dashboard/layout';
-import { StudentDashboardPanel } from 'src/sections/overview/student-dashboard-panel';
+import { Layout as DashboardLayout } from 'src/layouts/lecture-panel/dashboard/layout';
+import { LectureDashboardPanel } from 'src/sections/overview/lecture-dashboard-panel';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
@@ -10,7 +10,7 @@ const now = new Date();
 const Page = () => {
   const router = useRouter();
   // useEffect(() => {
-  //   router.push('/student-panel/assignments')
+  //   router.push('/lecture-panel/assignments')
   // }, [])
 
   return (
@@ -53,7 +53,7 @@ const Page = () => {
               xs={12}
               lg={12}
             >
-              <StudentDashboardPanel
+              <LectureDashboardPanel
                 sx={{ height: '100%' }}
               />
             </Grid>

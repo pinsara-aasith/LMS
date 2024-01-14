@@ -17,27 +17,27 @@ import { SvgIcon } from '@mui/material';
 export const items = [
   {
     title: 'Dashboard',
-    path: '/student-panel/',
+    path: '/lecture-panel/',
   },
   {
     title: 'Subjects',
-    path: '/student-panel/subjects',
+    path: '/lecture-panel/subjects',
   },
   {
     title: 'Timetable',
-    path: '/student-panel/timetable',
+    path: '/lecture-panel/timetable',
   },
   {
     title: 'Events',
-    path: '/student-panel/events',
+    path: '/lecture-panel/events',
   },
   {
     title: 'Submit Feedback',
-    path: '/student-panel/feedbacks',
+    path: '/lecture-panel/feedbacks',
   },
   {
     title: 'Noticeboard',
-    path: '/student-panel/noticeboard',
+    path: '/lecture-panel/noticeboard',
   },
 ];
 

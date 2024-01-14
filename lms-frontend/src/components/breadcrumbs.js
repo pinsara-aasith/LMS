@@ -9,12 +9,12 @@ export const StyledBreadCrumbs = (props) => {
   return (
     <Breadcrumbs aria-label="breadcrumb">
       <Link
-        href={'/'}
+        href={'/auth/login'}
         component={NextLink}
         sx={{ typography: 'subtitle2' }}
         underline="hover"
       >
-        Admin panel
+        LMS
       </Link>
       {
         (sequence || []).map((s, i) => {

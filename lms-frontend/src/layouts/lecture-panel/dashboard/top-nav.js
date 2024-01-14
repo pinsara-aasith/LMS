@@ -137,7 +137,7 @@ export const TopNav = (props) => {
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               {items.filter(i => !i.disableFromTop).map((page) => {
                 let active = false;
-                if (page.path == '/student-panel/') {
+                if (page.path == '/lecture-panel/') {
                   active = (pathname === page.path);
                 } else {
                   active = page.path ? (pathname === page.path || pathname.startsWith(page.path)) : false;
