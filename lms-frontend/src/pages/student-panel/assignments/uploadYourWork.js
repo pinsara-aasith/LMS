@@ -1,26 +1,16 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Head from 'next/head';
-import { Autocomplete, Box, Button, Card, CardContent, CardHeader, CircularProgress, Container, FormControl, Grid, InputLabel, MenuItem, NativeSelect, OutlinedInput, Select, Snackbar, Stack, SvgIcon, TextField, Typography } from '@mui/material';
-import { Layout as DashboardLayout } from 'src/layouts/admin-panel/dashboard/layout';
+import { Autocomplete, Box, Button, Card, CardContent, CardHeader, CircularProgress, Container, FormControl, Grid, InputLabel, Link, MenuItem, NativeSelect, OutlinedInput, Select, Snackbar, Stack, SvgIcon, TextField, Typography } from '@mui/material';
+import { Layout as DashboardLayout } from 'src/layouts/student-panel/dashboard/layout';
 import { StyledBreadCrumbs } from 'src/components/breadcrumbs';
-import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
 import axios from 'axios';
 import { BACKEND_URL } from 'src/apis/consts';
-import { getAllDepartments } from '../departments';
-import { getAllSubjects } from '../subjects';
 import { Paper, IconButton } from '@mui/material';
 import CloudUploadIcon from '@heroicons/react/24/solid/CloudArrowUpIcon';
 
-export function insertAssignment(data) {
-  return axios.post(`${BACKEND_URL}/api/assignments`, {
-    title: data?.title,
-    description: data?.description,
-    subject_id: data?.subject_id
-  })
-}
 
 function DragDropFileUpload({ onFileUpload }) {
   const [dragOver, setDragOver] = useState(false);
@@ -66,13 +56,12 @@ function DragDropFileUpload({ onFileUpload }) {
     (event) => {
       const files = event.target.files;
       if (files && files[0]) {
-        
+
         handleFileChange(files[0]);
       }
     },
     []
   );
-console.log(file)
   return (
     <Box>
       <Paper
@@ -154,71 +143,6 @@ const Page = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const [subjects, setSubjects] = useState([]);
-
-  useEffect(() => {
-    getAllSubjects().then(d => setSubjects(d));
-  }, [])
-
-  const formik = useFormik({
-    initialValues: {
-      title: '',
-      description: '',
-      subject_id: '',
-      submit: null
-    },
-    validationSchema: Yup.object({
-      title: Yup
-        .string()
-        .required('title is required'),
-      description: Yup
-        .string()
-        .required('description is required'),
-      subject_id: Yup.
-        number()
-        .required('subject is required')
-    }),
-    onSubmit: async (values, helpers) => {
-      try {
-        await insertAssignment(formik.values)
-
-        enqueueSnackbar('Assignment was added successfully!', {
-          variant: 'success',
-          anchorOrigin: {
-            vertical: 'bottom',
-            horizontal: 'right',
-
-          },
-          autoHideDuration: 2000
-        })
-
-        setTimeout(() => router.push('/assignments'), 400)
-
-      } catch (err) {
-        console.error(err);
-        enqueueSnackbar('Error occured!', {
-          variant: 'error',
-          anchorOrigin: {
-            vertical: 'bottom',
-            horizontal: 'right',
-
-          },
-          autoHideDuration: 2000
-        })
-        helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: err.message });
-        helpers.setSubmitting(false);
-      }
-    }
-  });
-
-  let [file, setFile] = React.useState();
-
-  const handleFileUpload = (f) => {
-    setFile(f);
-    console.log(f);
-  };
-
   return (
     <>
       <Head>
@@ -242,85 +166,31 @@ const Page = () => {
             >
               <Stack spacing={1}>
                 <Typography variant="h5">
-                  Assignments
+                  Assignment 1: Data Structures
                 </Typography>
-
-                <StyledBreadCrumbs sequence={[
-                  {
-                    text: 'Assignments',
-                    linkUrl: '/admin-panel/assignments',
-                  },
-                  {
-                    text: 'Add New',
-                    linkUrl: '/admin-panel/assignments/create',
-                    active: true
-                  },
-                ]} />
-
               </Stack>
 
             </Stack>
-            <Card sx={{ overflow: 'visible' }}>
-              <CardHeader title="Add New Assignment" />
+            <Card>
               <CardContent>
-                <form onSubmit={formik.handleSubmit}>
+            <Typography variant="body1">
+            Implement various data structures and analyze their time complexity.
+                </Typography>
+            
+
+              </CardContent>
+            </Card>
+            <Card sx={{ overflow: 'visible' }}>
+              <CardHeader title="Upload your work" />
+              <CardContent>
+                <form>
                   <Stack
                     direction="column"
                     justifyContent="space-between"
                     spacing={5}
                     sx={{ mb: 3 }}
                   >
-                    <DragDropFileUpload onFileUpload={handleFileUpload} />
-
-                    <FormControl
-                      variant="filled"
-                      fullWidth
-                    >
-
-                      <TextField
-                        fullWidth
-                        label="Select Subject"
-                        name="subject_id"
-                        required
-                        select
-                        SelectProps={{ native: true }}
-                        error={!!(formik.touched.subject_id && formik.errors.subject_id)}
-                        helperText={formik.touched.subject_id && formik.errors.subject_id}
-                        value={formik.values.subject_id}
-                        onChange={formik.handleChange}
-                      >
-                        <option
-                          key={''}
-                          value={null}
-                        >
-                        </option>
-                        {subjects.map((f) => (
-                          <option
-                            key={f.id}
-                            value={f.id}
-                          >
-                            {f.name}
-                          </option>
-                        ))}
-                      </TextField>
-                    </FormControl>
-
-                    <FormControl
-                      variant="filled"
-                      fullWidth
-
-                    >
-                      <TextField
-                        fullWidth
-                        type="text"
-                        label="Title"
-                        name="title"
-                        error={!!(formik.touched.title && formik.errors.title)}
-                        helperText={formik.touched.title && formik.errors.title}
-                        value={formik.values.title}
-                        onChange={formik.handleChange}
-                      />
-                    </FormControl>
+                    <DragDropFileUpload onFileUpload={() => { }} />
 
                     <FormControl
                       variant="filled"
@@ -328,15 +198,11 @@ const Page = () => {
                     >
                       <TextField
                         multiline
-                        rows={5}
+                        rows={8}
                         fullWidth
                         type="text"
-                        label="Description"
+                        label="Write something about the assignment"
                         name="description"
-                        error={!!(formik.touched.description && formik.errors.description)}
-                        helperText={formik.touched.description && formik.errors.description}
-                        value={formik.values.description}
-                        onChange={formik.handleChange}
                       />
                     </FormControl>
                   </Stack>

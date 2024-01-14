@@ -7,7 +7,7 @@ const Page = () => (
   <>
     <Head>
       <title>
-        404 | LMS
+        404 | E-LMS
       </title>
     </Head>
     <Box

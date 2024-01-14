@@ -3,7 +3,7 @@ import Head from 'next/head';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import { Box, Button, Card, Container, IconButton, LinearProgress, Stack, SvgIcon, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
-import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
+import { Layout as DashboardLayout } from 'src/layouts/admin-panel/dashboard/layout';
 import { BigSearch } from 'src/sections/big-search';
 import { applyPagination } from 'src/utils/apply-pagination';
 import NextLink from 'next/link';
@@ -149,7 +149,7 @@ const Page = () => {
                 <StyledBreadCrumbs sequence={[
                   {
                     text: 'Subjects',
-                    linkUrl: '/subjects',
+                    linkUrl: '/admin-panel/subjects',
                     active: true
                   },
                 ]} />
@@ -281,7 +281,7 @@ export const SubjectsTable = (props) => {
                       <IconButton
                         color="primary"
                         aria-label="edit"
-                        href={`/subjects/edit/${subject.id}`}
+                        href={`/admin-panel/subjects/edit/${subject.id}`}
                         LinkComponent={NextLink}
                       >
                         <SvgIcon>

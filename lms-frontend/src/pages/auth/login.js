@@ -75,7 +75,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Login | LMS
+          Login | E-LMS
         </title>
       </Head>
       <Box
@@ -140,7 +140,7 @@ const Page = () => {
                     error={!!(formik.touched.username && formik.errors.username)}
                     fullWidth
                     helperText={formik.touched.username && formik.errors.username}
-                    label="username"
+                    label="User Name"
                     name="username"
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}

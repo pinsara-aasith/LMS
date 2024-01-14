@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Head from 'next/head';
 import { Autocomplete, Box, Button, Card, CardContent, CardHeader, Container, FormControl, InputLabel, MenuItem, Select, Snackbar, Stack, SvgIcon, TextField, Typography } from '@mui/material';
-import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
+import { Layout as DashboardLayout } from 'src/layouts/admin-panel/dashboard/layout';
 import { StyledBreadCrumbs } from 'src/components/breadcrumbs';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -110,7 +110,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Lecturers | LMS
+          Lecturers | E-LMS
         </title>
       </Head>
       <Box
@@ -135,11 +135,11 @@ const Page = () => {
                 <StyledBreadCrumbs sequence={[
                   {
                     text: 'Lecturers',
-                    linkUrl: '/lecturers',
+                    linkUrl: '/admin-panel/lecturers',
                   },
                   {
                     text: 'Add New',
-                    linkUrl: '/lecturers/create',
+                    linkUrl: '/admin-panel/lecturers/create',
                     active: true
                   },
                 ]} />

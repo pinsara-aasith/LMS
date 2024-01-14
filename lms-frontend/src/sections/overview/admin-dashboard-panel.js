@@ -138,7 +138,7 @@ const NoticeList = () => {
     },
     {
       "title": "System Maintenance Notification",
-      "description": "The LMS will undergo scheduled maintenance on Saturday from 10:00 PM to 12:00 AM. During this time, the platform may be temporarily unavailable. We apologize for any inconvenience.",
+      "description": "The E-LMS will undergo scheduled maintenance on Saturday from 10:00 PM to 12:00 AM. During this time, the platform may be temporarily unavailable. We apologize for any inconvenience.",
     },
     {
       "title": "Guest Lecture by Industry Expert",
@@ -146,7 +146,7 @@ const NoticeList = () => {
     },
     {
       "title": "Feedback Survey",
-      "description": "Your feedback is important to us. Please take a moment to complete the feedback survey and let us know about your experience with the LMS. Your input helps us improve!",
+      "description": "Your feedback is important to us. Please take a moment to complete the feedback survey and let us know about your experience with the E-LMS. Your input helps us improve!",
     },
     {
       "title": "Course Registration Deadline",
@@ -183,7 +183,7 @@ const NoticeList = () => {
 };
 
 
-export const OverviewSales = (props) => {
+export const AdminDashboardPanel = (props) => {
   const { sx } = props;
   const chartOptions = useChartOptions();
 
@@ -207,22 +207,21 @@ export const OverviewSales = (props) => {
   }
 
   const data = [
-    { name: '2 Star', value: 300 },
-    { name: '3 Star', value: 300 },
-    { name: '4 Star', value: 200 },
-    { name: '5 Star', value: 200 },
-    { name: '1 Star', value: 40 },
+    { name: 'Harassment', value: 300 },
+    { name: 'Administration', value: 200 },
+    { name: 'Academic', value: 200 },
+    { name: 'Financial', value: 40 },
   ];
   const COLORS = ['#00C49F', '#FFBB28', '#0088FE', '#FF8042', '#FFF042'];
 
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.4;
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.2;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
     return (
-      <text style={{ fontWeight: 'bold' }} x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+      <text style={{ fontWeight: 'bold', fontSize: '11px' }} x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
         {data[index].name}
       </text>
     );
@@ -236,15 +235,9 @@ export const OverviewSales = (props) => {
     <Card sx={sx}>
       <CardContent>
         <Grid container spacing={3}>
-
-          {/* First Column - Iframe */}
-        
-
           <Grid item xs={6}>
             <NoticeList />
           </Grid>
-
-          {/* Second Column - Pie Chart */}
           <Grid item xs={6}>
             <Typography variant="h6" gutterBottom>
               Feedbacks
@@ -254,7 +247,6 @@ export const OverviewSales = (props) => {
                 <ResponsiveContainer>
                   <PieChart width={400} height={400}>
                     <Pie
-
                       cx="50%"
                       cy="50%"
                       data={data}
@@ -303,7 +295,7 @@ export const OverviewSales = (props) => {
   );
 };
 
-OverviewSales.protoTypes = {
+AdminDashboardPanel.protoTypes = {
   chartSeries: PropTypes.array.isRequired,
   sx: PropTypes.object
 };

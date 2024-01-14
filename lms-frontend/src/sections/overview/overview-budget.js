@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import ArrowDownIcon from '@heroicons/react/24/solid/ArrowDownIcon';
 import ArrowUpIcon from '@heroicons/react/24/solid/ArrowUpIcon';
-import CurrencyDollarIcon from '@heroicons/react/24/solid/CurrencyDollarIcon';
+import UserCircleIcon from '@heroicons/react/24/solid/UserCircleIcon';
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { BACKEND_URL } from 'src/apis/consts';
 
-export const OverviewBudget = (props) => {
+export const TotalAdmins = (props) => {
   const { difference, positive = false, sx } = props;
 
   const [year, setYear] = useState(2023)
@@ -49,7 +49,7 @@ export const OverviewBudget = (props) => {
               color="text.secondary"
               variant="overline"
             >
-              Total Students
+              Total Admins
             </Typography>
             <Typography variant="h4">
               4
@@ -63,7 +63,7 @@ export const OverviewBudget = (props) => {
             }}
           >
             <SvgIcon>
-              <CurrencyDollarIcon />
+              <UserCircleIcon />
             </SvgIcon>
           </Avatar>
         </Stack>
@@ -73,7 +73,7 @@ export const OverviewBudget = (props) => {
   );
 };
 
-OverviewBudget.prototypes = {
+TotalAdmins.prototypes = {
   difference: PropTypes.number,
   positive: PropTypes.bool,
   sx: PropTypes.object,

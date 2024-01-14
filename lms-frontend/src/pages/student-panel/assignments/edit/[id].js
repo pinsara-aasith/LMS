@@ -10,11 +10,13 @@ import { useSnackbar } from 'notistack';
 import { LoadingButton } from '@mui/lab';
 import axios from 'axios';
 import { BACKEND_URL } from 'src/apis/consts';
+import { getAllDepartments } from 'src/pages/admin-panel/departments';
 
-export function updateFaculty(id, data) {
-  return axios.put(`${BACKEND_URL}/api/faculties/${id}`, {
+export function updateSubject(id, data) {
+  return axios.put(`${BACKEND_URL}/api/subjects/${id}`, {
     name: data?.name,
-    description: data?.description
+    code: data?.code,
+    department_id: data?.department_id
   })
 }
 
@@ -23,29 +25,39 @@ const Page = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const facultyId = router.query.id
+  const subjectId = router.query.id
   const [loading, setLoading] = useState(true);
+
+  const [departments, setDepartments] = useState([]);
+
+  useEffect(() => {
+    getAllDepartments().then(d => setDepartments(d));
+  }, [])
 
 
   const formik = useFormik({
     initialValues: {
       name: '',
-      description: ''
+      code: '',
+      department_id: ''
     },
     enableReinitialize: true,
     validationSchema: Yup.object({
       name: Yup
         .string()
         .required('name is required'),
-      description: Yup
-        .string()
-        .required('description is required')
+        code: Yup
+          .string()
+          .required('code is required'),
+      department_id: Yup
+        .number()
+        .required('department_id is required')
     }),
     onSubmit: async (values, helpers) => {
       try {
-        updateFaculty(facultyId, values);
+        updateSubject(subjectId, values);
 
-        enqueueSnackbar('Faculty was edited successfully!', {
+        enqueueSnackbar('Subject was edited successfully!', {
           variant: 'success',
           anchorOrigin: {
             vertical: 'bottom',
@@ -55,7 +67,7 @@ const Page = () => {
           autoHideDuration: 2000
         })
 
-        setTimeout(() => router.push('/faculties'), 400)
+        setTimeout(() => router.push('/subjects'), 400)
 
       } catch (err) {
         enqueueSnackbar('Error occured!', {
@@ -77,23 +89,24 @@ const Page = () => {
   useEffect(() => {
     setLoading(true);
 
-    axios.get(`${BACKEND_URL}/api/faculties/${facultyId}`).then((res) => {
+    axios.get(`${BACKEND_URL}/api/subjects/${subjectId}`).then((res) => {
       formik.setValues({
         name: res.data?.data['name'] ?? '',
-        description: res.data?.data['description'] ?? '',
+        code: res.data?.data['code'] ?? '',
+        department_id: res.data?.data['department_id'] ?? '',
       })
 
       setLoading(false)
     })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [facultyId])
+  }, [subjectId])
 
   return (
     <>
       <Head>
         <title>
-          Faculties | E-LMS
+          Subjects | E-LMS
         </title>
       </Head>
       <Box
@@ -112,17 +125,17 @@ const Page = () => {
             >
               <Stack spacing={1}>
                 <Typography variant="h5">
-                  Faculties
+                  Subjects
                 </Typography>
 
                 <StyledBreadCrumbs sequence={[
                   {
-                    text: 'Faculties',
-                    linkUrl: '/admin-panel/faculties',
+                    text: 'Subjects',
+                    linkUrl: '/subjects',
                   },
                   {
                     text: 'Edit',
-                    linkUrl: '/admin-panel/faculties/edit/',
+                    linkUrl: '/subjects/edit/',
                     active: true
                   },
                 ]} />
@@ -133,7 +146,7 @@ const Page = () => {
             {loading && <LinearProgress />}
 
             <Card sx={{ overflow: 'visible' }}>
-              <CardHeader title="Edit Faculty" />
+              <CardHeader title="Edit Subject" />
 
               <CardContent>
                 <form onSubmit={formik.handleSubmit}>
@@ -162,19 +175,54 @@ const Page = () => {
                     <FormControl
                       variant="filled"
                       fullWidth
+
                     >
                       <TextField
-                        multiline
-                        rows={5}
                         fullWidth
                         type="text"
-                        label="Description"
-                        name="description"
-                        error={!!(formik.touched.description && formik.errors.description)}
-                        helperText={formik.touched.description && formik.errors.description}
-                        value={formik.values.description}
+                        label="Subject Code"
+                        name="code"
+                        error={!!(formik.touched.code && formik.errors.code)}
+                        helperText={formik.touched.code && formik.errors.code}
+                        value={formik.values.code}
                         onChange={formik.handleChange}
                       />
+                    </FormControl>
+                    <FormControl
+                      variant="filled"
+                      fullWidth
+                    >
+                      <FormControl
+                        variant="filled"
+                        fullWidth
+                      >
+                        <TextField
+                          fullWidth
+                          label="Select Department"
+                          name="department_id"
+                          required
+                          select
+                          SelectProps={{ native: true }}
+                          error={!!(formik.touched.department_id && formik.errors.department_id)}
+                          helperText={formik.touched.department_id && formik.errors.department_id}
+                          value={formik.values.department_id}
+                          onChange={formik.handleChange}
+                        >
+                          <option
+                            key={''}
+                            value={''}
+                          >
+                          </option>
+                          {departments.map((f) => (
+                            <option
+                              key={f.id}
+                              value={f.id}
+                            >
+                              {f.name}
+                            </option>
+                          ))}
+                        </TextField>
+                      </FormControl>
                     </FormControl>
                   </Stack>
                   <Stack

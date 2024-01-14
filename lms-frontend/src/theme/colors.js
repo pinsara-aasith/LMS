@@ -44,7 +44,7 @@ export const success = withAlphas({
 
 export const info = withAlphas({
   lightest: '#ECFDFF',
-  light: '#CFF9FE',
+  light: '#0000FF',
   main: '#06AED4',
   dark: '#0E7090',
   darkest: '#164C63',
@@ -52,8 +52,8 @@ export const info = withAlphas({
 });
 
 export const warning = withAlphas({
-  lightest: '#FFFAEB',
-  light: '#FEF0C7',
+  lightest: '#FFF933',
+  light: '#FFF700',
   main: '#F79009',
   dark: '#B54708',
   darkest: '#7A2E0E',

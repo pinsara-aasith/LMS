@@ -4,7 +4,7 @@ import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import { Box, Button, Card, Container, IconButton, LinearProgress, Stack, SvgIcon, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
 import { useSelection } from 'src/hooks/use-selection';
-import { Layout as DashboardLayout } from 'src/layouts/admin-panel/dashboard/layout';
+import { Layout as DashboardLayout } from 'src/layouts/student-panel/dashboard/layout';
 import { BigSearch } from 'src/sections/big-search';
 import { applyPagination } from 'src/utils/apply-pagination';
 import NextLink from 'next/link';
@@ -133,30 +133,11 @@ const Page = () => {
 
               <Stack spacing={1}>
                 <Typography variant="h5">
-                  Event Management
+                  Events
                 </Typography>
 
               </Stack>
-              <div>
-                <Stack
-                  spacing={1}
-                  direction={'row'}
-                >
-                  <Button
-                    startIcon={(
-                      <SvgIcon fontSize="small">
-                        <PlusIcon />
-                      </SvgIcon>
-                    )}
-                    variant="contained"
-                    href={lmsCalendarCustomize}
-                    LinkComponent={NextLink}
-                  >
-                    Customize your calendar
-                  </Button>
-                  
-                </Stack>
-              </div>
+             
             </Stack>
             
 

@@ -72,7 +72,7 @@ export const StoresTable = (props) => {
                       <IconButton
                         color="primary"
                         aria-label="edit"
-                        href={`/stores/edit/${store.id}`}
+                        href={`/admin-panel/stores/edit/${store.id}`}
                         LinkComponent={NextLink}
                       >
                         <SvgIcon>

@@ -4,7 +4,7 @@ import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import { Box, Button, Card, Container, IconButton, LinearProgress, Stack, SvgIcon, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
 import { useSelection } from 'src/hooks/use-selection';
-import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
+import { Layout as DashboardLayout } from 'src/layouts/admin-panel/dashboard/layout';
 import { BigSearch } from 'src/sections/big-search';
 import { applyPagination } from 'src/utils/apply-pagination';
 import NextLink from 'next/link';
@@ -151,7 +151,7 @@ const Page = () => {
                 <StyledBreadCrumbs sequence={[
                   {
                     text: 'Departments',
-                    linkUrl: '/departments',
+                    linkUrl: '/admin-panel/departments',
                     active: true
                   },
                 ]} />
@@ -273,7 +273,7 @@ export const DepartmentsTable = (props) => {
                       <IconButton
                         color="primary"
                         aria-label="edit"
-                        href={`/departments/edit/${department.id}`}
+                        href={`/admin-panel/departments/edit/${department.id}`}
                         LinkComponent={NextLink}
                       >
                         <SvgIcon>

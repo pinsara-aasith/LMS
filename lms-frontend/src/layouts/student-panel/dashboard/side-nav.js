@@ -80,14 +80,14 @@ export const SideNav = (props) => {
                 height: 100,
                 margin: 'auto',
                 marginTop: 3,
-              }} alt="User Avatar" src="assets/avatars/avatar-marcus-finn.png" />
+              }} alt="User Avatar" src="/assets/avatars/avatar-marcus-finn.png" />
 
               <CardContent sx={{p: 1}}>
                 <Typography variant="h6">
                   Arshad Ameen 
                 </Typography>
                 <Typography color="textSecondary" variant="body2">
-                  Administrator
+                  Student
                 </Typography>
                 <Typography color="textSecondary" variant="body2">
                   john.doe@example.com
@@ -98,7 +98,7 @@ export const SideNav = (props) => {
             <Typography sx={{marginTop: '10px'}}
               align="center"
               variant="h6">
-              LMS
+              E-LMS
             </Typography>
             <Typography
               align="center"
@@ -128,7 +128,7 @@ export const SideNav = (props) => {
           >
             {items.map((item) => {
               let active = false;
-              if(item.path == '/') {
+              if(item.path == '/admin-panel/') {
                 active = (pathname === item.path);
               } else {
                 active = item.path ? (pathname === item.path || pathname.startsWith(item.path)) : false;

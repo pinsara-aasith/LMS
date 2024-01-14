@@ -17,46 +17,46 @@ import { SvgIcon } from '@mui/material';
 export const items = [
   {
     title: 'Dashboard',
-    path: '/',
+    path: '/admin-panel/',
 
   },
   {
     title: 'Faculties',
-    path: '/faculties',
+    path: '/admin-panel/faculties',
 
   },
   {
     title: 'Departments',
-    path: '/departments',
+    path: '/admin-panel/departments',
     disableFromTop: true,
 
   },
   {
     title: 'Subjects',
-    path: '/subjects',
+    path: '/admin-panel/subjects',
   },
   {
     title: 'Admins',
-    path: '/admins',
+    path: '/admin-panel/admins',
     disableFromTop: true,
   },
   
   {
     title: 'Lecturers',
-    path: '/lecturers',
+    path: '/admin-panel/lecturers',
   },
   {
     title: 'Students',
-    path: '/students',
+    path: '/admin-panel/students',
   },
  
   {
     title: 'Assignments',
-    path: '/assignments',
+    path: '/admin-panel/assignments',
   },
   {
     title: 'Events',
-    path: '/events',
+    path: '/admin-panel/events',
     disableFromTop: true,
   },
 ];

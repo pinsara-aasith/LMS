@@ -3,7 +3,7 @@ import Head from 'next/head';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import { Avatar, Box, Button, Card, CardContent, Container, Divider, Grid, IconButton, LinearProgress, Stack, SvgIcon, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
-import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
+import { Layout as DashboardLayout } from 'src/layouts/admin-panel/dashboard/layout';
 import { BigSearch } from 'src/sections/big-search';
 import { applyPagination } from 'src/utils/apply-pagination';
 import NextLink from 'next/link';
@@ -135,7 +135,7 @@ const Page = () => {
                 <StyledBreadCrumbs sequence={[
                   {
                     text: 'Assignments',
-                    linkUrl: '/assignments',
+                    linkUrl: '/admin-panel/assignments',
                     active: true
                   },
                 ]} />
@@ -361,7 +361,7 @@ export const AssignmentsTable = (props) => {
                       <IconButton
                         color="primary"
                         aria-label="edit"
-                        href={`/assignments/edit/${assignment.id}`}
+                        href={`/admin-panel/assignments/edit/${assignment.id}`}
                         LinkComponent={NextLink}
                       >
                         <SvgIcon>
