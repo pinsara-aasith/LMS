@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import BellIcon from '@heroicons/react/24/solid/BellIcon';
+import ArrowTopRightOnSquareIcon from '@heroicons/react/24/solid/ArrowTopRightOnSquareIcon';
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import Bars3Icon from '@heroicons/react/24/solid/Bars3Icon';
 import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
@@ -204,6 +205,13 @@ export const TopNav = (props) => {
               <IconButton>
                 <SvgIcon fontSize="small">
                   <BellIcon />
+                </SvgIcon>
+              </IconButton>
+            </Tooltip> 
+            <Tooltip title="Logout">
+              <IconButton>
+                <SvgIcon fontSize="small">
+                  <ArrowTopRightOnSquareIcon />
                 </SvgIcon>
               </IconButton>
             </Tooltip>

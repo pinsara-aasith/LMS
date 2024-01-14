@@ -147,7 +147,7 @@ const Page = () => {
                       </SvgIcon>
                     )}
                     variant="contained"
-                    href={'/faculties/create'}
+                    href={'/admin-panel/faculties/create'}
                     LinkComponent={NextLink}
                   >
                     Customize your calendar

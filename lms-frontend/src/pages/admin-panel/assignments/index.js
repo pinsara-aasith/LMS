@@ -153,7 +153,7 @@ const Page = () => {
                       </SvgIcon>
                     )}
                     variant="contained"
-                    href={'/assignments/create'}
+                    href={'/admin-panel/assignments/create'}
                     LinkComponent={NextLink}
                   >
                     Add New
