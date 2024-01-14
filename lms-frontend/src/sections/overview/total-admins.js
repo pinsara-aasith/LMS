@@ -42,9 +42,9 @@ export const TotalAdmins = (props) => {
           alignItems="flex-start"
           direction="row"
           justifyContent="space-between"
-          spacing={2}
+          spacing={0}
         >
-          <Stack spacing={1}>
+          <Stack>
             <Typography
               color="text.secondary"
               variant="overline"

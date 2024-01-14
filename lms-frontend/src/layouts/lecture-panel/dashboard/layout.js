@@ -3,7 +3,7 @@ import { usePathname } from 'next/navigation';
 import { styled } from '@mui/material/styles';
 import { withAuthGuard } from 'src/hocs/with-auth-guard';
 import { SideNav } from './side-nav';
-import { TopNav } from './top-nav';
+import { TopNav } from '../../admin-panel/dashboard/top-nav';
 
 const SIDE_NAV_WIDTH = 280;
 

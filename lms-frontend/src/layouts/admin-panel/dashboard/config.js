@@ -49,6 +49,10 @@ export const items = [
     title: 'Students',
     path: '/admin-panel/students',
   },
+  {
+    title: 'Notices',
+    path: '/admin-panel/notices',
+  },
  
   {
     title: 'Assignments',

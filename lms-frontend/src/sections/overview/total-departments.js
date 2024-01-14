@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
-import CurrencyDollarIcon from '@heroicons/react/24/solid/CurrencyDollarIcon';
+import HomeIcon from '@heroicons/react/24/solid/HomeIcon';
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { BACKEND_URL } from 'src/apis/consts';
 
-export const OverviewTotalProfit = (props) => {
+export const TotalDepartments = (props) => {
   const { sx } = props;
 
   const [value, setValue] = useState(0)
@@ -34,7 +34,7 @@ export const OverviewTotalProfit = (props) => {
               color="text.secondary"
               variant="overline"
             >
-              Total Assignments
+              Total Departments
             </Typography>
             <Typography variant="h4">
               2
@@ -48,7 +48,7 @@ export const OverviewTotalProfit = (props) => {
             }}
           >
             <SvgIcon>
-              <CurrencyDollarIcon />
+              <HomeIcon />
             </SvgIcon>
           </Avatar>
         </Stack>
@@ -57,7 +57,7 @@ export const OverviewTotalProfit = (props) => {
   );
 };
 
-OverviewTotalProfit.propTypes = {
+TotalDepartments.propTypes = {
   value: PropTypes.string,
   sx: PropTypes.object
 };

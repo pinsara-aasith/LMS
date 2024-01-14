@@ -2,14 +2,15 @@ import Head from 'next/head';
 import { subDays, subHours } from 'date-fns';
 import { Box, Container, Unstable_Grid2 as Grid } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/admin-panel/dashboard/layout';
-import { TotalAdmins } from 'src/sections/overview/overview-budget';
+import { TotalAdmins } from 'src/sections/overview/total-admins';
 import { OverviewLatestOrders } from 'src/sections/overview/overview-latest-orders';
 import { OverviewLatestProducts } from 'src/sections/overview/overview-latest-products';
 import { AdminDashboardPanel } from 'src/sections/overview/admin-dashboard-panel';
 import { OverviewTasksProgress } from 'src/sections/overview/overview-tasks-progress';
-import { OverviewTotalCustomers } from 'src/sections/overview/overview-total-customers';
-import { OverviewTotalProfit } from 'src/sections/overview/overview-total-profit';
+import { TotalFaculties } from 'src/sections/overview/total-faculties';
+import { TotalDepartments } from 'src/sections/overview/total-departments';
 import { OverviewTraffic } from 'src/sections/overview/overview-traffic';
+import { TotalCourses } from 'src/sections/overview/total-students';
 
 const now = new Date();
 
@@ -30,12 +31,11 @@ const Page = () => (
       <Container maxWidth="xl">
         <Grid
           container
-          spacing={3}
+          spacing={1}
         >
           <Grid
             xs={12}
-            sm={6}
-            lg={4}
+            sm={3}
           >
             <TotalAdmins
               difference={12}
@@ -45,10 +45,9 @@ const Page = () => (
           </Grid>
           <Grid
             xs={12}
-            sm={6}
-            lg={4}
+            sm={3}
           >
-            <OverviewTotalCustomers
+            <TotalFaculties
               difference={16}
               positive={false}
               sx={{ height: '100%' }}
@@ -58,10 +57,17 @@ const Page = () => (
           
           <Grid
             xs={12}
-            sm={6}
-            lg={4}
+            sm={3}
           >
-            <OverviewTotalProfit
+            <TotalDepartments
+              sx={{ height: '100%' }}
+            />
+          </Grid>
+          <Grid
+            xs={12}
+            sm={3}
+          >
+            <TotalCourses
               sx={{ height: '100%' }}
             />
           </Grid>

@@ -1,16 +1,16 @@
 import PropTypes from 'prop-types';
 import ArrowDownIcon from '@heroicons/react/24/solid/ArrowDownIcon';
 import ArrowUpIcon from '@heroicons/react/24/solid/ArrowUpIcon';
-import ShoppingBagIcon from '@heroicons/react/24/solid/ShoppingBagIcon';
+import BookOpenIcon from '@heroicons/react/24/solid/BookOpenIcon';
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { BACKEND_URL } from 'src/apis/consts';
 
-export const OverviewTotalCustomers = (props) => {
+export const TotalCourses = (props) => {
   const { difference, positive = false, sx } = props;
 
-  const [value, setValue] = useState(0)
+  const [value, setValue] = useState(27)
 
   async function refresh() {
     // const { data } = await axios.get(`${BACKEND_URL}/api/reports/itemsInWarehouse`)
@@ -36,7 +36,7 @@ export const OverviewTotalCustomers = (props) => {
               color="text.secondary"
               variant="overline"
             >
-              Total Lecturers
+              Total Courses
             </Typography>
             <Typography variant="h4">
               {value}
@@ -50,7 +50,7 @@ export const OverviewTotalCustomers = (props) => {
             }}
           >
             <SvgIcon>
-              <ShoppingBagIcon />
+              <BookOpenIcon />
             </SvgIcon>
           </Avatar>
         </Stack>
@@ -60,7 +60,7 @@ export const OverviewTotalCustomers = (props) => {
   );
 };
 
-OverviewTotalCustomers.propTypes = {
+TotalCourses.propTypes = {
   difference: PropTypes.number,
   positive: PropTypes.bool,
   value: PropTypes.string.isRequired,

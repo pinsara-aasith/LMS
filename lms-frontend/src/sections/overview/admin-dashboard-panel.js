@@ -164,7 +164,7 @@ const NoticeList = () => {
 
   return (
     <div style={{ padding: 14 }} className="App">
-      <Typography variant="h6" gutterBottom>
+      <Typography sx={{textAlign: 'center'}} variant="h6" gutterBottom>
         Noticeboard
       </Typography>
       {notices.slice(0, 3).map((notice, index) => (
@@ -216,13 +216,13 @@ export const AdminDashboardPanel = (props) => {
 
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.2;
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.03;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
     return (
-      <text style={{ fontWeight: 'bold', fontSize: '11px' }} x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-        {data[index].name}
+      <text style={{ fontWeight: 'bold', fontSize: '10px' }} x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+        {data[index].name} ({data[index].value})
       </text>
     );
   };
@@ -239,7 +239,7 @@ export const AdminDashboardPanel = (props) => {
             <NoticeList />
           </Grid>
           <Grid item xs={6}>
-            <Typography variant="h6" gutterBottom>
+            <Typography variant="h6" sx={{textAlign: 'center'}} gutterBottom>
               Feedbacks
             </Typography>
             <Paper>
