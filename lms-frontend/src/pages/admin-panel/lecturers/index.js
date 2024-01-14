@@ -171,7 +171,7 @@ const Page = () => {
                       </SvgIcon>
                     )}
                     variant="contained"
-                    href={'/lecturers/create'}
+                    href={'/admin-panel/lecturers/create'}
                     LinkComponent={NextLink}
                   >
                     Add New

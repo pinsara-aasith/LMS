@@ -171,7 +171,7 @@ const Page = () => {
                       </SvgIcon>
                     )}
                     variant="contained"
-                    href={'/notices/create'}
+                    href={'/admin-panel/notices/create'}
                     LinkComponent={NextLink}
                   >
                     Add New

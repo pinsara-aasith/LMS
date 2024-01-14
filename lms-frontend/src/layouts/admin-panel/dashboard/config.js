@@ -29,7 +29,10 @@ export const items = [
     title: 'Departments',
     path: '/admin-panel/departments',
     disableFromTop: true,
-
+  },
+  {
+    title: 'Courses',
+    path: '/admin-panel/courses',
   },
   {
     title: 'Subjects',
@@ -59,9 +62,13 @@ export const items = [
     path: '/admin-panel/assignments',
   },
   {
-    title: 'Events',
+    title: 'Event Management',
     path: '/admin-panel/events',
     disableFromTop: true,
+  },
+  {
+    title: 'Feedbacks',
+    path: '/admin-panel/feedbacks',
   },
 ];
 

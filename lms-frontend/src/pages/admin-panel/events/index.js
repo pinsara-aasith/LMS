@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Head from 'next/head';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
+import CalendarIcon from '@heroicons/react/24/solid/CalendarIcon';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import { Box, Button, Card, Container, IconButton, LinearProgress, Stack, SvgIcon, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
 import { useSelection } from 'src/hooks/use-selection';
@@ -142,10 +143,24 @@ const Page = () => {
                   spacing={1}
                   direction={'row'}
                 >
-                  <Button
+                   <Button
                     startIcon={(
                       <SvgIcon fontSize="small">
                         <PlusIcon />
+                      </SvgIcon>
+                    )}
+                    variant="contained"
+                    href={lmsCalendarCustomize}
+                    LinkComponent={NextLink}
+                  >
+                    Add New Event
+                  </Button>
+                  
+
+                  <Button
+                    startIcon={(
+                      <SvgIcon fontSize="small">
+                        <CalendarIcon />
                       </SvgIcon>
                     )}
                     variant="contained"

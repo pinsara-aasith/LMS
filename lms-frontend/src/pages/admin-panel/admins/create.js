@@ -164,6 +164,23 @@ const Page = () => {
                     >
                       <TextField
                         fullWidth
+                        type="username"
+                        label="User Name"
+                        name="username"
+                        
+                        error={!!(formik.touched.username && formik.errors.username)}
+                        helperText={formik.touched.username && formik.errors.username}
+                        value={formik.values.username}
+                        onChange={formik.handleChange}
+                      />
+                    </FormControl>
+                    <FormControl
+                      variant="filled"
+                      fullWidth
+
+                    >
+                      <TextField
+                        fullWidth
                         type="password"
                         label="Password"
                         name="password"

@@ -94,7 +94,7 @@ const Page = () => {
           autoHideDuration: 2000
         })
 
-        setTimeout(() => router.push('/students'), 400)
+        setTimeout(() => router.push('/admin-panel/students'), 400)
 
       } catch (err) {
         console.error(err);
@@ -308,6 +308,38 @@ const Page = () => {
                           error={!!(formik.touched.contact_no && formik.errors.contact_no)}
                           helperText={formik.touched.contact_no && formik.errors.contact_no}
                           value={formik.values.contact_no}
+                          onChange={formik.handleChange}
+                        />
+
+                      </Stack>
+
+
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        spacing={5}
+                        sx={{ mb: 3 }}
+                      >
+
+                        <TextField
+                          fullWidth
+                          type="text"
+                          label="User Name"
+                          name="username"
+                          error={!!(formik.touched.username && formik.errors.username)}
+                          helperText={formik.touched.username && formik.errors.username}
+                          value={formik.values.username}
+                          onChange={formik.handleChange}
+                        />
+
+                        <TextField
+                          fullWidth
+                          type="password"
+                          label="Password"
+                          name="password"
+                          error={!!(formik.touched.password && formik.errors.password)}
+                          helperText={formik.touched.password && formik.errors.password}
+                          value={formik.values.password}
                           onChange={formik.handleChange}
                         />
 

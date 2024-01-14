@@ -171,7 +171,7 @@ const Page = () => {
                       </SvgIcon>
                     )}
                     variant="contained"
-                    href={'/students/create'}
+                    href={'/admin-panel/students/create'}
                     LinkComponent={NextLink}
                   >
                     Add New
@@ -232,7 +232,7 @@ export const StudentsTable = (props) => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell width={170}>
+                <TableCell>
                   ID
                 </TableCell>
 
@@ -252,6 +252,10 @@ export const StudentsTable = (props) => {
                 </TableCell>
 
                 <TableCell>
+                  Course
+                </TableCell>
+
+                <TableCell>
                   Department
                 </TableCell>
 
@@ -261,7 +265,7 @@ export const StudentsTable = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((student) => {
+              {items.map((student, index) => {
                 return (
                   <TableRow
                     hover
@@ -269,7 +273,7 @@ export const StudentsTable = (props) => {
                   >
                     <TableCell>
                       <Typography variant="subtitle2">
-                        {student.id}
+                        {index + 1}
                       </Typography>
                     </TableCell>
                     <TableCell>
@@ -287,11 +291,18 @@ export const StudentsTable = (props) => {
                         {student.nic_number}
                     </TableCell>
                     <TableCell>
+                    <Typography variant="subtitle2">
+                        {`Data Science`}
+                      </Typography>
+                        
+                    </TableCell>
+
+                    <TableCell>
                         {student.department.name}
                     </TableCell>
 
                     <TableCell>
-                      {/* <IconButton
+                      <IconButton
                         color="primary"
                         aria-label="edit"
                         href={`/admin-panel/students/edit/${student.id}`}
@@ -300,7 +311,7 @@ export const StudentsTable = (props) => {
                         <SvgIcon>
                           <PencilIcon style={{ fontSize: 24 }} /> 
                         </SvgIcon>
-                      </IconButton> */}
+                      </IconButton>
 
                       <IconButton
                         color="primary"
