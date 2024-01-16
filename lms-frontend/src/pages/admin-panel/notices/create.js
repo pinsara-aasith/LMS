@@ -10,8 +10,8 @@ import { useSnackbar } from 'notistack';
 import axios from 'axios';
 import { BACKEND_URL } from 'src/apis/consts';
 
-export function insertFaculty(data) {
-    return axios.post(`${BACKEND_URL}/api/faculties`, {
+export function insertNotice(data) {
+    return axios.post(`${BACKEND_URL}/api/notices`, {
         name: data?.name,
         description: data?.description
     })
@@ -37,9 +37,9 @@ const Page = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        await insertFaculty(formik.values)
+        await insertNotice(formik.values)
         
-        enqueueSnackbar('Faculty was added successfully!', {
+        enqueueSnackbar('Notice was added successfully!', {
           variant: 'success',
           anchorOrigin: {
             vertical: 'bottom',
@@ -49,7 +49,7 @@ const Page = () => {
           autoHideDuration: 2000
         })
 
-        setTimeout(() => router.push('/faculties'), 400)
+        setTimeout(() => router.push('/admin-panel/notices'), 400)
         
       } catch (err) {
         console.error(err);
@@ -73,7 +73,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Faculties | E-LMS
+          Notices | E-LMS
         </title>
       </Head>
       <Box
@@ -92,17 +92,17 @@ const Page = () => {
             >
               <Stack spacing={1}>
                 <Typography variant="h5">
-                  Faculties
+                  Notices
                 </Typography>
 
                 <StyledBreadCrumbs sequence={[
                   {
-                    text: 'Faculties',
-                    linkUrl: '/admin-panel/faculties',
+                    text: 'Notices',
+                    linkUrl: '/admin-panel/notices',
                   },
                   {
                     text: 'Add New',
-                    linkUrl: '/admin-panel/faculties/create',
+                    linkUrl: '/admin-panel/notices/create',
                     active: true
                   },
                 ]} />
@@ -111,7 +111,7 @@ const Page = () => {
 
             </Stack>
             <Card sx={{ overflow: 'visible' }}>
-              <CardHeader title="Add New Faculty" />
+              <CardHeader title="Add New Notice" />
               <CardContent>
                 <form onSubmit={formik.handleSubmit}>
                   <Stack

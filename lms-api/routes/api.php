@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AssignmentController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\LecturerController;
@@ -70,6 +71,14 @@ Route::prefix('subjects')->group(function () {
     Route::post('/', [SubjectController::class, 'store'])->name('subjects.store');
     Route::put('/{subject}', [SubjectController::class, 'update'])->name('subjects.update');
     Route::delete('/{subject}', [SubjectController::class, 'destroy'])->name('subjects.destroy');
+});
+
+Route::prefix('courses')->group(function () {
+    Route::get('/', [CourseController::class, 'index'])->name('courses.index');
+    Route::get('/{course}', [CourseController::class, 'show'])->name('courses.show');
+    Route::post('/', [CourseController::class, 'store'])->name('courses.store');
+    Route::put('/{course}', [CourseController::class, 'update'])->name('courses.update');
+    Route::delete('/{course}', [CourseController::class, 'destroy'])->name('courses.destroy');
 });
 
 Route::prefix('assignments')->group(function () {

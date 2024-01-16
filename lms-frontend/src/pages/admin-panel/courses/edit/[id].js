@@ -10,13 +10,13 @@ import { useSnackbar } from 'notistack';
 import { LoadingButton } from '@mui/lab';
 import axios from 'axios';
 import { BACKEND_URL } from 'src/apis/consts';
-import { getAllCourses } from 'src/pages/admin-panel/courses';
+import { getAllDepartments } from 'src/pages/admin-panel/departments';
 
-export function updateSubject(id, data) {
-  return axios.put(`${BACKEND_URL}/api/subjects/${id}`, {
+export function updateCourse(id, data) {
+  return axios.put(`${BACKEND_URL}/api/courses/${id}`, {
     name: data?.name,
     code: data?.code,
-    course_id: data?.course_id
+    department_id: data?.department_id
   })
 }
 
@@ -25,13 +25,13 @@ const Page = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const subjectId = router.query.id
+  const courseId = router.query.id
   const [loading, setLoading] = useState(true);
 
-  const [courses, setCourses] = useState([]);
+  const [departments, setDepartments] = useState([]);
 
   useEffect(() => {
-    getAllCourses().then(d => setCourses(d));
+    getAllDepartments().then(d => setDepartments(d));
   }, [])
 
 
@@ -39,7 +39,7 @@ const Page = () => {
     initialValues: {
       name: '',
       code: '',
-      course_id: ''
+      department_id: ''
     },
     enableReinitialize: true,
     validationSchema: Yup.object({
@@ -49,15 +49,15 @@ const Page = () => {
         code: Yup
           .string()
           .required('code is required'),
-      course_id: Yup
+      department_id: Yup
         .number()
-        .required('course_id is required')
+        .required('department_id is required')
     }),
     onSubmit: async (values, helpers) => {
       try {
-        updateSubject(subjectId, values);
+        updateCourse(courseId, values);
 
-        enqueueSnackbar('Subject was edited successfully!', {
+        enqueueSnackbar('Course was edited successfully!', {
           variant: 'success',
           anchorOrigin: {
             vertical: 'bottom',
@@ -67,7 +67,7 @@ const Page = () => {
           autoHideDuration: 2000
         })
 
-        setTimeout(() => router.push('/admin-panel/subjects'), 400)
+        setTimeout(() => router.push('/admin-panel/courses'), 400)
 
       } catch (err) {
         enqueueSnackbar('Error occured!', {
@@ -89,24 +89,24 @@ const Page = () => {
   useEffect(() => {
     setLoading(true);
 
-    axios.get(`${BACKEND_URL}/api/subjects/${subjectId}`).then((res) => {
+    axios.get(`${BACKEND_URL}/api/courses/${courseId}`).then((res) => {
       formik.setValues({
         name: res.data?.data['name'] ?? '',
         code: res.data?.data['code'] ?? '',
-        course_id: res.data?.data['course_id'] ?? '',
+        department_id: res.data?.data['department_id'] ?? '',
       })
 
       setLoading(false)
     })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [subjectId])
+  }, [courseId])
 
   return (
     <>
       <Head>
         <title>
-          Subjects | E-LMS
+          Courses | E-LMS
         </title>
       </Head>
       <Box
@@ -125,17 +125,17 @@ const Page = () => {
             >
               <Stack spacing={1}>
                 <Typography variant="h5">
-                  Subjects
+                  Courses
                 </Typography>
 
                 <StyledBreadCrumbs sequence={[
                   {
-                    text: 'Subjects',
-                    linkUrl: '/admin-panel/subjects',
+                    text: 'Courses',
+                    linkUrl: '/admin-panel/courses',
                   },
                   {
                     text: 'Edit',
-                    linkUrl: '/admin-panel/subjects/edit/',
+                    linkUrl: '/admin-panel/courses/edit/',
                     active: true
                   },
                 ]} />
@@ -146,7 +146,7 @@ const Page = () => {
             {loading && <LinearProgress />}
 
             <Card sx={{ overflow: 'visible' }}>
-              <CardHeader title="Edit Subject" />
+              <CardHeader title="Edit Course" />
 
               <CardContent>
                 <form onSubmit={formik.handleSubmit}>
@@ -180,7 +180,7 @@ const Page = () => {
                       <TextField
                         fullWidth
                         type="text"
-                        label="Subject Code"
+                        label="Course Code"
                         name="code"
                         error={!!(formik.touched.code && formik.errors.code)}
                         helperText={formik.touched.code && formik.errors.code}
@@ -198,14 +198,14 @@ const Page = () => {
                       >
                         <TextField
                           fullWidth
-                          label="Select Course"
-                          name="course_id"
+                          label="Select Department"
+                          name="department_id"
                           required
                           select
                           SelectProps={{ native: true }}
-                          error={!!(formik.touched.course_id && formik.errors.course_id)}
-                          helperText={formik.touched.course_id && formik.errors.course_id}
-                          value={formik.values.course_id}
+                          error={!!(formik.touched.department_id && formik.errors.department_id)}
+                          helperText={formik.touched.department_id && formik.errors.department_id}
+                          value={formik.values.department_id}
                           onChange={formik.handleChange}
                         >
                           <option
@@ -213,7 +213,7 @@ const Page = () => {
                             value={''}
                           >
                           </option>
-                          {courses.map((f) => (
+                          {departments.map((f) => (
                             <option
                               key={f.id}
                               value={f.id}

@@ -11,13 +11,13 @@ class SubjectController extends Controller
 {
     public function index()
     {
-        $subjects = Subject::with('department')->get();
+        $subjects = Subject::with('course')->get();
         return response()->json(['data' => $subjects]);
     }
 
     public function show(Subject $subject)
     {
-        return response()->json(['data' => Subject::with('department')->find($subject->id)]);
+        return response()->json(['data' => Subject::with('course')->find($subject->id)]);
     }
 
     public function store(Request $request)
@@ -25,13 +25,13 @@ class SubjectController extends Controller
         $request->validate([
             'name' => 'required|string',
             'code' => 'required|string',
-            'department_id' => 'required',
+            'course_id' => 'required',
         ]);
 
         $subject = Subject::create([
             'name' => $request->input('name'),
             'code' => $request->input('code'),
-            'department_id' => $request->input('department_id'),
+            'course_id' => $request->input('course_id'),
         ]);
 
         return response()->json(['message' => 'Ok', 'data' => $subject], 200);
@@ -47,7 +47,7 @@ class SubjectController extends Controller
             'name' => $request->input('name'),
         ]);
 
-        return response()->json(['message' => 'Ok', 'data' => $subject->with('department')]);
+        return response()->json(['message' => 'Ok', 'data' => $subject->with('course')]);
     }
 
     public function destroy(Subject $subject)

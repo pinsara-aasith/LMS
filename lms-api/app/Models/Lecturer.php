@@ -8,10 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Lecturer extends Model
 {
     use HasFactory;
-    
-    protected $fillable = [
-        'contact_no'
-    ];
+
+    protected $fillable = ['first_name', 'last_name', 'nic_number', 'dob', 'contact_no','country', 'city', 'admission_date','email', 'batch', 'faculty_id', 'department_id'];
 
     public function faculty()
     {

@@ -55,7 +55,7 @@ const Page = () => {
           autoHideDuration: 2000
         })
 
-        setTimeout(() => router.push('/faculties'), 400)
+        setTimeout(() => router.push('/admin-panel/faculties'), 400)
 
       } catch (err) {
         enqueueSnackbar('Error occured!', {

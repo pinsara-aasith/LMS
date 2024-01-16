@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Course;
 use App\Models\Department;
 use App\Models\Faculty;
 use App\Models\Lecturer;
@@ -40,11 +41,9 @@ class DatabaseSeeder extends Seeder
 
         $department = Department::create(['name' => 'Department of Computer Science Engineering', 'faculty_id' => $faculty->id]);
 
-        Subject::create(['name' => 'Thermodynamics', 'code' => 1223, 'department_id' => $department->id]);
-        Subject::create(['name' => 'Computer Hardware', 'code' => 1223, 'department_id' => $department->id]);
-        Subject::create(['name' => 'Networking and Cybersecurity', 'code' => 1223, 'department_id' => $department->id]);
-
-        Department::create(['name' => 'Department of Computer Science Engineering', 'faculty_id' => $faculty->id]);
+        Course::create(['name' => 'Data Science And Engineering', 'code' => 1223, 'department_id' => $department->id]);
+        Course::create(['name' => 'Computer Science Mainstream', 'code' => 1223, 'department_id' => $department->id]);
+        Course::create(['name' => 'Networking and Cybersecurity', 'code' => 1223, 'department_id' => $department->id]);
 
         $lecturerCount = 5;
                 // Creating lecturers with associated users

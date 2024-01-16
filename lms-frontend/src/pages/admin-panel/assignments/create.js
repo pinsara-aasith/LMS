@@ -192,7 +192,7 @@ const Page = () => {
           autoHideDuration: 2000
         })
 
-        setTimeout(() => router.push('/assignments'), 400)
+        setTimeout(() => router.push('/admin-panel/assignments'), 400)
 
       } catch (err) {
         console.error(err);

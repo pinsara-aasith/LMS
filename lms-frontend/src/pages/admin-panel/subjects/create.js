@@ -9,13 +9,13 @@ import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
 import axios from 'axios';
 import { BACKEND_URL } from 'src/apis/consts';
-import { getAllDepartments } from '../departments';
+import { getAllCourses } from '../courses';
 
 export function insertSubject(data) {
   return axios.post(`${BACKEND_URL}/api/subjects`, {
     name: data?.name,
     code: data?.code,
-    department_id: data?.department_id
+    course_id: data?.course_id
   })
 }
 
@@ -23,15 +23,15 @@ const Page = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const [departments, setDepartments] = useState([]);
+  const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    getAllDepartments().then(d => setDepartments(d));
+    getAllCourses().then(d => setCourses(d));
   }, [])
 
   const formik = useFormik({
     initialValues: {
-      department_id: '',
+      course_id: '',
       name: '',
       code: '',
       submit: null
@@ -43,9 +43,9 @@ const Page = () => {
       code: Yup
         .string()
         .required('subject code is required'),
-      department_id: Yup.
+      course_id: Yup.
         number()
-        .required('department is required')
+        .required('course is required')
     }),
     onSubmit: async (values, helpers) => {
       try {
@@ -61,7 +61,7 @@ const Page = () => {
           autoHideDuration: 2000
         })
 
-        setTimeout(() => router.push('/subjects'), 400)
+        setTimeout(() => router.push('/admin-panel/subjects'), 400)
 
       } catch (err) {
         console.error(err);
@@ -170,14 +170,14 @@ const Page = () => {
                     >
                       <TextField
                         fullWidth
-                        label="Select Department"
-                        name="department_id"
+                        label="Select Course"
+                        name="course_id"
                         required
                         select
                         SelectProps={{ native: true }}
-                        error={!!(formik.touched.department_id && formik.errors.department_id)}
-                        helperText={formik.touched.department_id && formik.errors.department_id}
-                        value={formik.values.department_id}
+                        error={!!(formik.touched.course_id && formik.errors.course_id)}
+                        helperText={formik.touched.course_id && formik.errors.course_id}
+                        value={formik.values.course_id}
                         onChange={formik.handleChange}
                       >
                         <option
@@ -185,7 +185,7 @@ const Page = () => {
                           value={''}
                         >
                         </option>
-                        {departments.map((f) => (
+                        {courses.map((f) => (
                           <option
                             key={f.id}
                             value={f.id}

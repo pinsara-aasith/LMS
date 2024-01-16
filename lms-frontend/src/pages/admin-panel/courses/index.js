@@ -17,17 +17,17 @@ import { BACKEND_URL, truncate } from 'src/apis/consts';
 import PencilIcon from '@heroicons/react/24/solid/PencilIcon';
 import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 
-export function deleteSubject(subjectId) {
-  return axios.delete(`${BACKEND_URL}/api/subjects/${subjectId}`)
+export function deleteCourse(courseId) {
+  return axios.delete(`${BACKEND_URL}/api/courses/${courseId}`)
 }
 
-export async function getAllSubjects() {
-  const response = await axios.get(`${BACKEND_URL}/api/subjects`)
+export async function getAllCourses() {
+  const response = await axios.get(`${BACKEND_URL}/api/courses`)
   return response.data?.['data']
 }
 
 
-const useSubjects = (data, page, rowsPerPage, search) => {
+const useCourses = (data, page, rowsPerPage, search) => {
   return useMemo(
     () => {
       const filtered = searchObjects(data, search)
@@ -44,7 +44,7 @@ const Page = () => {
   const [data, setData] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const subjects = useSubjects(data, page, rowsPerPage, search);
+  const courses = useCourses(data, page, rowsPerPage, search);
 
   const [loading, setLoading] = useState(true)
 
@@ -52,10 +52,10 @@ const Page = () => {
   async function retrieveAndRefreshData() {
     setLoading(true)
     try {
-      const subjects = (await getAllSubjects()) || [];
-      console.log("Subjects were fetched from the database", subjects)
+      const courses = (await getAllCourses()) || [];
+      console.log("Courses were fetched from the database", courses)
 
-      setData(subjects)
+      setData(courses)
     } catch (e) {
       enqueueSnackbar('Error occured!', {
         variant: 'error',
@@ -91,12 +91,12 @@ const Page = () => {
 
   const confirm = useConfirm()
 
-  const handleDelete = (subject) => {
+  const handleDelete = (course) => {
     confirm({ description: `This will permanently delete the record` })
       .then(async () => {
         try {
           setLoading(true)
-          await deleteSubject(subject.id)
+          await deleteCourse(course.id)
           console.log("Record was successfully deleted...")
 
         } catch (e) {
@@ -124,7 +124,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Subjects
+          Courses
         </title>
       </Head>
       <Box
@@ -143,13 +143,13 @@ const Page = () => {
             >
               <Stack spacing={1}>
                 <Typography variant="h5">
-                  Subjects
+                  Courses
                 </Typography>
 
                 <StyledBreadCrumbs sequence={[
                   {
-                    text: 'Subjects',
-                    linkUrl: '/admin-panel/subjects',
+                    text: 'Courses',
+                    linkUrl: '/admin-panel/courses',
                     active: true
                   },
                 ]} />
@@ -167,7 +167,7 @@ const Page = () => {
                       </SvgIcon>
                     )}
                     variant="contained"
-                    href={'/admin-panel/subjects/create'}
+                    href={'/admin-panel/courses/create'}
                     LinkComponent={NextLink}
                   >
                     Add New
@@ -189,14 +189,14 @@ const Page = () => {
             <BigSearch
               search={search}
               onSearch={setSearch}
-              placeholder={"Search Subjects"}
+              placeholder={"Search Courses"}
             />
 
             {loading && <LinearProgress />}
 
-            <SubjectsTable
+            <CoursesTable
               count={data.length}
-              items={subjects}
+              items={courses}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
               page={page}
@@ -210,7 +210,7 @@ const Page = () => {
   );
 };
 
-export const SubjectsTable = (props) => {
+export const CoursesTable = (props) => {
   const {
     count = 0,
     items = [],
@@ -229,7 +229,7 @@ export const SubjectsTable = (props) => {
             <TableHead>
               <TableRow>
                 <TableCell width={170}>
-                  Subject ID
+                  Course ID
                 </TableCell>
 
                 <TableCell>
@@ -237,11 +237,11 @@ export const SubjectsTable = (props) => {
                 </TableCell>
 
                 <TableCell>
-                  Subject Code
+                  Course Code
                 </TableCell>
 
                 <TableCell>
-                  Course
+                  Department
                 </TableCell>
 
                 <TableCell>
@@ -250,38 +250,38 @@ export const SubjectsTable = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((subject) => {
+              {items.map((course) => {
                 return (
                   <TableRow
                     hover
-                    key={subject.id}
+                    key={course.id}
                   >
                     <TableCell>
                       <Typography variant="subtitle2">
-                        {subject.id}
+                        {course.id}
                       </Typography>
                     </TableCell>
                     <TableCell>
 
                       <Typography variant="subtitle2">
-                        {subject.name}
+                        {course.name}
                       </Typography>
                     </TableCell>
                     <TableCell>
 
                       <Typography variant="subtitle1">
-                        {subject.code}
+                        {course.code}
                       </Typography>
                     </TableCell>
                     <TableCell>
-                      {subject.course.name}
+                      {course.department.name}
                     </TableCell>
 
                     <TableCell>
                       <IconButton
                         color="primary"
                         aria-label="edit"
-                        href={`/admin-panel/subjects/edit/${subject.id}`}
+                        href={`/admin-panel/courses/edit/${course.id}`}
                         LinkComponent={NextLink}
                       >
                         <SvgIcon>
@@ -292,7 +292,7 @@ export const SubjectsTable = (props) => {
                       <IconButton
                         color="primary"
                         aria-label="remove"
-                        onClick={() => handleDelete(subject)}
+                        onClick={() => handleDelete(course)}
                         LinkComponent={NextLink}
                       >
                         <SvgIcon>
