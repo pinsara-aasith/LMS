@@ -45,6 +45,7 @@ class SubjectController extends Controller
 
         $subject->update([
             'name' => $request->input('name'),
+            'code' => $request->input('code'),
         ]);
 
         return response()->json(['message' => 'Ok', 'data' => $subject->with('course')]);

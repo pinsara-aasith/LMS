@@ -5,7 +5,9 @@ use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\LecturerController;
+use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use Illuminate\Http\Request;
@@ -81,6 +83,14 @@ Route::prefix('courses')->group(function () {
     Route::delete('/{course}', [CourseController::class, 'destroy'])->name('courses.destroy');
 });
 
+Route::prefix('notices')->group(function () {
+    Route::get('/', [NoticeController::class, 'index'])->name('notices.index');
+    Route::get('/{notice}', [NoticeController::class, 'show'])->name('notices.show');
+    Route::post('/', [NoticeController::class, 'store'])->name('notices.store');
+    Route::put('/{notice}', [NoticeController::class, 'update'])->name('notices.update');
+    Route::delete('/{notice}', [NoticeController::class, 'destroy'])->name('notices.destroy');
+});
+
 Route::prefix('assignments')->group(function () {
     Route::get('/', [AssignmentController::class, 'index'])->name('assignments.index');
     Route::get('/{assignment}', [AssignmentController::class, 'show'])->name('assignments.show');
@@ -88,4 +98,10 @@ Route::prefix('assignments')->group(function () {
     Route::put('/{assignment}', [AssignmentController::class, 'update'])->name('assignments.update');
     Route::delete('/{assignment}', [AssignmentController::class, 'destroy'])->name('assignments.destroy');
 });
+
+
+Route::prefix('feedbacks')->group(function () {
+    Route::get('/', [FeedbackController::class, 'index'])->name('feedbacks.index');
+    Route::get('/{feedback}', [FeedbackController::class, 'show'])->name('feedbacks.show');
+   });
 

@@ -24,11 +24,12 @@ import {
 import { alpha, darken, makeStyles } from '@mui/material/styles';
 import { usePopover } from 'src/hooks/use-popover';
 import { AccountPopover } from './account-popover';
-import React from 'react';
+import React, { useState } from 'react';
 import { items } from './config';
 import { usePathname } from 'next/navigation';
 import SearchIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import { styled } from '@mui/system';
+import { useRouter } from 'next/router';
 
 
 const SIDE_NAV_WIDTH = 280;
@@ -86,6 +87,7 @@ export const TopNav = (props) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
+
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -100,8 +102,41 @@ export const TopNav = (props) => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [notifications, setNotifications] = useState([
+    {
+      id: 1,
+      title: 'New Assignment',
+      description: 'You have a new assignment in "Mathematics 101".',
+    },
+    {
+      id: 2,
+      title: 'Upcoming Quiz',
+      description: 'Reminder: Quiz on "History 202" is scheduled for tomorrow.',
+    },
+    {
+      id: 3,
+      title: 'Course Enrollment',
+      description: 'You have been enrolled in the course "Computer Science 301".',
+    },
+  ]);
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleMarkAllRead = () => {
+    // Add logic to mark all notifications as read
+    setNotifications(0);
+    handleMenuClose();
+  };
 
   const pathname = usePathname();
+  const router = useRouter();
 
   return (
     <>
@@ -202,14 +237,20 @@ export const TopNav = (props) => {
             spacing={2}
           >
             <Tooltip title="Notifications">
-              <IconButton>
+              <IconButton
+                aria-controls="notifications-menu"
+                aria-haspopup="true"
+                onClick={handleMenuOpen}>
+
                 <SvgIcon fontSize="small">
                   <BellIcon />
                 </SvgIcon>
               </IconButton>
-            </Tooltip> 
+            </Tooltip>
             <Tooltip title="Logout">
-              <IconButton>
+              <IconButton onClick={() => {
+                router.push('/auth/login')
+              }}>
                 <SvgIcon fontSize="small">
                   <ArrowTopRightOnSquareIcon />
                 </SvgIcon>
@@ -246,6 +287,41 @@ export const TopNav = (props) => {
         open={accountPopover.open}
         onClose={accountPopover.handleClose}
       />
+      <Menu
+        id="notifications-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}
+      >
+        {notifications.map((notification) => (
+          <MenuItem key={notification.id}>
+             {!notification.read && (
+              <Badge color="secondary" variant="dot" invisible={notification.read}>
+                &nbsp;
+              </Badge>
+            )}
+            <div style={{marginLeft: '20px'}}>
+              <Typography variant="subtitle1">{notification.title}</Typography>
+              <Typography variant="body2" color="textSecondary">
+                {notification.description}
+              </Typography>
+            </div>
+           
+            <div>
+              {/* <IconButton
+                onClick={() => handleMarkAsRead(notification.id)}
+              >
+                Mark as Read
+              </IconButton> */}
+            </div>
+          </MenuItem>
+        ))}
+
+        {/* Mark all as read */}
+        <MenuItem onClick={handleMarkAllRead}>
+          <Typography variant='body2'>Mark all as read</Typography></MenuItem>
+      </Menu>
     </>
   );
 };

@@ -11,9 +11,9 @@ import { LoadingButton } from '@mui/lab';
 import axios from 'axios';
 import { BACKEND_URL } from 'src/apis/consts';
 
-export function updateFaculty(id, data) {
-  return axios.put(`${BACKEND_URL}/api/faculties/${id}`, {
-    name: data?.name,
+export function updateNotice(id, data) {
+  return axios.put(`${BACKEND_URL}/api/notices/${id}`, {
+    title: data?.title,
     description: data?.description
   })
 }
@@ -23,29 +23,29 @@ const Page = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const facultyId = router.query.id
+  const noticeId = router.query.id
   const [loading, setLoading] = useState(true);
 
 
   const formik = useFormik({
     initialValues: {
-      name: '',
+      title: '',
       description: ''
     },
     enableReinitialize: true,
     validationSchema: Yup.object({
-      name: Yup
+      title: Yup
         .string()
-        .required('name is required'),
+        .required('title is required'),
       description: Yup
         .string()
         .required('description is required')
     }),
     onSubmit: async (values, helpers) => {
       try {
-        updateFaculty(facultyId, values);
+        updateNotice(noticeId, values);
 
-        enqueueSnackbar('Faculty was edited successfully!', {
+        enqueueSnackbar('Notice was edited successfully!', {
           variant: 'success',
           anchorOrigin: {
             vertical: 'bottom',
@@ -55,7 +55,7 @@ const Page = () => {
           autoHideDuration: 2000
         })
 
-        setTimeout(() => router.push('/admin-panel/faculties'), 400)
+        setTimeout(() => router.push('/admin-panel/notices'), 400)
 
       } catch (err) {
         enqueueSnackbar('Error occured!', {
@@ -77,9 +77,9 @@ const Page = () => {
   useEffect(() => {
     setLoading(true);
 
-    axios.get(`${BACKEND_URL}/api/faculties/${facultyId}`).then((res) => {
+    axios.get(`${BACKEND_URL}/api/notices/${noticeId}`).then((res) => {
       formik.setValues({
-        name: res.data?.data['name'] ?? '',
+        title: res.data?.data['title'] ?? '',
         description: res.data?.data['description'] ?? '',
       })
 
@@ -87,13 +87,13 @@ const Page = () => {
     })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [facultyId])
+  }, [noticeId])
 
   return (
     <>
       <Head>
         <title>
-          Faculties | E-LMS
+          Notices | E-LMS
         </title>
       </Head>
       <Box
@@ -112,17 +112,17 @@ const Page = () => {
             >
               <Stack spacing={1}>
                 <Typography variant="h5">
-                  Faculties
+                  Notices
                 </Typography>
 
                 <StyledBreadCrumbs sequence={[
                   {
-                    text: 'Faculties',
-                    linkUrl: '/admin-panel/faculties',
+                    text: 'Notices',
+                    linkUrl: '/admin-panel/notices',
                   },
                   {
                     text: 'Edit',
-                    linkUrl: '/admin-panel/faculties/edit/',
+                    linkUrl: '/admin-panel/notices/edit/',
                     active: true
                   },
                 ]} />
@@ -133,7 +133,7 @@ const Page = () => {
             {loading && <LinearProgress />}
 
             <Card sx={{ overflow: 'visible' }}>
-              <CardHeader title="Edit Faculty" />
+              <CardHeader title="Edit Notice" />
 
               <CardContent>
                 <form onSubmit={formik.handleSubmit}>
@@ -151,11 +151,11 @@ const Page = () => {
                       <TextField
                         fullWidth
                         type="text"
-                        label="Name"
-                        name="name"
-                        error={!!(formik.touched.name && formik.errors.name)}
-                        helperText={formik.touched.name && formik.errors.name}
-                        value={formik.values.name}
+                        label="Title"
+                        title="title"
+                        error={!!(formik.touched.title && formik.errors.title)}
+                        helperText={formik.touched.title && formik.errors.title}
+                        value={formik.values.title}
                         onChange={formik.handleChange}
                       />
                     </FormControl>
@@ -169,7 +169,7 @@ const Page = () => {
                         fullWidth
                         type="text"
                         label="Description"
-                        name="description"
+                        title="description"
                         error={!!(formik.touched.description && formik.errors.description)}
                         helperText={formik.touched.description && formik.errors.description}
                         value={formik.values.description}

@@ -41,10 +41,12 @@ class CourseController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
+            'code' => 'required|string',
         ]);
 
         $course->update([
             'name' => $request->input('name'),
+            'code' => $request->input('code'),
         ]);
 
         return response()->json(['message' => 'Ok', 'data' => $course->with('department')]);

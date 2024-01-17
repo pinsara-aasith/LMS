@@ -269,6 +269,40 @@ const Page = () => {
                           </TextField>
                         </FormControl>
 
+
+                        <FormControl
+                          variant="filled"
+                          fullWidth
+                        >
+
+                          <TextField
+                            fullWidth
+                            label="Select Course"
+                            name="course_id"
+                            required
+                            select
+                            SelectProps={{ native: true }}
+                            error={!!(formik.touched.course_id && formik.errors.course_id)}
+                            helperText={formik.touched.course_id && formik.errors.course_id}
+                            value={formik.values.course_id}
+                            onChange={formik.handleChange}
+                          >
+                            <option
+                              key={''}
+                              value={null}
+                            >
+                            </option>
+                            {['Data Science', 'Main stream'].map((d) => (
+                              <option
+                                key={d}
+                                value={d}
+                              >
+                                {d}
+                              </option>
+                            ))}
+                          </TextField>
+                        </FormControl>
+
                       </Stack>
 
                       <Stack

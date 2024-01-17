@@ -12,7 +12,7 @@ import { BACKEND_URL } from 'src/apis/consts';
 
 export function insertNotice(data) {
     return axios.post(`${BACKEND_URL}/api/notices`, {
-        name: data?.name,
+        title: data?.title,
         description: data?.description
     })
 }
@@ -24,13 +24,13 @@ const Page = () => {
   const formik = useFormik({
     initialValues: {
       description: '',
-      name: '',
+      title: '',
       submit: null
     },
     validationSchema: Yup.object({
-      name: Yup
+      title: Yup
         .string()
-        .required('name is required'),
+        .required('title is required'),
       description: Yup
         .string()
         .required('description is required')
@@ -128,11 +128,11 @@ const Page = () => {
                       <TextField
                         fullWidth
                         type="text"
-                        label="Name"
-                        name="name"
-                        error={!!(formik.touched.name && formik.errors.name)}
-                        helperText={formik.touched.name && formik.errors.name}
-                        value={formik.values.name}
+                        label="Title"
+                        title="title"
+                        error={!!(formik.touched.title && formik.errors.title)}
+                        helperText={formik.touched.title && formik.errors.title}
+                        value={formik.values.title}
                         onChange={formik.handleChange}
                       />
                     </FormControl>
@@ -146,7 +146,7 @@ const Page = () => {
                         fullWidth
                         type="text"
                         label="Description"
-                        name="description"
+                        title="description"
                         error={!!(formik.touched.description && formik.errors.description)}
                         helperText={formik.touched.description && formik.errors.description}
                         value={formik.values.description}

@@ -232,7 +232,7 @@ export const LecturersTable = (props) => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell width={170}>
+                <TableCell>
                   ID
                 </TableCell>
 
@@ -291,7 +291,7 @@ export const LecturersTable = (props) => {
                     </TableCell>
 
                     <TableCell>
-                      {/* <IconButton
+                      <IconButton
                         color="primary"
                         aria-label="edit"
                         href={`/admin-panel/lecturers/edit/${lecturer.id}`}
@@ -300,7 +300,7 @@ export const LecturersTable = (props) => {
                         <SvgIcon>
                           <PencilIcon style={{ fontSize: 24 }} /> 
                         </SvgIcon>
-                      </IconButton> */}
+                      </IconButton>
 
                       <IconButton
                         color="primary"

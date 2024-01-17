@@ -42,12 +42,12 @@ const Page = () => {
     onSubmit: async (values, helpers) => {
       try {
         let a = await auth.signIn(values.username, values.password);
-        if(a) {
+        if (a) {
           router.push('/admin-panel');
         } else {
           helpers.setErrors({ submit: "Please enter correct password" });
         }
-        
+
       } catch (err) {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
@@ -128,7 +128,7 @@ const Page = () => {
                 label="User Name"
                 value="username"
               />
-             
+
             </Tabs>
             {method === 'username' && (
               <form
@@ -159,6 +159,21 @@ const Page = () => {
                     value={formik.values.password}
                   />
                 </Stack>
+                <Typography
+                sx={{mb:3, ml:1, mt:1}}
+                  color="text.secondary"
+                  variant="body2"
+                >
+                  <Link
+                    component={NextLink}
+                    href="/auth/forgotPassword"
+                    underline="hover"
+                    variant="subtitle2"
+                  >
+                    Forgot password?
+                  </Link>
+                </Typography>
+
                 <FormHelperText sx={{ mt: 1 }}>
                   Optionally you can skip.
                 </FormHelperText>

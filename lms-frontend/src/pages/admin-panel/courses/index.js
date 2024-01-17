@@ -233,7 +233,7 @@ export const CoursesTable = (props) => {
                 </TableCell>
 
                 <TableCell>
-                  Name
+                  Course Name
                 </TableCell>
 
                 <TableCell>

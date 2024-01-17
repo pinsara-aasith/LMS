@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import Head from 'next/head';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
-import { Box, Button, Card, Container, IconButton, LinearProgress, Stack, SvgIcon, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
+import { Box, Button, Card, Container, IconButton, LinearProgress, Rating, Stack, SvgIcon, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
 import { useSelection } from 'src/hooks/use-selection';
 import { Layout as DashboardLayout } from 'src/layouts/admin-panel/dashboard/layout';
 import { BigSearch } from 'src/sections/big-search';
@@ -19,17 +19,17 @@ import { BACKEND_URL, truncate } from 'src/apis/consts';
 import PencilIcon from '@heroicons/react/24/solid/PencilIcon';
 import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 
-export function deleteNotice(noticeId) {
-  return axios.delete(`${BACKEND_URL}/api/notices/${noticeId}`)
+export function deleteFeedback(feedbackId) {
+  return axios.delete(`${BACKEND_URL}/api/feedbacks/${feedbackId}`)
 }
 
-export async function getAllNotices() {
-  const response = await axios.get(`${BACKEND_URL}/api/notices`)
+export async function getAllFeedbacks() {
+  const response = await axios.get(`${BACKEND_URL}/api/feedbacks`)
   return response.data?.['data']
 }
 
 
-const useNotices = (data, page, rowsPerPage, search) => {
+const useFeedbacks = (data, page, rowsPerPage, search) => {
   return useMemo(
     () => {
       const filtered = searchObjects(data, search)
@@ -46,7 +46,7 @@ const Page = () => {
   const [data, setData] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const notices = useNotices(data, page, rowsPerPage, search);
+  const feedbacks = useFeedbacks(data, page, rowsPerPage, search);
 
   const [loading, setLoading] = useState(true)
 
@@ -54,10 +54,10 @@ const Page = () => {
   async function retrieveAndRefreshData() {
     setLoading(true)
     try {
-      const notices = (await getAllNotices()) || [];
-      console.log("Notices were fetched from the database", notices)
+      const feedbacks = (await getAllFeedbacks()) || [];
+      console.log("Feedbacks were fetched from the database", feedbacks)
 
-      setData(notices)
+      setData(feedbacks)
     } catch (e) {
       enqueueSnackbar('Error occured!', {
         variant: 'error',
@@ -94,12 +94,12 @@ const Page = () => {
 
   const confirm = useConfirm()
 
-  const handleDelete = (notice) => {
+  const handleDelete = (feedback) => {
     confirm({ description: `This will permanently delete the record` })
       .then(async () => {
         try {
           setLoading(true)
-          await deleteNotice(notice.id)
+          await deleteFeedback(feedback.id)
           console.log("Record was successfully deleted...")
 
         } catch (e) {
@@ -126,9 +126,9 @@ const Page = () => {
 
     <>
       <Head>
-        <title>
-          Notices
-        </title>
+        <type>
+          Feedbacks
+        </type>
       </Head>
       <Box
         component="main"
@@ -147,13 +147,13 @@ const Page = () => {
 
               <Stack spacing={1}>
                 <Typography variant="h5">
-                  Notices
+                  Feedbacks
                 </Typography>
 
                 <StyledBreadCrumbs sequence={[
                   {
-                    text: 'Notices',
-                    linkUrl: '/admin-panel/notices',
+                    text: 'Feedbacks',
+                    linkUrl: '/admin-panel/feedbacks',
                     active: true
                   },
                 ]} />
@@ -164,18 +164,7 @@ const Page = () => {
                   spacing={1}
                   direction={'row'}
                 >
-                  <Button
-                    startIcon={(
-                      <SvgIcon fontSize="small">
-                        <PlusIcon />
-                      </SvgIcon>
-                    )}
-                    variant="contained"
-                    href={'/admin-panel/notices/create'}
-                    LinkComponent={NextLink}
-                  >
-                    Add New
-                  </Button>
+                  
                   <Button
                     startIcon={(
                       <SvgIcon fontSize="small">
@@ -193,14 +182,14 @@ const Page = () => {
             <BigSearch
               search={search}
               onSearch={setSearch}
-              placeholder={"Search Notices"}
+              placeholder={"Search Feedbacks"}
             />
 
             {loading && <LinearProgress />}
 
-            <NoticesTable
+            <FeedbacksTable
               count={data.length}
-              items={notices}
+              items={feedbacks}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
               page={page}
@@ -214,7 +203,7 @@ const Page = () => {
   );
 };
 
-export const NoticesTable = (props) => {
+export const FeedbacksTable = (props) => {
   const {
     count = 0,
     items = [],
@@ -233,66 +222,54 @@ export const NoticesTable = (props) => {
             <TableHead>
               <TableRow>
                 <TableCell>
-                  Notice ID
+                  Feedback ID
                 </TableCell>
 
                 <TableCell>
-                  Title
+                  Feedback Type
+                </TableCell>
+
+                <TableCell>
+                  Ratings
+                </TableCell>
+
+                <TableCell>
+                  User
                 </TableCell>
 
                 <TableCell>
                   Description
                 </TableCell>
 
-                <TableCell>
-                  Actions
-                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((notice) => {
+              {items.map((feedback) => {
                 return (
                   <TableRow
                     hover
-                    key={notice.id}
+                    key={feedback.id}
                   >
                     <TableCell>
-                      <Typography variant="subtitle2">
-                        {notice.id}
+                      <Typography variant="subtype2">
+                        {feedback.id}
                       </Typography>
                     </TableCell>
                     <TableCell>
 
-                      <Typography variant="subtitle2">
-                        {notice.title}
+                      <Typography variant="body2">
+                        {String(feedback.type).toUpperCase()}
                       </Typography>
                     </TableCell>
                     <TableCell>
-                      {truncate(notice.description, 50)}
+                      <Rating value={feedback.rating} />
                     </TableCell>
 
                     <TableCell>
-                      <IconButton
-                        color="primary"
-                        aria-label="edit"
-                        href={`/admin-panel/notices/edit/${notice.id}`}
-                        LinkComponent={NextLink}
-                      >
-                        <SvgIcon>
-                          <PencilIcon style={{ fontSize: 24 }} /> {/* Customize the icon */}
-                        </SvgIcon>
-                      </IconButton>
-
-                      <IconButton
-                        color="primary"
-                        aria-label="remove"
-                        onClick={() => handleDelete(notice)}
-                        LinkComponent={NextLink}
-                      >
-                        <SvgIcon>
-                          <TrashIcon style={{ fontSize: 24 }} /> {/* Customize the icon */}
-                        </SvgIcon>
-                      </IconButton>
+                      {String(feedback.user.role).toUpperCase()}
+                    </TableCell>
+                    <TableCell>
+                      {truncate(feedback.description, 50)}
                     </TableCell>
 
                   </TableRow>
