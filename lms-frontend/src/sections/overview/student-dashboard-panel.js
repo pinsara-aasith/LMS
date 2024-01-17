@@ -13,6 +13,7 @@ import {
   Divider,
   Grid,
   Link,
+  List,
   Paper,
   SvgIcon,
   Typography
@@ -21,9 +22,10 @@ import { alpha, useTheme } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { BACKEND_URL } from 'src/apis/consts';
-import { Container, Stack } from '@mui/system';
+import { Box, Container, Stack } from '@mui/system';
 
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
+import { notices } from 'src/pages/student-panel/noticeboard';
 
 const useChartOptions = () => {
   const theme = useTheme();
@@ -110,7 +112,7 @@ const useChartOptions = () => {
 
 const Notice = ({ title, description, severity }) => {
   return (
-    <Alert sx={{border: '0.5px solid black'}} severity={severity}>
+    <Alert sx={{ border: '0.5px solid black' }} severity={severity}>
       <AlertTitle>{title}</AlertTitle>
       {description}
     </Alert>
@@ -173,7 +175,7 @@ const NoticeList = () => {
           <Notice
             key={index}
             title={notice.title}
-            severity={index % 2 == 1 ? 'info': 'success'}
+            severity={index % 2 == 1 ? 'info' : 'success'}
             description={notice.description}
           />
         </div>
@@ -247,7 +249,7 @@ export const StudentDashboardPanel = (props) => {
       code: 'CSE501',
       course: 'Computer Science Engineering',
     },
-   
+
     {
       id: 5,
       name: 'Artificial Intelligence',
@@ -288,44 +290,79 @@ export const StudentDashboardPanel = (props) => {
     <Card sx={sx}>
       <CardContent>
         <Grid container spacing={3}>
-          
+
+          <Box
+            component="main"
+            sx={{
+              flexGrow: 1,
+              py: 4
+            }}
+          >
+            <Container maxWidth="xl">
+              <Stack spacing={3}>
+                <Container>
+                  <Paper elevation={3} style={{ padding: '20px', marginTop: '10px' }}>
+                    <Typography variant="h6" gutterBottom>
+                      Noticeboard
+                    </Typography>
+                    <List>
+
+                      <Grid container spacing={1}>
+                        {notices.map((notice, index) => (
+                          <Grid item xs={12} sm={4} md={4} key={index}>
+                            <Alert sx={{ m: 1 }} key={index} severity={notice.type}>
+                              <Typography variant="h6">{notice.title}</Typography>
+                              <Typography variant="caption" color="textSecondary">{`Created on: ${notice.createdDate}`}</Typography>
+                              <Typography variant="body1">{notice.description}</Typography>
+                            </Alert>
+                          </Grid>
+                        ))}
+                      </Grid>
+                    </List>
+                  </Paper>
+                </Container>
+              </Stack>
+            </Container>
+          </Box>
           <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>
               Frequently Accessed Courses
             </Typography>
             <Paper>
-            <Container>
-              <Grid sx={{mt:3}} container spacing={3}>
-                {subjects.splice(0,3).map((subject, index) => (
-                  <Grid sx={{height: '100%'}} item xs={12} sm={4} md={4} key={index}>
-                    <Card sx={{mb: 3}}>
-                      <CardContent>
-                        <Link href={`/student-panel/subjects/view/${subject.id}`} color="inherit">
 
-                          <Typography variant="h6" gutterBottom>
-                            {subject.name}
+              <Container>
+                <Grid sx={{ mt: 3 }} container spacing={3}>
+                  {subjects.splice(0, 6).map((subject, index) => (
+                    <Grid sx={{ height: '100%' }} item xs={12} sm={4} md={4} key={index}>
+                      <Card sx={{ mb: 3 }}>
+                        <CardContent>
+                          <Link href={`/student-panel/subjects/view/${subject.id}`} color="inherit">
+
+                            <Typography variant="h6" gutterBottom>
+                              {subject.name}
+                            </Typography>
+                          </Link>
+                          <Typography color="textSecondary" variant="subtitle2" gutterBottom>
+                            Code: {subject.code}
                           </Typography>
-                        </Link>
-                        <Typography color="textSecondary" variant="subtitle2" gutterBottom>
-                          Code: {subject.code}
-                        </Typography>
-                        <Typography color="textSecondary" variant="subtitle2">
-                          {subject.course}
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                ))}
-              </Grid>
-            </Container>
+                          <Typography color="textSecondary" variant="subtitle2">
+                            {subject.course}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Container>
             </Paper>
           </Grid>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>
               Timetable
             </Typography>
             <iframe style={{ width: '100%', height: '500px' }} src="https://calendar.google.com/calendar/embed?mode=WEEK&height=600&wkst=2&bgcolor=%23ffffff&ctz=Asia%2FColombo&showTz=0&showCalendars=0&showDate=1&showTabs=0&showPrint=0&showTitle=0&showNav=0&src=ODI2MDBkZmY4ZWFlMTg3MjdkNTNjNTA1MDIyODgwNTc2YjI0ODBhOWU5OTIyYmE1NTZjNjQzZDFkYTYzMmY1YkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23039BE5" frameborder="0" scrolling="no"></iframe>
-          </Grid>
+          </Grid> */}
+
         </Grid>
 
 
