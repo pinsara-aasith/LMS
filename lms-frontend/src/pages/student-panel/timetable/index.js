@@ -99,8 +99,12 @@ const Page = () => {
 
 
             {loading && <LinearProgress />}
-
-            <Timetable />
+            <iframe 
+            
+            style={{ width: '100%', height: '600px' }}
+            src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=Asia%2FColombo&mode=WEEK&showPrint=0&showDate=0&showNav=0&showTabs=0&showTz=0&showCalendars=0&showTitle=1&src=ODI2MDBkZmY4ZWFlMTg3MjdkNTNjNTA1MDIyODgwNTc2YjI0ODBhOWU5OTIyYmE1NTZjNjQzZDFkYTYzMmY1YkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23039BE5" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+           
+            {/* <Timetable /> */}
           </Stack>
         </Container>
       </Box>

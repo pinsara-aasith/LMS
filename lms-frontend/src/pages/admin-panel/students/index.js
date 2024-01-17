@@ -298,7 +298,7 @@ export const StudentsTable = (props) => {
                     </TableCell>
 
                     <TableCell>
-                        {student.department.name}
+                        {student.department?.name}
                     </TableCell>
 
                     <TableCell>

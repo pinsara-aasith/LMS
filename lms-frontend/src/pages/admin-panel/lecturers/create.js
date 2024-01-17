@@ -25,7 +25,7 @@ export function insertLecturer(data) {
     contact_no: data?.contact_no,
     city: data?.city,
     admission_date: dayjs(Date(data?.admission_date)).format('YYYY-MM-DD'),
-    batch:Number(data?.batch),
+    batch: Number(data?.batch),
     faculty_id: data?.faculty_id,
     department_id: data?.department_id,
   })
@@ -70,7 +70,7 @@ const Page = () => {
       faculty_id: Yup
         .number()
         .required('Faculty id is required'),
-     
+
     }),
     onSubmit: async (values, helpers) => {
       try {
@@ -387,6 +387,31 @@ const Page = () => {
                         />
                       </Stack>
 
+                    </FormControl>
+
+                  </Stack>
+
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                  >
+                    <FormControl
+                      variant="filled"
+                      fullWidth
+
+                    >
+                      <TextField
+                        multiline
+                        rows={3}
+                        fullWidth
+                        type="text"
+                        label="Time table link (Google Calendar)"
+                        name="calendar_link"
+                        error={!!(formik.touched.calendar_link && formik.errors.calendar_link)}
+                        helperText={formik.touched.calendar_link && formik.errors.calendar_link}
+                        value={formik.values.calendar_link}
+                        onChange={formik.handleChange}
+                      />
                     </FormControl>
                   </Stack>
                   <Stack

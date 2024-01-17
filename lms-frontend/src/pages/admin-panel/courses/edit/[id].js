@@ -224,6 +224,24 @@ const Page = () => {
                         </TextField>
                       </FormControl>
                     </FormControl>
+                    <FormControl
+                      variant="filled"
+                      fullWidth
+
+                    >
+                      <TextField
+                        multiline
+                        rows={3}
+                        fullWidth
+                        type="text"
+                        label="Time table link (Google Calendar)"
+                        name="calendar_link"
+                        error={!!(formik.touched.calendar_link && formik.errors.calendar_link)}
+                        helperText={formik.touched.calendar_link && formik.errors.calendar_link}
+                        value={formik.values.calendar_link}
+                        onChange={formik.handleChange}
+                      />
+                    </FormControl>
                   </Stack>
                   <Stack
                     direction={'row'}
