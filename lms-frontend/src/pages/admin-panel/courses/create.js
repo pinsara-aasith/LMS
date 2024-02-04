@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Head from 'next/head';
-import { Autocomplete, Box, Button, Card, CardContent, CardHeader, Container, FormControl, InputLabel, MenuItem, NativeSelect, OutlinedInput, Select, Snackbar, Stack, SvgIcon, TextField, Typography } from '@mui/material';
-import { Layout as DashboardLayout } from 'src/layouts/admin-panel/dashboard/layout';
+import { Autocomplete, Box, Button, Card, CardContent, CardHeader, Container, FormControl, FormLabel, InputLabel, MenuItem, NativeSelect, OutlinedInput, Select, Snackbar, Stack, SvgIcon, TextField, Typography } from '@mui/material';
+import { Layout as DashboardLayout } from 'src/layouts/common-panel/layout';
 import { StyledBreadCrumbs } from 'src/components/breadcrumbs';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -10,13 +10,18 @@ import { useSnackbar } from 'notistack';
 import axios from 'axios';
 import { BACKEND_URL } from 'src/apis/consts';
 import { getAllDepartments } from '../departments';
+import { DragDropFileUpload } from 'src/components/dragAndDropFileUpload';
 
-export function insertCourse(data) {
-  return axios.post(`${BACKEND_URL}/api/courses`, {
-    name: data?.name,
-    code: data?.code,
-    department_id: data?.department_id
-  })
+export function insertCourse(data, file) {
+  const formData = new FormData();
+  formData.append('name', data?.name);
+  formData.append('code', data?.code);
+  formData.append('department_id', data?.department_id);
+
+  if (file)
+    formData.append('file', file);
+
+  return axios.post(`${BACKEND_URL}/api/courses`, formData)
 }
 
 const Page = () => {
@@ -24,6 +29,7 @@ const Page = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const [departments, setDepartments] = useState([]);
+  const [file, setFile] = useState(null);
 
   useEffect(() => {
     getAllDepartments().then(d => setDepartments(d));
@@ -49,7 +55,7 @@ const Page = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        await insertCourse(formik.values)
+        await insertCourse(formik.values, file)
 
         enqueueSnackbar('Course was added successfully!', {
           variant: 'success',
@@ -129,7 +135,7 @@ const Page = () => {
                   <Stack
                     direction="column"
                     justifyContent="space-between"
-                    spacing={5}
+                    spacing={3.5}
                     sx={{ mb: 3 }}
                   >
                     <FormControl
@@ -195,23 +201,9 @@ const Page = () => {
                         ))}
                       </TextField>
                     </FormControl>
-                    <FormControl
-                      variant="filled"
-                      fullWidth
-
-                    >
-                      <TextField
-                        multiline
-                        rows={3}
-                        fullWidth
-                        type="text"
-                        label="Time table link (Google Calendar)"
-                        name="calendar_link"
-                        error={!!(formik.touched.calendar_link && formik.errors.calendar_link)}
-                        helperText={formik.touched.calendar_link && formik.errors.calendar_link}
-                        value={formik.values.calendar_link}
-                        onChange={formik.handleChange}
-                      />
+                    <FormControl>
+                      <FormLabel sx={{mb: '12px'}}>Upload Timetable image (Screenshot of google calendar)</FormLabel>
+                      <DragDropFileUpload file={file} onFileChange={(file) => setFile(file)} />
                     </FormControl>
 
                   </Stack>

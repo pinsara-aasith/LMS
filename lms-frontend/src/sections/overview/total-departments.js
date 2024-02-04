@@ -8,17 +8,16 @@ import { BACKEND_URL } from 'src/apis/consts';
 export const TotalDepartments = (props) => {
   const { sx } = props;
 
-  const [value, setValue] = useState(0)
+  const [totalDepartments, setTotalDepartments] = useState('Loading...')
 
   async function refresh() {
-    // const { data } = await axios.get(`${BACKEND_URL}/api/reports/totalEmployees`)
-    // setValue(data?.data?.[0].Count)
+    const { data } = await axios.get(`${BACKEND_URL}/api/totalDepartments`)
+    setTotalDepartments(data?.data || 0)
   }
 
   useEffect(() => {
     refresh();
   }, [])
-
 
   return (
     <Card sx={sx}>

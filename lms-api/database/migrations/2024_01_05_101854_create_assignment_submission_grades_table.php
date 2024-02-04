@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('assignment_submission_grades', function (Blueprint $table) {
             $table->id();
             $table->integer('grade');
-            $table->string('comment');
+            $table->string('comment')->nullable();
             $table->foreignId('assignment_submission_id')->constrained();
+
+            $table->foreignId('lecturer_id')->constrained();
             // Add other submission attributes as needed
             $table->timestamps();
         });

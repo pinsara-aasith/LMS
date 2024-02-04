@@ -11,7 +11,7 @@ class StudentController extends Controller
 {
     public function index()
     {
-        $students = Student::with(['user', 'department', 'faculty'])->get();
+        $students = Student::orderBy('id', 'DESC')->with(['user', 'department', 'faculty'])->get();
         return response()->json(['data' => $students]);
     }
 
@@ -26,6 +26,7 @@ class StudentController extends Controller
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'email' => 'required|string',
+            'user_name' => 'required|string',
             'contact_no' => 'required|string',
             'nic_number' => 'required|string',
             'dob' => 'required|date',
@@ -35,6 +36,7 @@ class StudentController extends Controller
             'batch' => 'required|integer',
             'faculty_id' => 'required|integer',
             'department_id' => 'required|integer',
+            'course_id' => 'required|integer',
         ]);
 
       
@@ -51,6 +53,7 @@ class StudentController extends Controller
             'admission_date' => $request->input('admission_date'),
             'batch' => $request->input('batch'),
 
+            'course_id' => $request->input('course_id'),
             'faculty_id' => $request->input('faculty_id'),
             'department_id' => $request->input('department_id'),
         ]);
@@ -60,6 +63,7 @@ class StudentController extends Controller
         $fullName = $request->input('first_name') . " " . $request->input('last_name');
         $student->user()->create([
             'name' => $fullName,
+            'user_name' => $request->input('user_name'),
             'email' => $request->input('email'),
             'password' => Hash::make('password'),
             'role' => 'student',
@@ -81,6 +85,7 @@ class StudentController extends Controller
             'contact_no' => $request->input('contact_no'),
             'admission_date' => $request->input('admission_date'),
             'batch' => $request->input('batch'),
+            'course_id' => $request->input('course_id'),
         ]);
 
         $user = $student->user;

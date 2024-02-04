@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Head from 'next/head';
 import { Autocomplete, Box, Button, Card, CardContent, CardHeader, Container, FormControl, InputLabel, MenuItem, Select, Snackbar, Stack, SvgIcon, TextField, Typography } from '@mui/material';
-import { Layout as DashboardLayout } from 'src/layouts/admin-panel/dashboard/layout';
+import { Layout as DashboardLayout } from 'src/layouts/common-panel/layout';
 import { StyledBreadCrumbs } from 'src/components/breadcrumbs';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -11,10 +11,10 @@ import axios from 'axios';
 import { BACKEND_URL } from 'src/apis/consts';
 
 export function insertNotice(data) {
-    return axios.post(`${BACKEND_URL}/api/notices`, {
-        title: data?.title,
-        description: data?.description
-    })
+  return axios.post(`${BACKEND_URL}/api/notices`, {
+    title: data?.title,
+    description: data?.description
+  })
 }
 
 const Page = () => {
@@ -38,19 +38,19 @@ const Page = () => {
     onSubmit: async (values, helpers) => {
       try {
         await insertNotice(formik.values)
-        
+
         enqueueSnackbar('Notice was added successfully!', {
           variant: 'success',
           anchorOrigin: {
             vertical: 'bottom',
             horizontal: 'right',
-            
+
           },
           autoHideDuration: 2000
         })
 
         setTimeout(() => router.push('/admin-panel/notices'), 400)
-        
+
       } catch (err) {
         console.error(err);
         enqueueSnackbar('Error occured!', {
@@ -123,7 +123,6 @@ const Page = () => {
                     <FormControl
                       variant="filled"
                       fullWidth
-
                     >
                       <TextField
                         fullWidth
@@ -133,7 +132,7 @@ const Page = () => {
                         error={!!(formik.touched.title && formik.errors.title)}
                         helperText={formik.touched.title && formik.errors.title}
                         value={formik.values.title}
-                        onChange={formik.handleChange}
+                        onChange={(evt) => { formik.setFieldValue('title', evt.target.value) }}
                       />
                     </FormControl>
                     <FormControl
@@ -141,8 +140,8 @@ const Page = () => {
                       fullWidth
                     >
                       <TextField
-                      multiline
-                      rows={5}
+                        multiline
+                        rows={5}
                         fullWidth
                         type="text"
                         label="Description"
@@ -150,7 +149,7 @@ const Page = () => {
                         error={!!(formik.touched.description && formik.errors.description)}
                         helperText={formik.touched.description && formik.errors.description}
                         value={formik.values.description}
-                        onChange={formik.handleChange}
+                        onChange={(evt) => { formik.setFieldValue('description', evt.target.value) }}
                       />
                     </FormControl>
                   </Stack>

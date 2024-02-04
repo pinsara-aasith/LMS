@@ -10,17 +10,16 @@ import { BACKEND_URL } from 'src/apis/consts';
 export const TotalFaculties = (props) => {
   const { difference, positive = false, sx } = props;
 
-  const [value, setValue] = useState(27)
+  const [totalFaculties, setTotalFaculties] = useState('Loading...')
 
   async function refresh() {
-    // const { data } = await axios.get(`${BACKEND_URL}/api/reports/itemsInWarehouse`)
-    // setValue(data?.data?.[0].Count)
+    const { data } = await axios.get(`${BACKEND_URL}/api/totalFaculties`)
+    setTotalFaculties(data?.data || 0)
   }
 
   useEffect(() => {
     refresh();
   }, [])
-
 
   return (
     <Card sx={sx}>
@@ -39,7 +38,7 @@ export const TotalFaculties = (props) => {
               Total Faculties
             </Typography>
             <Typography variant="h4">
-              {value}
+              {totalFaculties}
             </Typography>
           </Stack>
           <Avatar

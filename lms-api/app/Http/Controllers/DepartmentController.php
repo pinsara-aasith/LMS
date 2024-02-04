@@ -11,7 +11,7 @@ class DepartmentController extends Controller
 {
     public function index()
     {
-        $departments = Department::with('faculty')->get();
+        $departments = Department::orderBy('id', 'DESC')->with('faculty')->get();
         return response()->json(['data' => $departments]);
     }
 

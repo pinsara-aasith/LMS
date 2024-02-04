@@ -10,7 +10,7 @@ class FacultyController extends Controller
     public function index()
     {
         return [
-            'data' => Faculty::all(),
+            'data' => Faculty::orderBy('id', 'DESC')->get(),
             'message' => 'Ok'
         ];
     }

@@ -9,5 +9,5 @@ class Notice extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['title', 'description'];
 }

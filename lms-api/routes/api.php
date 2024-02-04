@@ -2,14 +2,22 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AssignmentController;
+use App\Http\Controllers\AssignmentSubmissionController;
+use App\Http\Controllers\AssignmentSubmissionGradeController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\LecturerController;
+use App\Http\Controllers\MySubjectController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\SubjectsAssignmentController;
+use App\Models\Admin;
+use App\Models\Course;
+use App\Models\Department;
+use App\Models\Faculty;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -75,6 +83,10 @@ Route::prefix('subjects')->group(function () {
     Route::delete('/{subject}', [SubjectController::class, 'destroy'])->name('subjects.destroy');
 });
 
+Route::prefix('subjects/{subject}')->group(function () {
+    Route::get('/assignments', [SubjectsAssignmentController::class, 'index'])->name('subjects.index');
+});
+
 Route::prefix('courses')->group(function () {
     Route::get('/', [CourseController::class, 'index'])->name('courses.index');
     Route::get('/{course}', [CourseController::class, 'show'])->name('courses.show');
@@ -91,17 +103,49 @@ Route::prefix('notices')->group(function () {
     Route::delete('/{notice}', [NoticeController::class, 'destroy'])->name('notices.destroy');
 });
 
-Route::prefix('assignments')->group(function () {
+Route::middleware(['auth:sanctum'])->prefix('assignments')->group(function () {
     Route::get('/', [AssignmentController::class, 'index'])->name('assignments.index');
     Route::get('/{assignment}', [AssignmentController::class, 'show'])->name('assignments.show');
     Route::post('/', [AssignmentController::class, 'store'])->name('assignments.store');
     Route::put('/{assignment}', [AssignmentController::class, 'update'])->name('assignments.update');
     Route::delete('/{assignment}', [AssignmentController::class, 'destroy'])->name('assignments.destroy');
+
+    Route::get('/{assignment}/submissions/', [AssignmentController::class, 'indexSubmissions'])->name('assignmentSubmissions.showAll');
+    Route::post('/{assignment}/submissions/', [AssignmentSubmissionController::class, 'store'])->name('assignmentSubmissions.store');
+});
+
+
+Route::middleware(['auth:sanctum'])->prefix('assignmentSubmissions')->group(function () {
+    Route::get('/', [AssignmentSubmissionController::class, 'index'])->name('assignmentSubmissions.index');
+    Route::get('/{assignmentSubmission}', [AssignmentSubmissionController::class, 'show'])->name('assignments.show');
+
+    Route::post('/{assignmentSubmission}/grade', [AssignmentSubmissionGradeController::class, 'store'])->name('assignmentsSubmissionGrade.store');
+});
+
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/totalAdmins',  function (Request $request) {
+        return response()->json(['data' => Admin::count()]);
+    })->name('totalAdmins.show');
+
+    Route::get('/totalFaculties',  function (Request $request) {
+        return response()->json(['data' => Faculty::count()]);
+    })->name('totalFaculties.show');
+
+    Route::get('/totalCourses',  function (Request $request) {
+        return response()->json(['data' => Course::count()]);
+    })->name('totalCourses.show');
+
+    Route::get('/totalDepartments',  function (Request $request) {
+        return response()->json(['data' => Department::count()]);
+    })->name('totalCourses.show');
 });
 
 
 Route::prefix('feedbacks')->group(function () {
     Route::get('/', [FeedbackController::class, 'index'])->name('feedbacks.index');
     Route::get('/{feedback}', [FeedbackController::class, 'show'])->name('feedbacks.show');
-   });
+    Route::middleware(['auth:sanctum'])->post('/', [FeedbackController::class, 'store'])->name('feedbacks.store');
+});
 
+Route::middleware(['auth:sanctum'])->get('/me/subjects', [MySubjectController::class, 'index'])->name('mysubjects.index');

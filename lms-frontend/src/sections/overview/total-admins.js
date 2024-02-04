@@ -10,24 +10,11 @@ import { BACKEND_URL } from 'src/apis/consts';
 export const TotalAdmins = (props) => {
   const { difference, positive = false, sx } = props;
 
-  const [year, setYear] = useState(2023)
-  const [sales, setSales] = useState(0)
+  const [totalAdmins, setTotalAdmins] = useState('Loading...')
 
   async function refresh() {
-    // const { data } = await axios.get(`${BACKEND_URL}/api/reports/quartelySales/${year}`)
-    // let report = data?.report?.[0]
-    // console.log(report, 'report')
-
-    // if (!!report) {
-    //   let _sales = 0
-
-    //   report.forEach(r => {
-    //     _sales += r.Revenue
-    //   })
-
-    //   setSales(_sales)
-    // }
-
+    const { data } = await axios.get(`${BACKEND_URL}/api/totalAdmins`)
+    setTotalAdmins(data?.data || 0)
   }
 
   useEffect(() => {
@@ -52,7 +39,7 @@ export const TotalAdmins = (props) => {
               Total Admins
             </Typography>
             <Typography variant="h4">
-              4
+              {totalAdmins}
             </Typography>
           </Stack>
           <Avatar

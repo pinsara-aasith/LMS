@@ -24,6 +24,7 @@ return new class extends Migration
             $table->date('admission_date')->nullable();
             $table->integer('batch')->nullable();
             $table->foreignId('faculty_id')->nullable()->references('id')->on('faculties');
+            $table->string('time_table_link')->nullable();
 
             $table->timestamps();
         });

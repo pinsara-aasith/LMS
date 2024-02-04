@@ -2,27 +2,25 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Head from 'next/head';
 import { Alert, Autocomplete, Box, Button, Card, CardContent, CardHeader, CircularProgress, Container, FormControl, Grid, InputLabel, Link, List, ListItem, ListItemText, MenuItem, NativeSelect, OutlinedInput, Paper, Rating, Select, Snackbar, Stack, SvgIcon, TextField, Typography } from '@mui/material';
-import { Layout as DashboardLayout } from 'src/layouts/student-panel/dashboard/layout';
+import { Layout as DashboardLayout } from 'src/layouts/common-panel/layout';
 import { StyledBreadCrumbs } from 'src/components/breadcrumbs';
+import axios from 'axios';
+import { BACKEND_URL } from 'src/apis/consts';
+
+export async function getAllSubjects() {
+  const response = await axios.get(`${BACKEND_URL}/api/me/subjects`)
+  return response.data?.['data']
+}
 
 const Page = () => {
-  const [content, setContent] = useState('');
-  const [rating, setRating] = useState(0);
+  const [subjects, setSubjects] = useState([]);
 
-  const handleContentChange = (event) => {
-    setContent(event.target.value);
-  };
+  useEffect(() => {
+    getAllSubjects()
+      .then((ns) => { setSubjects(ns) })
+  }, []);
 
-  const handleRatingChange = (event, newValue) => {
-    setRating(newValue);
-  };
-
-  const handleSubmit = () => {
-    console.log('Feedback Submitted:', { content, rating });
-    setContent('');
-    setRating(0);
-  };
-  const subjects = [
+  const sampleSubjects = [
     {
       id: 1,
       name: 'Data Structures and Algorithms',
@@ -120,7 +118,7 @@ const Page = () => {
             </Stack>
             <Container>
               <Grid container spacing={3}>
-                {subjects.map((subject, index) => (
+                {subjects?.map((subject, index) => (
                   <Grid item xs={12} sm={6} md={4} key={index}>
                     <Card>
                       <CardContent>
@@ -134,7 +132,7 @@ const Page = () => {
                           Code: {subject.code}
                         </Typography>
                         <Typography color="textSecondary" variant="subtitle2">
-                          {subject.course}
+                          {subject?.course?.name}
                         </Typography>
                       </CardContent>
                     </Card>

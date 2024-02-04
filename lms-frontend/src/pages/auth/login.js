@@ -25,8 +25,6 @@ const Page = () => {
   const [method, setMethod] = useState('username');
   const formik = useFormik({
     initialValues: {
-      username: 'aasithp@gmail.com',
-      password: 'demo',
       submit: null
     },
     validationSchema: Yup.object({
@@ -43,14 +41,14 @@ const Page = () => {
       try {
         let a = await auth.signIn(values.username, values.password);
         if (a) {
-          router.push('/admin-panel');
+          router.push('/');
         } else {
           helpers.setErrors({ submit: "Please enter correct password" });
         }
 
       } catch (err) {
         helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: err.message });
+        helpers.setErrors({ submit: err?.response?.data?.message || err.message });
         helpers.setSubmitting(false);
       }
     }
@@ -174,9 +172,7 @@ const Page = () => {
                   </Link>
                 </Typography>
 
-                <FormHelperText sx={{ mt: 1 }}>
-                  Optionally you can skip.
-                </FormHelperText>
+                
                 {formik.errors.submit && (
                   <Typography
                     color="error"
@@ -194,15 +190,7 @@ const Page = () => {
                   variant="contained"
 
                 >
-                  Continue
-                </Button>
-                <Button
-                  fullWidth
-                  size="large"
-                  sx={{ mt: 3 }}
-                  onClick={handleSkip}
-                >
-                  Skip authentication
+                  Login
                 </Button>
               </form>
             )}

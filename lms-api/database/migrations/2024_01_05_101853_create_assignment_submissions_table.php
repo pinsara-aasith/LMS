@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('assignment_submissions', function (Blueprint $table) {
             $table->id();
             $table->text('text');
-            $table->string('file_path');
+            $table->string('file_path')->nullable();
             $table->foreignId('assignment_id')->constrained();
             $table->foreignId('student_id')->constrained();
             // Add other submission attributes as needed

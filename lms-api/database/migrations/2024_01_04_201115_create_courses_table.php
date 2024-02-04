@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('code');
             $table->foreignId('department_id')->references('id')->on('departments');
+            $table->string('time_table_link')->nullable();
 
             $table->timestamps();
         });

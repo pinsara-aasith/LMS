@@ -9,7 +9,7 @@ export const StyledBreadCrumbs = (props) => {
   return (
     <Breadcrumbs aria-label="breadcrumb">
       <Link
-        href={'/auth/login'}
+        href={'/'}
         component={NextLink}
         sx={{ typography: 'subtitle2' }}
         underline="hover"

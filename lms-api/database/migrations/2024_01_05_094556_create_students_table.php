@@ -24,9 +24,10 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->date('admission_date')->nullable();
             $table->integer('batch')->nullable();
+            $table->foreignId('course_id')->nullable()->references('id')->on('courses');
             $table->foreignId('faculty_id')->nullable()->references('id')->on('faculties');
             $table->foreignId('department_id')->nullable()->references('id')->on('departments');
-            
+
             $table->timestamps();
         });
     }

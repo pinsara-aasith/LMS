@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { Autocomplete, Backdrop, Box, Button, Card, CardContent, CardHeader, CircularProgress, Container, FormControl, InputLabel, LinearProgress, MenuItem, Select, Snackbar, Stack, SvgIcon, TextField, Typography } from '@mui/material';
-import { Layout as DashboardLayout } from 'src/layouts/admin-panel/dashboard/layout';
+import { Autocomplete, Backdrop, Box, Button, Card, CardContent, CardHeader, CircularProgress, Container, FormControl, FormLabel, InputLabel, LinearProgress, MenuItem, Select, Snackbar, Stack, SvgIcon, TextField, Typography } from '@mui/material';
+import { Layout as DashboardLayout } from 'src/layouts/common-panel/layout';
 import { StyledBreadCrumbs } from 'src/components/breadcrumbs';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -11,13 +11,18 @@ import { LoadingButton } from '@mui/lab';
 import axios from 'axios';
 import { BACKEND_URL } from 'src/apis/consts';
 import { getAllDepartments } from 'src/pages/admin-panel/departments';
+import { DragDropFileUpload } from 'src/components/dragAndDropFileUpload';
 
-export function updateCourse(id, data) {
-  return axios.put(`${BACKEND_URL}/api/courses/${id}`, {
-    name: data?.name,
-    code: data?.code,
-    department_id: data?.department_id
-  })
+export function updateCourse(id, data, file) {
+  const formData = new FormData();
+  formData.append('name', data?.name);
+  formData.append('code', data?.code);
+  formData.append('department_id', data?.department_id);
+
+  if (file)
+    formData.append('file', file);
+
+  return axios.put(`${BACKEND_URL}/api/courses/${id}`, formData)
 }
 
 
@@ -27,13 +32,14 @@ const Page = () => {
 
   const courseId = router.query.id
   const [loading, setLoading] = useState(true);
-
   const [departments, setDepartments] = useState([]);
 
   useEffect(() => {
     getAllDepartments().then(d => setDepartments(d));
   }, [])
 
+
+  const [file, setFile] = useState(null);
 
   const formik = useFormik({
     initialValues: {
@@ -55,7 +61,7 @@ const Page = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        updateCourse(courseId, values);
+        updateCourse(courseId, values, file);
 
         enqueueSnackbar('Course was edited successfully!', {
           variant: 'success',
@@ -71,7 +77,7 @@ const Page = () => {
 
       } catch (err) {
         enqueueSnackbar('Error occured!', {
-          variant: 'success',
+          variant: 'error',
           anchorOrigin: {
             vertical: 'bottom',
             horizontal: 'right',
@@ -79,6 +85,7 @@ const Page = () => {
           },
           autoHideDuration: 2000
         })
+        console.error(err)
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
         helpers.setSubmitting(false);
@@ -224,23 +231,10 @@ const Page = () => {
                         </TextField>
                       </FormControl>
                     </FormControl>
-                    <FormControl
-                      variant="filled"
-                      fullWidth
-
-                    >
-                      <TextField
-                        multiline
-                        rows={3}
-                        fullWidth
-                        type="text"
-                        label="Time table link (Google Calendar)"
-                        name="calendar_link"
-                        error={!!(formik.touched.calendar_link && formik.errors.calendar_link)}
-                        helperText={formik.touched.calendar_link && formik.errors.calendar_link}
-                        value={formik.values.calendar_link}
-                        onChange={formik.handleChange}
-                      />
+                   
+                    <FormControl>
+                      <FormLabel sx={{mb: '12px'}}>Upload Timetable image (Screenshot of google calendar)</FormLabel>
+                      <DragDropFileUpload file={file} onFileChange={(file) => setFile(file)} />
                     </FormControl>
                   </Stack>
                   <Stack

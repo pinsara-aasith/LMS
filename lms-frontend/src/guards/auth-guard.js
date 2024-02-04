@@ -2,17 +2,15 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useAuthContext } from 'src/contexts/auth-context';
+import axios from 'axios';
+import { BACKEND_URL } from 'src/apis/consts';
 
 export const AuthGuard = (props) => {
   const { children } = props;
   const router = useRouter();
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated, authData } = useAuthContext();
   const ignore = useRef(false);
   const [checked, setChecked] = useState(false);
-
-  // Only do authentication check on component mount.
-  // This flow allows you to manually redirect the user after sign-out, otherwise this will be
-  // triggered and will automatically redirect to sign-in page.
 
   useEffect(
     () => {
@@ -35,11 +33,50 @@ export const AuthGuard = (props) => {
             query: router.asPath !== '/' ? { continueUrl: router.asPath } : undefined
           })
           .catch(console.error);
-      } else {
-        setChecked(true);
+
+        return;
+
       }
+      if (router.pathname.startsWith("/student-panel") && authData?.user.role === 'student') {
+        setChecked(true);
+        return;
+      }
+
+      if (router.pathname.startsWith("/lecturer-panel") && authData?.user.role === 'lecturer') {
+        setChecked(true);
+        return;
+      }
+
+      if (router.pathname.startsWith("/admin-panel") && authData?.user.role === 'admin') {
+        setChecked(true);
+        return;
+      }
+
+      if (router.pathname.startsWith("/")) {
+        window.location = `/${authData?.user.role}-panel`;
+        return;
+      }
+
+      if (router.pathname.startsWith("/admin-panel") && authData?.user.role !== 'admin') {
+        router.push({ pathname: '/404' })
+        setChecked(true)
+        return;
+      }
+
+      if (router.pathname.startsWith("/lecturer-panel") && authData?.user.role !== 'lecturer') {
+        router.push({ pathname: '/404' })
+        return;
+      }
+
+      if (router.pathname.startsWith("/student-panel") && authData?.user.role !== 'student') {
+        router.push({ pathname: '/404' })
+        return;
+      }
+
+
+      setChecked(true);
     },
-    [router.isReady]
+    [router.isReady, router.pathname]
   );
 
   if (!checked) {

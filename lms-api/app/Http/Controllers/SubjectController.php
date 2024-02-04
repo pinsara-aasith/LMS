@@ -11,7 +11,7 @@ class SubjectController extends Controller
 {
     public function index()
     {
-        $subjects = Subject::with('course')->get();
+        $subjects = Subject::orderBy('id', 'DESC')->with('course')->get();
         return response()->json(['data' => $subjects]);
     }
 

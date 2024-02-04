@@ -11,7 +11,7 @@ class LecturerController extends Controller
 {
     public function index()
     {
-        $lecturers = Lecturer::with(['user', 'faculty'])->get();
+        $lecturers = Lecturer::orderBy('id', 'DESC')->with(['user', 'faculty'])->get();
         return response()->json(['data' => $lecturers]);
     }
 
@@ -27,12 +27,18 @@ class LecturerController extends Controller
             'last_name' => 'required|string',
             'email' => 'required|string',
             'contact_no' => 'required|string',
+            'user_name' => 'required|string',
             'nic_number' => 'required|string',
             'dob' => 'required|date',
             'faculty_id' => 'required|integer',
         ]);
 
       
+        $filePath = null;
+        if ($request->hasFile('file')) {
+            $filePath = $request->file('file')->store('timetable_links');
+        }
+
 
         $lecturer = new Lecturer([
             'first_name' => $request->input('first_name'),
@@ -43,6 +49,7 @@ class LecturerController extends Controller
             'dob' => $request->input('dob'),
 
             'faculty_id' => $request->input('faculty_id'),
+            'time_table_link' => $filePath
         ]);
 
         $lecturer->save();
@@ -51,6 +58,7 @@ class LecturerController extends Controller
         $lecturer->user()->create([
             'name' => $fullName,
             'email' => $request->input('email'),
+            'user_name' => $request->input('user_name'),
             'password' => Hash::make('password'),
             'role' => 'lecturer',
         ]);

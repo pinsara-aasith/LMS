@@ -16,14 +16,14 @@ class Student extends Model
         return $this->morphOne(User::class, 'userable');
     }
 
-    public function subjects()
-    {
-        return $this->belongsToMany(Subject::class);
-    }
-
     public function faculty()
     {
         return $this->belongsTo(Faculty::class);
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
     }
 
     public function department()

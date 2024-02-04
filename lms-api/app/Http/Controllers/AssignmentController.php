@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Assignment;
+use App\Models\AssignmentSubmission;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -11,7 +12,7 @@ class AssignmentController extends Controller
 {
     public function index()
     {
-        $assignments = Assignment::with('subject')->get();
+        $assignments = Assignment::orderBy('id', 'DESC')->with('subject')->get();
         return response()->json(['data' => $assignments]);
     }
 
@@ -53,4 +54,12 @@ class AssignmentController extends Controller
 
         return response()->json(['message' => 'Ok']);
     }
+
+    public function indexSubmissions(Assignment $assignment)
+    {
+        $assignments = $assignment->submissions()->orderBy('id', 'DESC')->with('assignment')->with('assignmentSubmissionGrade')->with('student')->get();
+        
+        return response()->json(['data' => $assignments]);
+    }
+
 }

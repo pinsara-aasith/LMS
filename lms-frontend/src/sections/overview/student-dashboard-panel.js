@@ -10,6 +10,7 @@ import {
   CardActions,
   CardContent,
   CardHeader,
+  CircularProgress,
   Divider,
   Grid,
   Link,
@@ -18,6 +19,7 @@ import {
   SvgIcon,
   Typography
 } from '@mui/material';
+import NextLink from 'next/link'
 import { alpha, useTheme } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -25,7 +27,8 @@ import { BACKEND_URL } from 'src/apis/consts';
 import { Box, Container, Stack } from '@mui/system';
 
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
-import { notices } from 'src/pages/student-panel/noticeboard';
+import { getAllNotices } from 'src/pages/common-pages/noticeboard';
+import { useSnackbar } from 'notistack';
 
 const useChartOptions = () => {
   const theme = useTheme();
@@ -119,172 +122,46 @@ const Notice = ({ title, description, severity }) => {
   );
 };
 
-
-const NoticeList = () => {
-  const imgLink = 'your_image_link_here'; // Replace with your actual image link
-  const notices = [
-    {
-      "title": "Important Course Update",
-      "description": "There has been a change in the course schedule. Please check the updated timetable for the latest information on class timings and assignments.",
-    },
-    {
-      "title": "Upcoming Webinar",
-      "description": "Don't miss the upcoming webinar on 'Latest Trends in Technology.' Join us to gain valuable insights and interact with industry experts.",
-    },
-    {
-      "title": "New Learning Resources Available",
-      "description": "We have added new learning materials to enhance your understanding of the subject. Visit the Resources section to access the latest study materials.",
-    },
-    {
-      "title": "Reminder: Assignment Submission",
-      "description": "A friendly reminder to submit your assignments by the deadline. Late submissions will not be accepted, so make sure to complete your work on time.",
-    },
-    {
-      "title": "System Maintenance Notification",
-      "description": "The E-LMS will undergo scheduled maintenance on Saturday from 10:00 PM to 12:00 AM. During this time, the platform may be temporarily unavailable. We apologize for any inconvenience.",
-    },
-    {
-      "title": "Guest Lecture by Industry Expert",
-      "description": "We are excited to announce a guest lecture by a renowned industry expert. Join us for this insightful session on 'Career Opportunities in the Tech Industry.'",
-    },
-    {
-      "title": "Feedback Survey",
-      "description": "Your feedback is important to us. Please take a moment to complete the feedback survey and let us know about your experience with the E-LMS. Your input helps us improve!",
-    },
-    {
-      "title": "Course Registration Deadline",
-      "description": "The deadline for course registration is approaching. Ensure you have registered for the upcoming semester courses to avoid any disruptions to your learning journey.",
-    },
-    {
-      "title": "Holiday Break Notice",
-      "description": "Wishing you a joyful holiday break! Please note that there will be no classes during the upcoming holidays. Enjoy your break and come back refreshed for the next session.",
-    },
-    {
-      "title": "Congratulations on Course Completion",
-      "description": "Congratulations! You have successfully completed the 'Introduction to Programming' course. We applaud your dedication and hard work. Best wishes for your future courses!",
-    }
-  ];
-
-  return (
-    <div style={{ padding: 14 }} className="App">
-      <Typography variant="h6" gutterBottom>
-        Noticeboard
-      </Typography>
-      {notices.slice(0, 3).map((notice, index) => (
-        <div style={{ padding: '10px' }}>
-          <Notice
-            key={index}
-            title={notice.title}
-            severity={index % 2 == 1 ? 'info' : 'success'}
-            description={notice.description}
-          />
-        </div>
-
-      ))}
-    </div>
-  );
-};
-
+export async function getAllSubjects() {
+  const response = await axios.get(`${BACKEND_URL}/api/me/subjects`)
+  return response.data?.['data']
+}
 
 export const StudentDashboardPanel = (props) => {
   const { sx } = props;
   const chartOptions = useChartOptions();
 
-  const [year, setYear] = useState(2023)
-  const [sales, setSales] = useState([0, 0, 0, 0])
+  const { enqueueSnackbar } = useSnackbar();
 
-  async function refresh() {
-    // const {data} = await axios.get(`${BACKEND_URL}/api/reports/quartelySales/${year}`)
-    // let report = data?.report?.[0]
-    // console.log(report, 'report')
-    // if(!!report) {
-    //   const _sales = [0,0,0,0]
-
-    //   report.forEach(r => {
-    //     _sales[r.Quarter - 1] += r.Revenue
-    //   })
-
-    //   setSales(_sales)
-    //   console.log(_sales, "sales")
-    // }
-  }
-
-  const data = [
-    { name: 'Harassment', value: 300 },
-    { name: 'Administration', value: 200 },
-    { name: 'Academic', value: 200 },
-    { name: 'Financial', value: 40 },
-  ];
-  const COLORS = ['#00C49F', '#FFBB28', '#0088FE', '#FF8042', '#FFF042'];
-
-  const RADIAN = Math.PI / 180;
-  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.2;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-    return (
-      <text style={{ fontWeight: 'bold', fontSize: '11px' }} x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-        {data[index].name}
-      </text>
-    );
-  };
-
-  const subjects = [
-    {
-      id: 1,
-      name: 'Data Structures and Algorithms',
-      code: 'CSE301',
-      course: 'Computer Science Engineering',
-    },
-    {
-      id: 4,
-      name: 'Software Engineering',
-      code: 'CSE601',
-      course: 'Computer Science Engineering',
-    },
-    {
-      id: 3,
-      name: 'Computer Networks',
-      code: 'CSE501',
-      course: 'Computer Science Engineering',
-    },
-
-    {
-      id: 5,
-      name: 'Artificial Intelligence',
-      code: 'CSE701',
-      course: 'Computer Science Engineering',
-    },
-    {
-      id: 6,
-      name: 'Web Development',
-      code: 'CSE801',
-      course: 'Computer Science Engineering',
-    },
-    {
-      id: 7,
-      name: 'Operating Systems',
-      code: 'CSE302',
-      course: 'Computer Science Engineering',
-    },
-    {
-      id: 8,
-      name: 'Computer Architecture',
-      code: 'CSE402',
-      course: 'Computer Science Engineering',
-    },
-    {
-      id: 9,
-      name: 'Cybersecurity',
-      code: 'CSE502',
-      course: 'Computer Science Engineering',
-    },
-  ];
+  const [notices, setNotices] = useState([]);
+  const [loadingSubjects, setLoadingSubjects] = useState(true);
+  const [loadingNotices, setLoadingNotices] = useState(true);
+  const [subjects, setSubjects] = useState([]);
 
   useEffect(() => {
-    refresh();
-  }, [])
+    setLoadingSubjects(true);
+    setLoadingNotices(true);
+    Promise.all([getAllSubjects(), getAllNotices()])
+      .then(([subjects, notices]) => {
+        setSubjects(subjects)
+        setNotices(notices)
+      })
+      .catch((err) => {
+        console.error(err)
+        enqueueSnackbar('Error occured while fetching dashbaord data!', {
+          variant: 'error',
+          anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'right',
+
+          },
+          autoHideDuration: 2000
+        })
+      }).finally(() => {
+        setLoadingSubjects(false)
+        setLoadingNotices(false)
+      })
+  }, []);
 
   return (
     <Card sx={sx}>
@@ -308,11 +185,14 @@ export const StudentDashboardPanel = (props) => {
                     <List>
 
                       <Grid container spacing={1}>
-                        {notices.map((notice, index) => (
+                        {loadingNotices && (
+                          <CircularProgress />
+                        )}
+                        {notices?.map((notice, index) => (
                           <Grid item xs={12} sm={4} md={4} key={index}>
                             <Alert sx={{ m: 1 }} key={index} severity={notice.type}>
                               <Typography variant="h6">{notice.title}</Typography>
-                              <Typography variant="caption" color="textSecondary">{`Created on: ${notice.createdDate}`}</Typography>
+                              <Typography variant="caption" color="textSecondary">{`Created on: ${new Date(notice.updated_at).toLocaleString()}`}</Typography>
                               <Typography variant="body1">{notice.description}</Typography>
                             </Alert>
                           </Grid>
@@ -326,17 +206,23 @@ export const StudentDashboardPanel = (props) => {
           </Box>
           <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>
-              Frequently Accessed Courses
+              Recently Added Subjects
             </Typography>
             <Paper>
 
               <Container>
                 <Grid sx={{ mt: 3 }} container spacing={3}>
-                  {subjects.splice(0, 6).map((subject, index) => (
+                  {loadingSubjects && (
+                    <CircularProgress />
+                  )}
+                  {!subjects.length && <>No subjects related to the student</>}
+
+                  {subjects.map((subject, index) => (
                     <Grid sx={{ height: '100%' }} item xs={12} sm={4} md={4} key={index}>
                       <Card sx={{ mb: 3 }}>
                         <CardContent>
-                          <Link href={`/student-panel/subjects/view/${subject.id}`} color="inherit">
+
+                          <Link component={NextLink} href={`/student-panel/subjects/view/${subject.id}`} color="inherit">
 
                             <Typography variant="h6" gutterBottom>
                               {subject.name}
@@ -346,7 +232,7 @@ export const StudentDashboardPanel = (props) => {
                             Code: {subject.code}
                           </Typography>
                           <Typography color="textSecondary" variant="subtitle2">
-                            {subject.course}
+                            {subject.course.name}
                           </Typography>
                         </CardContent>
                       </Card>
@@ -360,7 +246,7 @@ export const StudentDashboardPanel = (props) => {
             <Typography variant="h6" gutterBottom>
               Timetable
             </Typography>
-            <iframe style={{ width: '100%', height: '500px' }} src="https://calendar.google.com/calendar/embed?mode=WEEK&height=600&wkst=2&bgcolor=%23ffffff&ctz=Asia%2FColombo&showTz=0&showCalendars=0&showDate=1&showTabs=0&showPrint=0&showTitle=0&showNav=0&src=ODI2MDBkZmY4ZWFlMTg3MjdkNTNjNTA1MDIyODgwNTc2YjI0ODBhOWU5OTIyYmE1NTZjNjQzZDFkYTYzMmY1YkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23039BE5" frameborder="0" scrolling="no"></iframe>
+            <iframe style={{ width: '100%', height: '500px' }} src="https://calendar.google.com/calendar/embed?mode=WEEK&height=600&wkst=2&bgcolor=%23ffffff&ctz=Asia%2FColombo&showTz=0&showCalendars=0&showDate=1&showTabs=0&showPrint=0&showTitle=0&showNav=0&src=ODI2MDBkZmY4ZWFlMTg3MjdkNTNjNTA1MDIyODgwNTc2YjI0ODBhOWU5OTIyYmE1NTZjNjQzZDFkYTYzMmY1YkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23039BE5" frameBorder="0" scrolling="no"></iframe>
           </Grid> */}
 
         </Grid>

@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Head from 'next/head';
 import { Autocomplete, Box, Button, Card, CardContent, CardHeader, Container, FormControl, InputLabel, MenuItem, Select, Snackbar, Stack, SvgIcon, TextField, Typography } from '@mui/material';
-import { Layout as DashboardLayout } from 'src/layouts/admin-panel/dashboard/layout';
+import { Layout as DashboardLayout } from 'src/layouts/common-panel/layout';
 import { StyledBreadCrumbs } from 'src/components/breadcrumbs';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -14,6 +14,7 @@ export function insertAdmin(data) {
   return axios.post(`${BACKEND_URL}/api/admins`, {
     name: data?.name,
     email: data?.email,
+    user_name: data?.user_name,
     password: data?.password
   })
 }
@@ -164,13 +165,13 @@ const Page = () => {
                     >
                       <TextField
                         fullWidth
-                        type="username"
+                        type="user_name"
                         label="User Name"
-                        name="username"
+                        name="user_name"
                         
-                        error={!!(formik.touched.username && formik.errors.username)}
-                        helperText={formik.touched.username && formik.errors.username}
-                        value={formik.values.username}
+                        error={!!(formik.touched.user_name && formik.errors.user_name)}
+                        helperText={formik.touched.user_name && formik.errors.user_name}
+                        value={formik.values.user_name}
                         onChange={formik.handleChange}
                       />
                     </FormControl>

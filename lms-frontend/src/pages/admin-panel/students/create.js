@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Head from 'next/head';
 import { Autocomplete, Box, Button, Card, CardContent, CardHeader, Container, FormControl, InputLabel, MenuItem, Select, Snackbar, Stack, SvgIcon, TextField, Typography } from '@mui/material';
-import { Layout as DashboardLayout } from 'src/layouts/admin-panel/dashboard/layout';
+import { Layout as DashboardLayout } from 'src/layouts/common-panel/layout';
 import { StyledBreadCrumbs } from 'src/components/breadcrumbs';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -19,6 +19,7 @@ export function insertStudent(data) {
     first_name: data?.first_name,
     last_name: data?.last_name,
     email: data?.email,
+    user_name: data?.user_name,
     nic_number: data?.nic_number,
     dob: dayjs(data?.dob).format('YYYY-MM-DD'),
     country: data?.country,
@@ -359,10 +360,10 @@ const Page = () => {
                           fullWidth
                           type="text"
                           label="User Name"
-                          name="username"
-                          error={!!(formik.touched.username && formik.errors.username)}
-                          helperText={formik.touched.username && formik.errors.username}
-                          value={formik.values.username}
+                          name="user_name"
+                          error={!!(formik.touched.user_name && formik.errors.user_name)}
+                          helperText={formik.touched.user_name && formik.errors.user_name}
+                          value={formik.values.user_name}
                           onChange={formik.handleChange}
                         />
 

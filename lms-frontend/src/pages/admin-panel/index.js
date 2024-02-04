@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { subDays, subHours } from 'date-fns';
 import { Box, Container, Unstable_Grid2 as Grid } from '@mui/material';
-import { Layout as DashboardLayout } from 'src/layouts/admin-panel/dashboard/layout';
+import { Layout as DashboardLayout } from 'src/layouts/common-panel/layout';
 import { TotalAdmins } from 'src/sections/overview/total-admins';
 import { OverviewLatestOrders } from 'src/sections/overview/overview-latest-orders';
 import { OverviewLatestProducts } from 'src/sections/overview/overview-latest-products';
@@ -10,7 +10,7 @@ import { OverviewTasksProgress } from 'src/sections/overview/overview-tasks-prog
 import { TotalFaculties } from 'src/sections/overview/total-faculties';
 import { TotalDepartments } from 'src/sections/overview/total-departments';
 import { OverviewTraffic } from 'src/sections/overview/overview-traffic';
-import { TotalCourses } from 'src/sections/overview/total-students';
+import { TotalCourses } from 'src/sections/overview/total-courses';
 
 const now = new Date();
 

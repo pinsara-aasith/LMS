@@ -5,7 +5,7 @@ import CalendarIcon from '@heroicons/react/24/solid/CalendarIcon';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import { Box, Button, Card, Container, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, LinearProgress, Stack, SvgIcon, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, TextField, Typography } from '@mui/material';
 import { useSelection } from 'src/hooks/use-selection';
-import { Layout as DashboardLayout } from 'src/layouts/admin-panel/dashboard/layout';
+import { Layout as DashboardLayout } from 'src/layouts/common-panel/layout';
 import { BigSearch } from 'src/sections/big-search';
 import { applyPagination } from 'src/utils/apply-pagination';
 import NextLink from 'next/link';
@@ -182,7 +182,7 @@ const Page = () => {
             <iframe
 
               style={{ width: '100%', height: '600px' }}
-              src="https://calendar.google.com/calendar/embed?title=E-LMS%20Calendar&height=600&wkst=1&bgcolor=%23ffffff&ctz=Asia%2FColombo&src=ZjA4NGEzMzZmNjFkMzYyNTgxYTRhOTI2ZDQ1MGQwY2ZmMWVjZDVmYjE5ZDg2MTg2ZDNkYmY1ZTRjMmU4OThkYkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=OGE3MDk2YzBhZDE4YmVjODcyNTQxYTE3MmZmOTk2MTdjZGM2ODNhNGY1ZTk3YjVmZjk4MmUyY2U0ODRjZTEwNEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=NjZlN2JiNzQ0ZTE2NjhjZjExZTYyNGFjOWI0ZTdlNGY3YmJlZGE3ZmM2Y2Q4NWJhZTJhZGVjYTEwNjMyYzcxMkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=NWQzNzZjYWZmNmEwNDE1ZWZmM2JjYzNmYWVhZGZhMjI2ZDQ3YjY4ZWYxZWJiOGNhMjcyNWRjNTY0NDVhZDQzOUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZmFtaWx5MTA0NTkxODM5OTEyODE1NzcwNDhAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=ZW4ubGsjaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23D81B60&color=%23B39DDB&color=%23F09300&color=%23C0CA33&color=%2333B679&color=%23795548&color=%230B8043" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+              src="https://calendar.google.com/calendar/embed?title=E-LMS%20Calendar&height=600&wkst=1&bgcolor=%23ffffff&ctz=Asia%2FColombo&src=ZjA4NGEzMzZmNjFkMzYyNTgxYTRhOTI2ZDQ1MGQwY2ZmMWVjZDVmYjE5ZDg2MTg2ZDNkYmY1ZTRjMmU4OThkYkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=OGE3MDk2YzBhZDE4YmVjODcyNTQxYTE3MmZmOTk2MTdjZGM2ODNhNGY1ZTk3YjVmZjk4MmUyY2U0ODRjZTEwNEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=NjZlN2JiNzQ0ZTE2NjhjZjExZTYyNGFjOWI0ZTdlNGY3YmJlZGE3ZmM2Y2Q4NWJhZTJhZGVjYTEwNjMyYzcxMkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=NWQzNzZjYWZmNmEwNDE1ZWZmM2JjYzNmYWVhZGZhMjI2ZDQ3YjY4ZWYxZWJiOGNhMjcyNWRjNTY0NDVhZDQzOUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZmFtaWx5MTA0NTkxODM5OTEyODE1NzcwNDhAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=ZW4ubGsjaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23D81B60&color=%23B39DDB&color=%23F09300&color=%23C0CA33&color=%2333B679&color=%23795548&color=%230B8043" width="800" height="600" frameBorder="0" scrolling="no"></iframe>
 
           </Stack>
         </Container>

@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Head from 'next/head';
-import { Autocomplete, Box, Button, Card, CardContent, CardHeader, Container, FormControl, InputLabel, MenuItem, Select, Snackbar, Stack, SvgIcon, TextField, Typography } from '@mui/material';
-import { Layout as DashboardLayout } from 'src/layouts/admin-panel/dashboard/layout';
+import { Autocomplete, Box, Button, Card, CardContent, CardHeader, Container, FormControl, FormLabel, InputLabel, MenuItem, Select, Snackbar, Stack, SvgIcon, TextField, Typography } from '@mui/material';
+import { Layout as DashboardLayout } from 'src/layouts/common-panel/layout';
 import { StyledBreadCrumbs } from 'src/components/breadcrumbs';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -13,22 +13,29 @@ import { getAllDepartments } from '../departments';
 import { getAllFaculties } from '../faculties';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
+import { DragDropFileUpload } from 'src/components/dragAndDropFileUpload';
 
-export function insertLecturer(data) {
-  return axios.post(`${BACKEND_URL}/api/lecturers`, {
-    first_name: data?.first_name,
-    last_name: data?.last_name,
-    email: data?.email,
-    nic_number: data?.nic_number,
-    dob: dayjs(data?.dob).format('YYYY-MM-DD'),
-    country: data?.country,
-    contact_no: data?.contact_no,
-    city: data?.city,
-    admission_date: dayjs(Date(data?.admission_date)).format('YYYY-MM-DD'),
-    batch: Number(data?.batch),
-    faculty_id: data?.faculty_id,
-    department_id: data?.department_id,
-  })
+export function insertLecturer(data, file) {
+  const formData = new FormData();
+  formData.append('first_name', data?.first_name);
+  formData.append('last_name', data?.last_name);
+  formData.append('email', data?.email);
+  formData.append('nic_number', data?.nic_number);
+  formData.append('dob', data?.dob);
+  formData.append('user_name', data?.user_name);
+  formData.append('country', data?.country);
+  formData.append('contact_no', data?.contact_no);
+  formData.append('city', data?.city);
+  formData.append('admission_date', data?.admission_date);
+  formData.append('batch', data?.batch);
+  formData.append('faculty_id', data?.faculty_id);
+  formData.append('department_id', data?.department_id);
+
+  if (file)
+    formData.append('file', file);
+
+  return axios.post(`${BACKEND_URL}/api/lecturers`, formData)
+  
 }
 
 const Page = () => {
@@ -37,6 +44,8 @@ const Page = () => {
 
   const [faculties, setFaculties] = useState([]);
   const [departments, setDepartments] = useState([]);
+
+  const [file, setFile] = useState();
 
   useEffect(() => {
     getAllFaculties().then(d => setFaculties(d));
@@ -74,7 +83,7 @@ const Page = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        await insertLecturer(formik.values)
+        await insertLecturer(formik.values, file)
 
         enqueueSnackbar('Lecturer was added successfully!', {
           variant: 'success',
@@ -317,10 +326,10 @@ const Page = () => {
                           fullWidth
                           type="text"
                           label="User Name"
-                          name="username"
-                          error={!!(formik.touched.username && formik.errors.username)}
-                          helperText={formik.touched.username && formik.errors.username}
-                          value={formik.values.username}
+                          name="user_name"
+                          error={!!(formik.touched.user_name && formik.errors.user_name)}
+                          helperText={formik.touched.user_name && formik.errors.user_name}
+                          value={formik.values.user_name}
                           onChange={formik.handleChange}
                         />
 
@@ -395,24 +404,11 @@ const Page = () => {
                     direction="row"
                     justifyContent="space-between"
                   >
-                    <FormControl
-                      variant="filled"
-                      fullWidth
-
-                    >
-                      <TextField
-                        multiline
-                        rows={3}
-                        fullWidth
-                        type="text"
-                        label="Time table link (Google Calendar)"
-                        name="calendar_link"
-                        error={!!(formik.touched.calendar_link && formik.errors.calendar_link)}
-                        helperText={formik.touched.calendar_link && formik.errors.calendar_link}
-                        value={formik.values.calendar_link}
-                        onChange={formik.handleChange}
-                      />
+                   <FormControl>
+                      <FormLabel sx={{mb: '12px'}}>Upload Timetable image (Screenshot of google calendar)</FormLabel>
+                      <DragDropFileUpload file={file} onFileChange={(file) => setFile(file)} />
                     </FormControl>
+
                   </Stack>
                   <Stack
                     direction={'row'}

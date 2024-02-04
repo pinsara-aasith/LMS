@@ -12,22 +12,30 @@ const HANDLERS = {
 const initialState = {
   isAuthenticated: false,
   isLoading: true,
-  user: null
+  authData: null
 };
 
 const handlers = {
   [HANDLERS.INITIALIZE]: (state, action) => {
-    const user = action.payload;
+    const authData = action.payload;
+
+    if (authData) {
+      axios.defaults.headers.common = {
+        'Authorization': `Bearer ${authData.token}`,
+        'Accept': 'application/json'
+      };
+
+    }
 
     return {
       ...state,
       ...(
         // if payload (user) is provided, then is authenticated
-        user
+        authData
           ? ({
             isAuthenticated: true,
             isLoading: false,
-            user
+            authData
           })
           : ({
             isLoading: false
@@ -36,19 +44,26 @@ const handlers = {
     };
   },
   [HANDLERS.SIGN_IN]: (state, action) => {
-    const user = action.payload;
+    const authData = action.payload;
+
+    window.sessionStorage.setItem('authData', JSON.stringify(authData));
+
+    axios.defaults.headers.common = {
+      'Authorization': `Bearer ${authData.token}`,
+      'Accept': 'application/json'
+    };
 
     return {
       ...state,
       isAuthenticated: true,
-      user
+      authData
     };
   },
   [HANDLERS.SIGN_OUT]: (state) => {
     return {
       ...state,
       isAuthenticated: false,
-      user: null
+      authData: null
     };
   }
 };
@@ -67,7 +82,6 @@ export const AuthProvider = (props) => {
   const initialized = useRef(false);
 
   const initialize = async () => {
-    // Prevent from calling twice in development mode with React.StrictMode enabled
     if (initialized.current) {
       return;
     }
@@ -77,27 +91,25 @@ export const AuthProvider = (props) => {
     let isAuthenticated = false;
 
     try {
-      isAuthenticated = window.sessionStorage.getItem('authenticated') === 'true';
+      isAuthenticated = !!window.sessionStorage.getItem('authData');
+
+      if (isAuthenticated) {
+        const authData = JSON.parse(window.sessionStorage.getItem('authData'));
+        dispatch({
+          type: HANDLERS.INITIALIZE,
+          payload: authData
+        });
+      } else {
+        dispatch({
+          type: HANDLERS.INITIALIZE
+        });
+      }
     } catch (err) {
-      console.error(err);
-    }
-
-    if (isAuthenticated) {
-      const user = {
-        id: '5e86809283e28b96d2d38537',
-        avatar: '/assets/avatars/avatar-anika-visser.png',
-        name: 'Anika Visser',
-        email: 'anika.vissergmail.com'
-      };
-
-      dispatch({
-        type: HANDLERS.INITIALIZE,
-        payload: user
-      });
-    } else {
+      window.sessionStorage.removeItem('authData')
       dispatch({
         type: HANDLERS.INITIALIZE
       });
+      console.error(err);
     }
   };
 
@@ -116,44 +128,36 @@ export const AuthProvider = (props) => {
       console.error(err);
     }
 
-    const user = {
-      id: '5e86809283e28b96d2d38537',
-      avatar: '/assets/avatars/avatar-anika-visser.png',
-      name: 'Anika Visser',
-      email: 'anika.vissergmail.com'
-    };
+    // const user = {
+    //   id: '5e86809283e28b96d2d38537',
+    //   avatar: '/assets/avatars/avatar-anika-visser.png',
+    //   name: 'Anika Visser',
+    //   email: 'anika.vissergmail.com'
+    // };
 
-    dispatch({
-      type: HANDLERS.SIGN_IN,
-      payload: user
-    });
+    // dispatch({
+    //   type: HANDLERS.SIGN_IN,
+    //   payload: user
+    // });
   };
 
   const signIn = async (email, password) => {
 
-    console.log(email, password)
     try {
-      let { data } = await axios.post(`${BACKEND_URL}/api/auth/users/login`, { email, password })
-      if (!data.success) {
+      let { data, status } = await axios.post(`${BACKEND_URL}/login`, { email, password })
+      if (data.status != 'success') {
         throw new Error("Please check the password again!")
       }
-      window.sessionStorage.setItem('authenticated', 'true')
-
-      const user = {
-        avatar: '/assets/avatars/avatar-anika-visser.png',
-        name: data.Name,
-        email: data.Email,
-      };
-
 
       dispatch({
         type: HANDLERS.SIGN_IN,
-        payload: user
+        payload: data.data
       });
 
       return true;
     } catch (err) {
       console.error(err);
+      throw err;
     }
   };
 

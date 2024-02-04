@@ -10,6 +10,7 @@ import {
   CardActions,
   CardContent,
   CardHeader,
+  CircularProgress,
   Divider,
   Grid,
   Paper,
@@ -19,10 +20,12 @@ import {
 import { alpha, useTheme } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { BACKEND_URL } from 'src/apis/consts';
+import { BACKEND_URL, truncate } from 'src/apis/consts';
 import { Stack } from '@mui/system';
 
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
+import { getAllNotices } from 'src/pages/common-pages/noticeboard';
+import { getAllFeedbacks } from 'src/pages/admin-panel/feedbacks';
 
 const useChartOptions = () => {
   const theme = useTheme();
@@ -109,70 +112,55 @@ const useChartOptions = () => {
 
 const Notice = ({ title, description, severity }) => {
   return (
-    <Alert sx={{border: '0.5px solid black'}} severity={severity}>
+    <Alert sx={{ border: '0.5px solid black' }} severity={severity}>
       <AlertTitle>{title}</AlertTitle>
-      {description}
+      {truncate(description, 150)}
     </Alert>
   );
 };
 
 
 const NoticeList = () => {
-  const imgLink = 'your_image_link_here'; // Replace with your actual image link
-  const notices = [
-    {
-      "title": "Important Course Update",
-      "description": "There has been a change in the course schedule. Please check the updated timetable for the latest information on class timings and assignments.",
-    },
-    {
-      "title": "Upcoming Webinar",
-      "description": "Don't miss the upcoming webinar on 'Latest Trends in Technology.' Join us to gain valuable insights and interact with industry experts.",
-    },
-    {
-      "title": "New Learning Resources Available",
-      "description": "We have added new learning materials to enhance your understanding of the subject. Visit the Resources section to access the latest study materials.",
-    },
-    {
-      "title": "Reminder: Assignment Submission",
-      "description": "A friendly reminder to submit your assignments by the deadline. Late submissions will not be accepted, so make sure to complete your work on time.",
-    },
-    {
-      "title": "System Maintenance Notification",
-      "description": "The E-LMS will undergo scheduled maintenance on Saturday from 10:00 PM to 12:00 AM. During this time, the platform may be temporarily unavailable. We apologize for any inconvenience.",
-    },
-    {
-      "title": "Guest Lecture by Industry Expert",
-      "description": "We are excited to announce a guest lecture by a renowned industry expert. Join us for this insightful session on 'Career Opportunities in the Tech Industry.'",
-    },
-    {
-      "title": "Feedback Survey",
-      "description": "Your feedback is important to us. Please take a moment to complete the feedback survey and let us know about your experience with the E-LMS. Your input helps us improve!",
-    },
-    {
-      "title": "Course Registration Deadline",
-      "description": "The deadline for course registration is approaching. Ensure you have registered for the upcoming semester courses to avoid any disruptions to your learning journey.",
-    },
-    {
-      "title": "Holiday Break Notice",
-      "description": "Wishing you a joyful holiday break! Please note that there will be no classes during the upcoming holidays. Enjoy your break and come back refreshed for the next session.",
-    },
-    {
-      "title": "Congratulations on Course Completion",
-      "description": "Congratulations! You have successfully completed the 'Introduction to Programming' course. We applaud your dedication and hard work. Best wishes for your future courses!",
-    }
-  ];
+  const [notices, setNotices] = useState([]);
+  const [loadingNotices, setLoadingNotices] = useState(true);
+
+
+  useEffect(() => {
+    getAllNotices()
+      .then((notices) => {
+        setNotices(notices)
+      })
+      .catch((err) => {
+        enqueueSnackbar('Error occured while fetching dashbaord data!', {
+          variant: 'error',
+          anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'right',
+
+          },
+          autoHideDuration: 2000
+        })
+      }).finally(() => {
+        setLoadingNotices(false)
+      })
+  }, []);
 
   return (
     <div style={{ padding: 14 }} className="App">
-      <Typography sx={{textAlign: 'center'}} variant="h6" gutterBottom>
+      <Typography sx={{ textAlign: 'center' }} variant="h6" gutterBottom>
         Noticeboard
       </Typography>
+      {loadingNotices && (
+        <CircularProgress />
+      )}
       {notices.slice(0, 3).map((notice, index) => (
-        <div style={{ padding: '10px' }}>
+        <div
+          key={index}
+          style={{ padding: '10px' }}>
           <Notice
             key={index}
             title={notice.title}
-            severity={index % 2 == 1 ? 'info': 'success'}
+            severity={'success'}
             description={notice.description}
           />
         </div>
@@ -185,33 +173,14 @@ const NoticeList = () => {
 
 export const AdminDashboardPanel = (props) => {
   const { sx } = props;
-  const chartOptions = useChartOptions();
 
-  const [year, setYear] = useState(2023)
-  const [sales, setSales] = useState([0, 0, 0, 0])
+  const [feedBackData, setFeedbackData] = useState([
+    { name: 'harassment', value: 0 },
+    { name: 'administration', value: 0 },
+    { name: 'academic', value: 0 },
+    { name: 'financial', value: 0 },
+  ]);
 
-  async function refresh() {
-    // const {data} = await axios.get(`${BACKEND_URL}/api/reports/quartelySales/${year}`)
-    // let report = data?.report?.[0]
-    // console.log(report, 'report')
-    // if(!!report) {
-    //   const _sales = [0,0,0,0]
-
-    //   report.forEach(r => {
-    //     _sales[r.Quarter - 1] += r.Revenue
-    //   })
-
-    //   setSales(_sales)
-    //   console.log(_sales, "sales")
-    // }
-  }
-
-  const data = [
-    { name: 'Harassment', value: 300 },
-    { name: 'Administration', value: 200 },
-    { name: 'Academic', value: 200 },
-    { name: 'Financial', value: 40 },
-  ];
   const COLORS = ['#00C49F', '#FFBB28', '#0088FE', '#FF8042', '#FFF042'];
 
   const RADIAN = Math.PI / 180;
@@ -219,17 +188,42 @@ export const AdminDashboardPanel = (props) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.03;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
     return (
       <text style={{ fontWeight: 'bold', fontSize: '10px' }} x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-        {data[index].name} ({data[index].value})
+        {feedBackData[index]?.name} ({feedBackData[index]?.value})
       </text>
     );
   };
 
   useEffect(() => {
-    refresh();
-  }, [])
+    getAllFeedbacks()
+      .then((feedbacks) => {
+        feedBackData?.forEach(fD => fD.value = 0)
+
+        feedbacks?.forEach(f => {
+          let matchingFeedbackType = feedBackData?.find(fD => f?.type == fD?.name);
+          if (!matchingFeedbackType) return;
+          matchingFeedbackType.value += 1
+
+        })
+
+        console.log(feedbacks)
+        console.log(feedBackData)
+        setFeedbackData([...feedBackData]);
+
+      })
+      .catch((err) => {
+        enqueueSnackbar('Error occured while fetching dashbaord data!', {
+          variant: 'error',
+          anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'right',
+
+          },
+          autoHideDuration: 2000
+        })
+      })
+  }, []);
 
   return (
     <Card sx={sx}>
@@ -239,7 +233,7 @@ export const AdminDashboardPanel = (props) => {
             <NoticeList />
           </Grid>
           <Grid item xs={6}>
-            <Typography variant="h6" sx={{textAlign: 'center'}} gutterBottom>
+            <Typography variant="h6" sx={{ textAlign: 'center' }} gutterBottom>
               Feedbacks
             </Typography>
             <Paper>
@@ -249,7 +243,7 @@ export const AdminDashboardPanel = (props) => {
                     <Pie
                       cx="50%"
                       cy="50%"
-                      data={data}
+                      data={feedBackData}
                       label={renderCustomizedLabel}
                       labelLine={false}
                       fill="#8884d8"
@@ -257,7 +251,7 @@ export const AdminDashboardPanel = (props) => {
                       innerRadius={70}
                       outerRadius={170}
                     >
-                      {data.map((entry, index) => (
+                      {feedBackData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
@@ -265,12 +259,6 @@ export const AdminDashboardPanel = (props) => {
                 </ResponsiveContainer>
               </div>
             </Paper>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="h6" gutterBottom>
-              Timetable
-            </Typography>
-            <iframe style={{ width: '100%', height: '500px' }} src="https://calendar.google.com/calendar/embed?mode=WEEK&height=600&wkst=2&bgcolor=%23ffffff&ctz=Asia%2FColombo&showTz=0&showCalendars=0&showDate=1&showTabs=0&showPrint=0&showTitle=0&showNav=0&src=ODI2MDBkZmY4ZWFlMTg3MjdkNTNjNTA1MDIyODgwNTc2YjI0ODBhOWU5OTIyYmE1NTZjNjQzZDFkYTYzMmY1YkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23039BE5" frameborder="0" scrolling="no"></iframe>
           </Grid>
         </Grid>
 

@@ -11,7 +11,7 @@ class NoticeController extends Controller
 {
     public function index()
     {
-        $notices = Notice::all();
+        $notices = Notice::orderBy('id', 'DESC')->get();
         return response()->json(['data' => $notices]);
     }
 

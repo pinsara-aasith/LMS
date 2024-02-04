@@ -1,9 +1,10 @@
 import Head from 'next/head';
 import { Box, Container, Unstable_Grid2 as Grid, Paper, Typography } from '@mui/material';
-import { Layout as DashboardLayout } from 'src/layouts/student-panel/dashboard/layout';
+import { Layout as DashboardLayout } from 'src/layouts/common-panel/layout';
 import { StudentDashboardPanel } from 'src/sections/overview/student-dashboard-panel';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useAuthContext } from 'src/contexts/auth-context';
 
 const now = new Date();
 
@@ -12,6 +13,9 @@ const Page = () => {
   // useEffect(() => {
   //   router.push('/student-panel/assignments')
   // }, [])
+
+  const { authData } = useAuthContext();
+
 
   return (
     <>
@@ -39,7 +43,7 @@ const Page = () => {
             >
               <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
                 <Typography variant="h5" gutterBottom>
-                  Welcome Arshad Ameen!
+                  Welcome {authData?.user.name}!
                 </Typography>
 
                 <Box mt={2}>

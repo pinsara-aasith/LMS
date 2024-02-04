@@ -5,4 +5,6 @@ function truncate(source, size) {
     return source.length > size ? source.slice(0, size - 1) + "…" : source;
 }
 
+
+
 export { BACKEND_URL, BACKEND_URL2, truncate }

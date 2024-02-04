@@ -9,7 +9,7 @@ class Lecturer extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['first_name', 'last_name', 'nic_number', 'dob', 'contact_no','country', 'city', 'admission_date','email', 'batch', 'faculty_id', 'department_id'];
+    protected $fillable = ['first_name', 'last_name', 'nic_number', 'dob', 'contact_no','country', 'city', 'admission_date','email', 'batch', 'faculty_id', 'department_id','time_table_link'];
 
     public function faculty()
     {
@@ -25,4 +25,10 @@ class Lecturer extends Model
     {
         return $this->hasMany(Assignment::class);
     }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+
 }

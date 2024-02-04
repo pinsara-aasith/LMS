@@ -22,6 +22,11 @@ class CourseController extends Controller
 
     public function store(Request $request)
     {
+        $filePath = null;
+        if ($request->hasFile('file')) {
+            $filePath = $request->file('file')->store('timetable_links');
+        }
+
         $request->validate([
             'name' => 'required|string',
             'code' => 'required|string',
@@ -32,6 +37,7 @@ class CourseController extends Controller
             'name' => $request->input('name'),
             'code' => $request->input('code'),
             'department_id' => $request->input('department_id'),
+            'time_table_link' => $filePath
         ]);
 
         return response()->json(['message' => 'Ok', 'data' => $course], 200);
@@ -44,9 +50,15 @@ class CourseController extends Controller
             'code' => 'required|string',
         ]);
 
+        $filePath = null;
+        if ($request->hasFile('file')) {
+            $filePath = $request->file('file')->store('timetable_links');
+        }
+
         $course->update([
             'name' => $request->input('name'),
             'code' => $request->input('code'),
+            'time_table_link' => $filePath
         ]);
 
         return response()->json(['message' => 'Ok', 'data' => $course->with('department')]);

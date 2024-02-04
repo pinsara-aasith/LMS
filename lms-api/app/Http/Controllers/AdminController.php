@@ -11,7 +11,7 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $admins = Admin::with('user')->get();
+        $admins = Admin::orderBy('id', 'DESC')->with('user')->get();
         return response()->json(['data' => $admins]);
     }
 
@@ -24,6 +24,7 @@ class AdminController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
+            'user_name' => 'required|string',
             'email' => 'required|email|unique:users', // Assuming you have an 'email' field in your users table
             'password' => 'required|string|min:6',
         ]);
@@ -33,6 +34,7 @@ class AdminController extends Controller
         $user = $admin->user()->create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
+            'user_name' => $request->input('user_name'),
             'password' => Hash::make($request->password),
             'role' => 'admin',
         ]);

@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { Autocomplete, Backdrop, Box, Button, Card, CardContent, CardHeader, CircularProgress, Container, FormControl, InputLabel, LinearProgress, MenuItem, Select, Snackbar, Stack, SvgIcon, TextField, Typography } from '@mui/material';
-import { Layout as DashboardLayout } from 'src/layouts/admin-panel/dashboard/layout';
+import { Autocomplete, Backdrop, Box, Button, Card, CardContent, CardHeader, CircularProgress, Container, FormControl, FormLabel, InputLabel, LinearProgress, MenuItem, Select, Snackbar, Stack, SvgIcon, TextField, Typography } from '@mui/material';
+import { Layout as DashboardLayout } from 'src/layouts/common-panel/layout';
 import { StyledBreadCrumbs } from 'src/components/breadcrumbs';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -10,21 +10,35 @@ import { useSnackbar } from 'notistack';
 import { LoadingButton } from '@mui/lab';
 import axios from 'axios';
 import { BACKEND_URL } from 'src/apis/consts';
+import { DragDropFileUpload } from 'src/components/dragAndDropFileUpload';
+import { getAllFaculties } from '../../faculties';
+import { getAllDepartments } from '../../departments';
+import { DatePicker } from '@mui/x-date-pickers';
 
-export function updateStudent(id, data) {
-  return axios.put(`${BACKEND_URL}/api/students/${id}`, {
+export function updateLecturer(id, data) {
+  return axios.put(`${BACKEND_URL}/api/lecturers/${id}`, {
     name: data?.name,
     description: data?.description
   })
 }
-
+ 
 
 const Page = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const studentId = router.query.id
+  const lecturerId = router.query.id
   const [loading, setLoading] = useState(true);
+
+  const [faculties, setFaculties] = useState([]);
+  const [departments, setDepartments] = useState([]);
+
+  const [file, setFile] = useState();
+
+  useEffect(() => {
+    getAllFaculties().then(d => setFaculties(d));
+    getAllDepartments().then(d => setDepartments(d));
+  }, [])
 
 
   const formik = useFormik({
@@ -43,9 +57,9 @@ const Page = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        updateStudent(studentId, values);
+        updateLecturer(lecturerId, values);
 
-        enqueueSnackbar('Student was edited successfully!', {
+        enqueueSnackbar('Lecturer was edited successfully!', {
           variant: 'success',
           anchorOrigin: {
             vertical: 'bottom',
@@ -55,7 +69,7 @@ const Page = () => {
           autoHideDuration: 2000
         })
 
-        setTimeout(() => router.push('/admin-panel/students'), 400)
+        setTimeout(() => router.push('/admin-panel/lecturers'), 400)
 
       } catch (err) {
         enqueueSnackbar('Error occured!', {
@@ -77,7 +91,7 @@ const Page = () => {
   useEffect(() => {
     setLoading(true);
 
-    axios.get(`${BACKEND_URL}/api/students/${studentId}`).then((res) => {
+    axios.get(`${BACKEND_URL}/api/lecturers/${lecturerId}`).then((res) => {
       formik.setValues({
         name: res.data?.data['name'] ?? '',
         description: res.data?.data['description'] ?? '',
@@ -87,13 +101,13 @@ const Page = () => {
     })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [studentId])
+  }, [lecturerId])
 
   return (
     <>
       <Head>
         <title>
-          Students | E-LMS
+          Lecturers | E-LMS
         </title>
       </Head>
       <Box
@@ -112,17 +126,17 @@ const Page = () => {
             >
               <Stack spacing={1}>
                 <Typography variant="h5">
-                  Students
+                  Lecturers
                 </Typography>
 
                 <StyledBreadCrumbs sequence={[
                   {
-                    text: 'Students',
-                    linkUrl: '/admin-panel/students',
+                    text: 'Lecturers',
+                    linkUrl: '/admin-panel/lecturers',
                   },
                   {
                     text: 'Edit',
-                    linkUrl: '/admin-panel/students/edit/',
+                    linkUrl: '/admin-panel/lecturers/edit/',
                     active: true
                   },
                 ]} />
@@ -133,10 +147,11 @@ const Page = () => {
             {loading && <LinearProgress />}
 
             <Card sx={{ overflow: 'visible' }}>
-              <CardHeader title="Edit Student" />
+              <CardHeader title="Edit Lecturer" />
 
               <CardContent>
-                <form onSubmit={formik.handleSubmit}>
+               
+              <form onSubmit={formik.handleSubmit}>
                   <Stack
                     direction="column"
                     justifyContent="space-between"
@@ -148,46 +163,257 @@ const Page = () => {
                       fullWidth
 
                     >
-                      <TextField
-                        fullWidth
-                        type="text"
-                        label="Name"
-                        name="name"
-                        error={!!(formik.touched.name && formik.errors.name)}
-                        helperText={formik.touched.name && formik.errors.name}
-                        value={formik.values.name}
-                        onChange={formik.handleChange}
-                      />
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        spacing={5}
+                        sx={{ mb: 3 }}
+                      >
+                        <TextField
+                          fullWidth
+                          type="text"
+                          label="First Name"
+                          name="first_name"
+                          error={!!(formik.touched.first_name && formik.errors.first_name)}
+                          helperText={formik.touched.first_name && formik.errors.first_name}
+                          value={formik.values.first_name}
+                          onChange={formik.handleChange}
+                        />
+
+                        <TextField
+                          fullWidth
+                          type="text"
+                          label="Last Name"
+                          name="last_name"
+                          error={!!(formik.touched.last_name && formik.errors.last_name)}
+                          helperText={formik.touched.last_name && formik.errors.last_name}
+                          value={formik.values.last_name}
+                          onChange={formik.handleChange}
+                        />
+                      </Stack>
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        spacing={5}
+                        sx={{ mb: 3 }}
+                      >
+                        <FormControl
+                          variant="filled"
+                          fullWidth
+                        >
+
+                          <TextField
+                            fullWidth
+                            label="Select Faculty"
+                            name="faculty_id"
+                            required
+                            select
+                            SelectProps={{ native: true }}
+                            error={!!(formik.touched.faculty_id && formik.errors.faculty_id)}
+                            helperText={formik.touched.faculty_id && formik.errors.faculty_id}
+                            value={formik.values.faculty_id}
+                            onChange={formik.handleChange}
+                          >
+                            <option
+                              key={''}
+                              value={null}
+                            >
+                            </option>
+                            {faculties.map((f) => (
+                              <option
+                                key={f.id}
+                                value={f.id}
+                              >
+                                {f.name}
+                              </option>
+                            ))}
+                          </TextField>
+                        </FormControl>
+
+                        <FormControl
+                          variant="filled"
+                          fullWidth
+                        >
+
+                          <TextField
+                            fullWidth
+                            label="Select Department"
+                            name="department_id"
+                            required
+                            select
+                            SelectProps={{ native: true }}
+                            error={!!(formik.touched.department_id && formik.errors.department_id)}
+                            helperText={formik.touched.department_id && formik.errors.department_id}
+                            value={formik.values.department_id}
+                            onChange={formik.handleChange}
+                          >
+                            <option
+                              key={''}
+                              value={null}
+                            >
+                            </option>
+                            {departments.map((d) => (
+                              <option
+                                key={d.id}
+                                value={d.id}
+                              >
+                                {d.name}
+                              </option>
+                            ))}
+                          </TextField>
+                        </FormControl>
+
+                      </Stack>
+
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        spacing={5}
+                        sx={{ mb: 3 }}
+                      >
+
+                        <TextField
+                          fullWidth
+                          type="text"
+                          label="Email"
+                          name="email"
+                          error={!!(formik.touched.email && formik.errors.email)}
+                          helperText={formik.touched.email && formik.errors.email}
+                          value={formik.values.email}
+                          onChange={formik.handleChange}
+                        />
+
+                        <TextField
+                          fullWidth
+                          type="text"
+                          label="NIC"
+                          name="nic_number"
+                          error={!!(formik.touched.nic_number && formik.errors.nic_number)}
+                          helperText={formik.touched.nic_number && formik.errors.nic_number}
+                          value={formik.values.nic_number}
+                          onChange={formik.handleChange}
+                        />
+
+                        <TextField
+                          fullWidth
+                          type="text"
+                          label="Contact No"
+                          name="contact_no"
+                          error={!!(formik.touched.contact_no && formik.errors.contact_no)}
+                          helperText={formik.touched.contact_no && formik.errors.contact_no}
+                          value={formik.values.contact_no}
+                          onChange={formik.handleChange}
+                        />
+
+                      </Stack>
+
+
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        spacing={5}
+                        sx={{ mb: 3 }}
+                      >
+
+                        <TextField
+                          fullWidth
+                          type="text"
+                          label="User Name"
+                          name="user_name"
+                          error={!!(formik.touched.user_name && formik.errors.user_name)}
+                          helperText={formik.touched.user_name && formik.errors.user_name}
+                          value={formik.values.user_name}
+                          onChange={formik.handleChange}
+                        />
+
+                        <TextField
+                          fullWidth
+                          type="password"
+                          label="Password"
+                          name="password"
+                          error={!!(formik.touched.password && formik.errors.password)}
+                          helperText={formik.touched.password && formik.errors.password}
+                          value={formik.values.password}
+                          onChange={formik.handleChange}
+                        />
+
+                      </Stack>
+
+
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        spacing={5}
+                        sx={{ mb: 3 }}
+                      >
+                        <DatePicker
+                          value={formik.values.dob}
+                          label="Date of birth"
+                          name="dob"
+                          onChange={value => formik.setFieldValue("dob", value)}
+                          renderInput={(params) => <TextField
+                            name="dob"
+                            fullWidth
+                            {...params}
+                          />}
+                        />
+
+                      </Stack>
+
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        spacing={5}
+                        sx={{ mb: 3 }}
+                      >
+                        <TextField
+                          fullWidth
+                          type="text"
+                          label="Country"
+                          name="country"
+                          error={!!(formik.touched.country && formik.errors.country)}
+                          helperText={formik.touched.country && formik.errors.country}
+                          value={formik.values.country}
+                          onChange={formik.handleChange}
+                        />
+
+                        <TextField
+                          fullWidth
+                          type="text"
+                          label="City"
+                          name="city"
+                          error={!!(formik.touched.city && formik.errors.city)}
+                          helperText={formik.touched.city && formik.errors.city}
+                          value={formik.values.city}
+                          onChange={formik.handleChange}
+                        />
+                      </Stack>
+
                     </FormControl>
-                    <FormControl
-                      variant="filled"
-                      fullWidth
-                    >
-                      <TextField
-                        multiline
-                        rows={5}
-                        fullWidth
-                        type="text"
-                        label="Description"
-                        name="description"
-                        error={!!(formik.touched.description && formik.errors.description)}
-                        helperText={formik.touched.description && formik.errors.description}
-                        value={formik.values.description}
-                        onChange={formik.handleChange}
-                      />
+
+                  </Stack>
+
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                  >
+                   <FormControl>
+                      <FormLabel sx={{mb: '12px'}}>Upload Timetable image (Screenshot of google calendar)</FormLabel>
+                      <DragDropFileUpload file={file} onFileChange={(file) => setFile(file)} />
                     </FormControl>
+
                   </Stack>
                   <Stack
                     direction={'row'}
                     justifyContent={'flex-end'}
                   >
-                    <LoadingButton
+                    <Button
                       variant="contained"
                       color="primary"
                       type="submit"
                     >
                       Submit
-                    </LoadingButton>
+                    </Button>
                   </Stack>
 
                 </form>

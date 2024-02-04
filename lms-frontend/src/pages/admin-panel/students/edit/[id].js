@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { Autocomplete, Backdrop, Box, Button, Card, CardContent, CardHeader, CircularProgress, Container, FormControl, InputLabel, LinearProgress, MenuItem, Select, Snackbar, Stack, SvgIcon, TextField, Typography } from '@mui/material';
-import { Layout as DashboardLayout } from 'src/layouts/admin-panel/dashboard/layout';
+import { Layout as DashboardLayout } from 'src/layouts/common-panel/layout';
 import { StyledBreadCrumbs } from 'src/components/breadcrumbs';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -10,6 +10,9 @@ import { useSnackbar } from 'notistack';
 import { LoadingButton } from '@mui/lab';
 import axios from 'axios';
 import { BACKEND_URL } from 'src/apis/consts';
+import { DatePicker } from '@mui/x-date-pickers';
+import { getAllFaculties } from '../../faculties';
+import { getAllDepartments } from '../../departments';
 
 export function updateStudent(id, data) {
   return axios.put(`${BACKEND_URL}/api/students/${id}`, {
@@ -25,6 +28,14 @@ const Page = () => {
 
   const studentId = router.query.id
   const [loading, setLoading] = useState(true);
+
+  const [faculties, setFaculties] = useState([]);
+  const [departments, setDepartments] = useState([]);
+
+  useEffect(() => {
+    getAllFaculties().then(d => setFaculties(d));
+    getAllDepartments().then(d => setDepartments(d));
+  }, [])
 
 
   const formik = useFormik({
@@ -136,7 +147,7 @@ const Page = () => {
               <CardHeader title="Edit Student" />
 
               <CardContent>
-                <form onSubmit={formik.handleSubmit}>
+              <form onSubmit={formik.handleSubmit}>
                   <Stack
                     direction="column"
                     justifyContent="space-between"
@@ -148,31 +159,308 @@ const Page = () => {
                       fullWidth
 
                     >
-                      <TextField
-                        fullWidth
-                        type="text"
-                        label="Name"
-                        name="name"
-                        error={!!(formik.touched.name && formik.errors.name)}
-                        helperText={formik.touched.name && formik.errors.name}
-                        value={formik.values.name}
-                        onChange={formik.handleChange}
-                      />
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        spacing={5}
+                        sx={{ mb: 3 }}
+                      >
+                        <TextField
+                          fullWidth
+                          type="text"
+                          label="First Name"
+                          name="first_name"
+                          error={!!(formik.touched.first_name && formik.errors.first_name)}
+                          helperText={formik.touched.first_name && formik.errors.first_name}
+                          value={formik.values.first_name}
+                          onChange={formik.handleChange}
+                        />
+
+                        <TextField
+                          fullWidth
+                          type="text"
+                          label="Last Name"
+                          name="last_name"
+                          error={!!(formik.touched.last_name && formik.errors.last_name)}
+                          helperText={formik.touched.last_name && formik.errors.last_name}
+                          value={formik.values.last_name}
+                          onChange={formik.handleChange}
+                        />
+                      </Stack>
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        spacing={5}
+                        sx={{ mb: 3 }}
+                      >
+                        <FormControl
+                          variant="filled"
+                          fullWidth
+                        >
+
+                          <TextField
+                            fullWidth
+                            label="Select Faculty"
+                            name="faculty_id"
+                            required
+                            select
+                            SelectProps={{ native: true }}
+                            error={!!(formik.touched.faculty_id && formik.errors.faculty_id)}
+                            helperText={formik.touched.faculty_id && formik.errors.faculty_id}
+                            value={formik.values.faculty_id}
+                            onChange={formik.handleChange}
+                          >
+                            <option
+                              key={''}
+                              value={null}
+                            >
+                            </option>
+                            {faculties.map((f) => (
+                              <option
+                                key={f.id}
+                                value={f.id}
+                              >
+                                {f.name}
+                              </option>
+                            ))}
+                          </TextField>
+                        </FormControl>
+
+                        <FormControl
+                          variant="filled"
+                          fullWidth
+                        >
+
+                          <TextField
+                            fullWidth
+                            label="Select Department"
+                            name="department_id"
+                            required
+                            select
+                            SelectProps={{ native: true }}
+                            error={!!(formik.touched.department_id && formik.errors.department_id)}
+                            helperText={formik.touched.department_id && formik.errors.department_id}
+                            value={formik.values.department_id}
+                            onChange={formik.handleChange}
+                          >
+                            <option
+                              key={''}
+                              value={null}
+                            >
+                            </option>
+                            {departments.map((d) => (
+                              <option
+                                key={d.id}
+                                value={d.id}
+                              >
+                                {d.name}
+                              </option>
+                            ))}
+                          </TextField>
+                        </FormControl>
+
+
+                        <FormControl
+                          variant="filled"
+                          fullWidth
+                        >
+
+                          <TextField
+                            fullWidth
+                            label="Select Course"
+                            name="course_id"
+                            required
+                            select
+                            SelectProps={{ native: true }}
+                            error={!!(formik.touched.course_id && formik.errors.course_id)}
+                            helperText={formik.touched.course_id && formik.errors.course_id}
+                            value={formik.values.course_id}
+                            onChange={formik.handleChange}
+                          >
+                            <option
+                              key={''}
+                              value={null}
+                            >
+                            </option>
+                            {['Data Science', 'Main stream'].map((d) => (
+                              <option
+                                key={d}
+                                value={d}
+                              >
+                                {d}
+                              </option>
+                            ))}
+                          </TextField>
+                        </FormControl>
+
+                      </Stack>
+
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        spacing={5}
+                        sx={{ mb: 3 }}
+                      >
+
+                        <TextField
+                          fullWidth
+                          type="text"
+                          label="Email"
+                          name="email"
+                          error={!!(formik.touched.email && formik.errors.email)}
+                          helperText={formik.touched.email && formik.errors.email}
+                          value={formik.values.email}
+                          onChange={formik.handleChange}
+                        />
+
+                        <TextField
+                          fullWidth
+                          type="text"
+                          label="NIC"
+                          name="nic_number"
+                          error={!!(formik.touched.nic_number && formik.errors.nic_number)}
+                          helperText={formik.touched.nic_number && formik.errors.nic_number}
+                          value={formik.values.nic_number}
+                          onChange={formik.handleChange}
+                        />
+
+                        <TextField
+                          fullWidth
+                          type="text"
+                          label="Contact No"
+                          name="contact_no"
+                          error={!!(formik.touched.contact_no && formik.errors.contact_no)}
+                          helperText={formik.touched.contact_no && formik.errors.contact_no}
+                          value={formik.values.contact_no}
+                          onChange={formik.handleChange}
+                        />
+
+                      </Stack>
+
+
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        spacing={5}
+                        sx={{ mb: 3 }}
+                      >
+
+                        <TextField
+                          fullWidth
+                          type="text"
+                          label="User Name"
+                          name="user_name"
+                          error={!!(formik.touched.user_name && formik.errors.user_name)}
+                          helperText={formik.touched.user_name && formik.errors.user_name}
+                          value={formik.values.user_name}
+                          onChange={formik.handleChange}
+                        />
+
+                        <TextField
+                          fullWidth
+                          type="password"
+                          label="Password"
+                          name="password"
+                          error={!!(formik.touched.password && formik.errors.password)}
+                          helperText={formik.touched.password && formik.errors.password}
+                          value={formik.values.password}
+                          onChange={formik.handleChange}
+                        />
+
+                      </Stack>
+
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        spacing={5}
+                        sx={{ mb: 3 }}
+                      >
+                        <DatePicker
+                          value={formik.values.dob}
+                          label="Date of birth"
+                          name="dob"
+                          onChange={value => formik.setFieldValue("dob", value)}
+                          renderInput={(params) => <TextField
+                            name="dob"
+                            fullWidth
+                            {...params}
+                          />}
+                        />
+
+                        <DatePicker
+                          value={formik.values.admission_date}
+                          onChange={value => formik.setFieldValue("admission_date", value)}
+                          label="Admission Date"
+                          name="admission_date"
+                          renderInput={(params) => <TextField
+                            fullWidth
+                            {...params} />}
+                        />
+                      </Stack>
+
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        spacing={5}
+                        sx={{ mb: 3 }}
+                      >
+
+
+                        <TextField
+                          fullWidth
+                          type="number"
+                          label="Batch"
+                          name="batch"
+                          error={!!(formik.touched.batch && formik.errors.batch)}
+                          helperText={formik.touched.batch && formik.errors.batch}
+                          value={formik.values.batch}
+                          onChange={formik.handleChange}
+                        />
+
+                        <TextField
+                          fullWidth
+                          type="text"
+                          label="Country"
+                          name="country"
+                          error={!!(formik.touched.country && formik.errors.country)}
+                          helperText={formik.touched.country && formik.errors.country}
+                          value={formik.values.country}
+                          onChange={formik.handleChange}
+                        />
+
+                        <TextField
+                          fullWidth
+                          type="text"
+                          label="City"
+                          name="city"
+                          error={!!(formik.touched.city && formik.errors.city)}
+                          helperText={formik.touched.city && formik.errors.city}
+                          value={formik.values.city}
+                          onChange={formik.handleChange}
+                        />
+                      </Stack>
+
                     </FormControl>
+                  </Stack>
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                  >
                     <FormControl
                       variant="filled"
                       fullWidth
+
                     >
                       <TextField
                         multiline
-                        rows={5}
+                        rows={3}
                         fullWidth
                         type="text"
-                        label="Description"
-                        name="description"
-                        error={!!(formik.touched.description && formik.errors.description)}
-                        helperText={formik.touched.description && formik.errors.description}
-                        value={formik.values.description}
+                        label="Time table link (Google Calendar)"
+                        name="calendar_link"
+                        error={!!(formik.touched.calendar_link && formik.errors.calendar_link)}
+                        helperText={formik.touched.calendar_link && formik.errors.calendar_link}
+                        value={formik.values.calendar_link}
                         onChange={formik.handleChange}
                       />
                     </FormControl>
@@ -181,13 +469,13 @@ const Page = () => {
                     direction={'row'}
                     justifyContent={'flex-end'}
                   >
-                    <LoadingButton
+                    <Button
                       variant="contained"
                       color="primary"
                       type="submit"
                     >
                       Submit
-                    </LoadingButton>
+                    </Button>
                   </Stack>
 
                 </form>
