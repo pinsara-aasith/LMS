@@ -13,6 +13,7 @@ import { BACKEND_URL } from 'src/apis/consts';
 import { DatePicker } from '@mui/x-date-pickers';
 import { getAllFaculties } from '../../faculties';
 import { getAllDepartments } from '../../departments';
+import { getAllCourses } from '../../courses';
 
 export function updateStudent(id, data) {
   return axios.put(`${BACKEND_URL}/api/students/${id}`, {
@@ -37,6 +38,11 @@ const Page = () => {
     getAllDepartments().then(d => setDepartments(d));
   }, [])
 
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    getAllCourses().then(d => setCourses(d));
+  }, [])
 
   const formik = useFormik({
     initialValues: {
@@ -282,12 +288,12 @@ const Page = () => {
                               value={null}
                             >
                             </option>
-                            {['Data Science', 'Main stream'].map((d) => (
+                            {(courses || []).map((c) => (
                               <option
-                                key={d}
-                                value={d}
+                                key={c.name}
+                                value={c.id}
                               >
-                                {d}
+                                {c.name}
                               </option>
                             ))}
                           </TextField>
@@ -440,29 +446,6 @@ const Page = () => {
                         />
                       </Stack>
 
-                    </FormControl>
-                  </Stack>
-                  <Stack
-                    direction="row"
-                    justifyContent="space-between"
-                  >
-                    <FormControl
-                      variant="filled"
-                      fullWidth
-
-                    >
-                      <TextField
-                        multiline
-                        rows={3}
-                        fullWidth
-                        type="text"
-                        label="Time table link (Google Calendar)"
-                        name="calendar_link"
-                        error={!!(formik.touched.calendar_link && formik.errors.calendar_link)}
-                        helperText={formik.touched.calendar_link && formik.errors.calendar_link}
-                        value={formik.values.calendar_link}
-                        onChange={formik.handleChange}
-                      />
                     </FormControl>
                   </Stack>
                   <Stack

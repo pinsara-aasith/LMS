@@ -13,6 +13,7 @@ import { getAllDepartments } from '../departments';
 import { getAllFaculties } from '../faculties';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
+import { getAllCourses } from '../courses';
 
 export function insertStudent(data) {
   return axios.post(`${BACKEND_URL}/api/students`, {
@@ -43,6 +44,13 @@ const Page = () => {
     getAllFaculties().then(d => setFaculties(d));
     getAllDepartments().then(d => setDepartments(d));
   }, [])
+
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    getAllCourses().then(d => setCourses(d));
+  }, [])
+
 
   const formik = useFormik({
     initialValues: {
@@ -293,12 +301,12 @@ const Page = () => {
                               value={null}
                             >
                             </option>
-                            {['Data Science', 'Main stream'].map((d) => (
+                            {courses.map((c) => (
                               <option
-                                key={d}
-                                value={d}
+                                key={c.name}
+                                value={c.id}
                               >
-                                {d}
+                                {c.name}
                               </option>
                             ))}
                           </TextField>

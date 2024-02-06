@@ -59,7 +59,7 @@ const Page = () => {
 
       } catch (err) {
         console.error(err);
-        enqueueSnackbar('Error occured!', {
+        enqueueSnackbar( `Error occured! ${err}`, {
           variant: 'error',
           anchorOrigin: {
             vertical: 'bottom',
