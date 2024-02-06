@@ -21,7 +21,7 @@ export function insertLecturer(data, file) {
   formData.append('last_name', data?.last_name);
   formData.append('email', data?.email);
   formData.append('nic_number', data?.nic_number);
-  formData.append('dob', data?.dob);
+  formData.append('dob', dayjs(data?.dob).format('YYYY-MM-DD'));
   formData.append('user_name', data?.user_name);
   formData.append('country', data?.country);
   formData.append('contact_no', data?.contact_no);
