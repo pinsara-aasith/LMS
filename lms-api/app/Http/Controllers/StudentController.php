@@ -76,22 +76,49 @@ class StudentController extends Controller
     public function update(Request $request, Student $student)
     {
         $request->validate([
-            'name' => 'required|string',
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
             'contact_no' => 'required|string',
             'admission_date' => 'required|date',
             'batch' => 'required|integer',
+            'email' => $request->input('email'),
+            
+            'nic_number' => 'required|string',
+            'dob' => 'required|date',
+            'country' => 'required|string',
+            'city' => 'required|string',
+
+            'faculty_id' => 'required|integer',
+            'department_id' => 'required|integer',
+            'course_id' => 'required|integer',
         ]);
 
         $student->update([
+            'first_name' => $request->input('first_name'),
+            'last_name' => $request->input('last_name'),
+            'email' => $request->input('email'),
+            'contact_no' => $request->input('contact_no'),
+            'nic_number' => $request->input('nic_number'),
+
+            'dob' => $request->input('dob'),
             'contact_no' => $request->input('contact_no'),
             'admission_date' => $request->input('admission_date'),
             'batch' => $request->input('batch'),
+
             'course_id' => $request->input('course_id'),
+            'faculty_id' => $request->input('faculty_id'),
+            'department_id' => $request->input('department_id'),
         ]);
 
         $user = $student->user;
+
+        $fullName = $request->input('first_name') . " " . $request->input('last_name');
+
         $user->update([
-            'name' => $request->input('name'),
+            'name' => $fullName,
+            'user_name' => $request->input('user_name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password')),
         ]);
 
         return response()->json(['message' => 'Ok', 'data' => $student->with('user')]);

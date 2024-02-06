@@ -17,8 +17,21 @@ import { getAllCourses } from '../../courses';
 
 export function updateStudent(id, data) {
   return axios.put(`${BACKEND_URL}/api/students/${id}`, {
-    name: data?.name,
-    description: data?.description
+    password: data?.password,
+    first_name: data?.first_name,
+    last_name: data?.last_name,
+    email: data?.email,
+    user_name: data?.user_name,
+    nic_number: data?.nic_number,
+    dob: data?.dob,
+    city: data?.city,
+    country: data?.country,
+    contact_no: data?.contact_no,
+    admission_date: data?.admission_date,
+    batch: data?.batch,
+    faculty_id: data?.faculty_id,
+    department_id: data?.department_id,
+    course_id: data?.course_id,
   })
 }
 
@@ -51,12 +64,25 @@ const Page = () => {
     },
     enableReinitialize: true,
     validationSchema: Yup.object({
-      name: Yup
+      first_name: Yup
         .string()
-        .required('name is required'),
-      description: Yup
+        .required('First name is required'),
+      last_name: Yup
         .string()
-        .required('description is required')
+        .required('Last name is required'),
+      email: Yup
+        .string()
+        .email('Invalid email format')
+        .required('Email is required'),
+      faculty_id: Yup
+        .number()
+        .required('Faculty id is required'),
+      batch: Yup
+        .number()
+        .required('Batch is required'),
+      department_id: Yup
+        .number()
+        .required('Department id is required'),
     }),
     onSubmit: async (values, helpers) => {
       try {
@@ -96,8 +122,19 @@ const Page = () => {
 
     axios.get(`${BACKEND_URL}/api/students/${studentId}`).then((res) => {
       formik.setValues({
-        name: res.data?.data['name'] ?? '',
-        description: res.data?.data['description'] ?? '',
+        first_name: res.data?.data['first_name'] ?? '',
+        last_name: res.data?.data['last_name'] ?? '',
+        email: res.data?.data['email'] ?? '',
+        user_name: res.data?.data['user_name'] ?? '',
+        nic_number: res.data?.data['nic_number'] ?? '',
+        dob: res.data?.data['dob'] ?? '',
+        city: res.data?.data['city'] ?? '',
+        country: res.data?.data['country'] ?? '',
+        contact_no: res.data?.data['contact_no'] ?? '',
+        admission_date: res.data?.data['admission_date'] ?? '',
+        batch: res.data?.data['batch'] ?? 0,
+        faculty_id: res.data?.data['faculty_id'],
+        department_id: res.data?.data['department_id'],
       })
 
       setLoading(false)
@@ -149,7 +186,7 @@ const Page = () => {
 
             {loading && <LinearProgress />}
 
-            <Card sx={{ overflow: 'visible' }}>
+            {!loading && <Card sx={{ overflow: 'visible' }}>
               <CardHeader title="Edit Student" />
 
               <CardContent>
@@ -463,7 +500,7 @@ const Page = () => {
 
                 </form>
               </CardContent>
-            </Card>
+            </Card>}
           </Stack>
         </Container>
       </Box>
