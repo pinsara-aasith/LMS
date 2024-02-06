@@ -23,6 +23,7 @@ export function insertLecturer(data, file) {
   formData.append('nic_number', data?.nic_number);
   formData.append('dob', dayjs(data?.dob).format('YYYY-MM-DD'));
   formData.append('user_name', data?.user_name);
+  formData.append('password', data?.password);
   formData.append('country', data?.country);
   formData.append('contact_no', data?.contact_no);
   formData.append('city', data?.city);
@@ -68,7 +69,10 @@ const Page = () => {
     validationSchema: Yup.object({
       first_name: Yup
         .string()
-        .required('First name is required'),
+        .required('First name is required'), 
+         password: Yup
+        .string()
+        .required('Password is required'),
       last_name: Yup
         .string()
         .required('Last name is required'),
