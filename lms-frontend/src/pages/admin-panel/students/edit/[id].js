@@ -128,7 +128,7 @@ const Page = () => {
         first_name: res.data?.data['first_name'] ?? '',
         last_name: res.data?.data['last_name'] ?? '',
         email: res.data?.data['email'] ?? '',
-        user_name: res.data?.data['user_name'] ?? '',
+        user_name: res.data?.data['user']?.user_name ?? '',
         nic_number: res.data?.data['nic_number'] ?? '',
         dob: res.data?.data['dob'] ?? '',
         city: res.data?.data['city'] ?? '',
