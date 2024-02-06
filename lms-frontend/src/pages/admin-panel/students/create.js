@@ -90,6 +90,9 @@ const Page = () => {
       department_id: Yup
         .number()
         .required('Department id is required'),
+        course_id: Yup
+          .number()
+          .required('Course id is required'),
     }),
     onSubmit: async (values, helpers) => {
       try {

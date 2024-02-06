@@ -83,6 +83,9 @@ const Page = () => {
       department_id: Yup
         .number()
         .required('Department id is required'),
+      course_id: Yup
+        .number()
+        .required('Course id is required'),
     }),
     onSubmit: async (values, helpers) => {
       try {
@@ -135,6 +138,7 @@ const Page = () => {
         batch: res.data?.data['batch'] ?? 0,
         faculty_id: res.data?.data['faculty_id'],
         department_id: res.data?.data['department_id'],
+        course_id: res.data?.data['course_id'],
       })
 
       setLoading(false)
@@ -190,7 +194,7 @@ const Page = () => {
               <CardHeader title="Edit Student" />
 
               <CardContent>
-              <form onSubmit={formik.handleSubmit}>
+                <form onSubmit={formik.handleSubmit}>
                   <Stack
                     direction="column"
                     justifyContent="space-between"
