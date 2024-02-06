@@ -19,6 +19,8 @@ import PencilIcon from '@heroicons/react/24/solid/PencilIcon';
 import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 import Timetable from 'src/components/timetable';
 import { Layout as DashboardLayout } from 'src/layouts/common-panel/layout';
+import { useAuthContext } from 'src/contexts/auth-context';
+import { getAllCourses, getCourse } from '../admin-panel/courses';
 
 export function deleteStudent(studentId) {
   return axios.delete(`${BACKEND_URL}/api/students/${studentId}`)
@@ -41,6 +43,9 @@ const lmsCalendarCustomize = "https://calendar.google.com/calendar/u/0/r"
 const Page = () => {
   const [page, setPage] = useState(0);
   const [search, setSearch] = useState('');
+
+  const [timetableLink, setTimetableLink] = useState('');
+
   const [data, setData] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -49,15 +54,23 @@ const Page = () => {
   const [loading, setLoading] = useState(true)
 
   const { enqueueSnackbar } = useSnackbar()
-  async function retrieveAndRefreshData() {
-    setLoading(true)
-    setTimeout(() => { setLoading(false) }, 2000)
+  const { authData } = useAuthContext();
 
+  async function getTimeTableLink() {
+    if(authData.user.role == 'student') {
+      let course = (await getCourse(authData.user.course_id))
+
+      setTimetableLink(course.time_table_link)
+    }
+
+    if(authData.user.role == 'lecturer') {
+      setTimetableLink(authData.user.time_table_link)
+    }
+    setLoading(false) 
   }
 
-
   useEffect(() => {
-    retrieveAndRefreshData()
+    getTimeTableLink()
   }, [])
 
   return (
@@ -94,12 +107,12 @@ const Page = () => {
 
 
             {loading && <LinearProgress />}
-            <iframe 
-            
-            style={{ width: '100%', height: '600px' }}
-            src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=Asia%2FColombo&mode=WEEK&showPrint=0&showDate=0&showNav=0&showTabs=0&showTz=0&showCalendars=0&showTitle=1&src=ODI2MDBkZmY4ZWFlMTg3MjdkNTNjNTA1MDIyODgwNTc2YjI0ODBhOWU5OTIyYmE1NTZjNjQzZDFkYTYzMmY1YkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23039BE5" width="800" height="600" frameBorder="0" scrolling="no"></iframe>
-           
-            {/* <Timetable /> */}
+            {!loading && 
+            <div>
+              {!timetableLink && <Typography>No timetable provided for this user</Typography>}
+              {timetableLink && <img src={timetableLink} alt="No timetable" sx={{ width: '100%', height: 'auto' }} />}
+            </div>
+            }
           </Stack>
         </Container>
       </Box>

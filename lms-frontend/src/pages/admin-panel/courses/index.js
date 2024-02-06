@@ -26,6 +26,11 @@ export async function getAllCourses() {
   return response.data?.['data']
 }
 
+export async function getCourse(id) {
+  const response = await axios.get(`${BACKEND_URL}/api/courses/${id}`)
+  return response.data?.['data']
+}
+
 
 const useCourses = (data, page, rowsPerPage, search) => {
   return useMemo(
