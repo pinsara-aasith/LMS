@@ -46,11 +46,18 @@ class AdminController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
+            'user_name' => 'required|string',
+            'email' => 'required|email|unique:users', // Assuming you have an 'email' field in your users table
+            'password' => 'required|string|min:6',
         ]);
 
         $user = $admin->user;
         $user->update([
             'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'user_name' => $request->input('user_name'),
+            'password' => Hash::make($request->password),
+            'role' => 'admin',
         ]);
 
         return response()->json(['message' => 'Ok', 'data' => $admin->with('user')]);

@@ -14,6 +14,9 @@ import { BACKEND_URL } from 'src/apis/consts';
 export function updateAdmin(id, data) {
   return axios.put(`${BACKEND_URL}/api/admins/${id}`, {
     name: data?.name,
+    email: data?.email,
+    user_name: data?.user_name,
+    password: data?.password
   })
 }
 
@@ -75,6 +78,8 @@ const Page = () => {
     axios.get(`${BACKEND_URL}/api/admins/${adminId}`).then((res) => {
       formik.setValues({
         name: res.data?.data?.['user']['name'] ?? '',
+        email: res.data?.data?.['user']['email'] ?? '',
+        name: res.data?.data?.['user']['user_name'] ?? '',
       })
 
       setLoading(false)
@@ -126,7 +131,7 @@ const Page = () => {
 
             {loading && <LinearProgress />}
 
-            <Card sx={{ overflow: 'visible' }}>
+            {!loading && <Card sx={{ overflow: 'visible' }}>
               <CardHeader title="Edit Admin" />
 
               <CardContent>
@@ -153,8 +158,58 @@ const Page = () => {
                         onChange={formik.handleChange}
                       />
                     </FormControl>
-                    
+                    <FormControl
+                      variant="filled"
+                      fullWidth
+
+                    >
+                      <TextField
+                        fullWidth
+                        type="text"
+                        label="Email"
+                        name="email"
+                        error={!!(formik.touched.email && formik.errors.email)}
+                        helperText={formik.touched.email && formik.errors.email}
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
+                      />
+                    </FormControl>
+                    <FormControl
+                      variant="filled"
+                      fullWidth
+
+                    >
+                      <TextField
+                        fullWidth
+                        type="user_name"
+                        label="User Name"
+                        name="user_name"
+
+                        error={!!(formik.touched.user_name && formik.errors.user_name)}
+                        helperText={formik.touched.user_name && formik.errors.user_name}
+                        value={formik.values.user_name}
+                        onChange={formik.handleChange}
+                      />
+                    </FormControl>
+                    <FormControl
+                      variant="filled"
+                      fullWidth
+
+                    >
+                      <TextField
+                        fullWidth
+                        type="password"
+                        label="Password"
+                        name="password"
+
+                        error={!!(formik.touched.password && formik.errors.password)}
+                        helperText={formik.touched.password && formik.errors.password}
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                      />
+                    </FormControl>
                   </Stack>
+
                   <Stack
                     direction={'row'}
                     justifyContent={'flex-end'}
@@ -170,7 +225,7 @@ const Page = () => {
 
                 </form>
               </CardContent>
-            </Card>
+            </Card>}
           </Stack>
         </Container>
       </Box>
