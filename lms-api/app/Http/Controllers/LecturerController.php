@@ -81,6 +81,13 @@ class LecturerController extends Controller
             'faculty_id' => 'required|integer',
         ]);
 
+
+        $filePath = null;
+        if ($request->hasFile('file')) {
+            $filePath = $request->file('file')->store('timetable_links');
+        }
+
+
         $lecturer->update([
             'first_name' => $request->input('first_name'),
             'last_name' => $request->input('last_name'),
@@ -89,11 +96,14 @@ class LecturerController extends Controller
             'nic_number' => $request->input('nic_number'),
             'dob' => $request->input('dob'),
             'faculty_id' => $request->input('faculty_id'),
+            'department_id' => $request->input('department_id'),
 
 
             'contact_no' => $request->input('contact_no'),
             'admission_date' => $request->input('admission_date'),
             'batch' => $request->input('batch'),
+
+            'time_table_link' => $filePath ?? $lecturer->time_table_link
         ]);
 
         $user = $lecturer->user;

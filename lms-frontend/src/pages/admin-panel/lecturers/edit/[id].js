@@ -71,9 +71,11 @@ const Page = () => {
          password: Yup
         .string()
         .required('Password is required'),
-      last_name: Yup
+        last_name: Yup
         .string()
-        .required('Last name is required'),
+        .required('Last name is required'),nic_number: Yup
+        .string()
+        .required('Nic Number is required'),
       email: Yup
         .string()
         .email('Invalid email format')
@@ -328,6 +330,7 @@ const Page = () => {
                           type="text"
                           label="NIC"
                           name="nic_number"
+                          required
                           error={!!(formik.touched.nic_number && formik.errors.nic_number)}
                           helperText={formik.touched.nic_number && formik.errors.nic_number}
                           value={formik.values.nic_number}
@@ -339,6 +342,7 @@ const Page = () => {
                           type="text"
                           label="Contact No"
                           name="contact_no"
+                          required
                           error={!!(formik.touched.contact_no && formik.errors.contact_no)}
                           helperText={formik.touched.contact_no && formik.errors.contact_no}
                           value={formik.values.contact_no}
