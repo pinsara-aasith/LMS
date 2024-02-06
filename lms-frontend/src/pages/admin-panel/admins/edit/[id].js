@@ -38,6 +38,12 @@ const Page = () => {
       name: Yup
         .string()
         .required('name is required'),
+      email: Yup
+        .string().email()
+        .required('email is required'),
+      password: Yup
+        .string()
+        .required('password is required'),
     }),
     onSubmit: async (values, helpers) => {
       try {
@@ -77,9 +83,9 @@ const Page = () => {
 
     axios.get(`${BACKEND_URL}/api/admins/${adminId}`).then((res) => {
       formik.setValues({
-        name: res.data?.data?.['user']['name'] ?? '',
-        email: res.data?.data?.['user']['email'] ?? '',
-        name: res.data?.data?.['user']['user_name'] ?? '',
+        name: res.data?.data?.['user']?.['name'] ?? '',
+        email: res.data?.data?.['user']?.['email'] ?? '',
+        user_name: res.data?.data?.['user']?.['user_name'] ?? '',
       })
 
       setLoading(false)
