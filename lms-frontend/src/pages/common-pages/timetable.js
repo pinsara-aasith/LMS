@@ -21,6 +21,8 @@ import Timetable from 'src/components/timetable';
 import { Layout as DashboardLayout } from 'src/layouts/common-panel/layout';
 import { useAuthContext } from 'src/contexts/auth-context';
 import { getAllCourses, getCourse } from '../admin-panel/courses';
+import { getAllStudents, getLecturer } from '../admin-panel/events';
+import { getStudent } from '../admin-panel/students';
 
 export function deleteStudent(studentId) {
   return axios.delete(`${BACKEND_URL}/api/students/${studentId}`)
@@ -57,16 +59,21 @@ const Page = () => {
   const { authData } = useAuthContext();
 
   async function getTimeTableLink() {
-    if(authData.user.role == 'student') {
-      let course = (await getCourse(authData.user.course_id))
+    console.log(authData)
+    if (authData.user.role == 'student') {
+      let student = (await getStudent(authData.user.userable_id))
 
-      setTimetableLink(course.time_table_link)
+      let course = (await getCourse(student.course_id))
+
+      setTimetableLink(`${BACKEND_URL}/storage/${course.time_table_link}`)
     }
 
-    if(authData.user.role == 'lecturer') {
-      setTimetableLink(authData.user.time_table_link)
+    if (authData.user.role == 'lecturer') {
+      let lecturer = (await getLecturer(authData.user.userable_id))
+
+      setTimetableLink(`${BACKEND_URL}/storage/${lecturer.time_table_link}`)
     }
-    setLoading(false) 
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -107,11 +114,11 @@ const Page = () => {
 
 
             {loading && <LinearProgress />}
-            {!loading && 
-            <div>
-              {!timetableLink && <Typography>No timetable provided for this user</Typography>}
-              {timetableLink && <img src={timetableLink} alt="No timetable" sx={{ width: '100%', height: 'auto' }} />}
-            </div>
+            {!loading &&
+              <div>
+                {!timetableLink && <Typography>No timetable provided for this user</Typography>}
+                {timetableLink && <img src={timetableLink} alt="No timetable" style={{ width: '100%', height: 'auto' }} />}
+              </div>
             }
           </Stack>
         </Container>

@@ -24,11 +24,10 @@ export function deleteStudent(studentId) {
   return axios.delete(`${BACKEND_URL}/api/students/${studentId}`)
 }
 
-export async function getAllStudents() {
-  const response = await axios.get(`${BACKEND_URL}/api/students`)
+export async function getLecturer(id) {
+  const response = await axios.get(`${BACKEND_URL}/api/lecturers/${id}`)
   return response.data?.['data']
 }
-
 
 const useStudents = (data, page, rowsPerPage, search) => {
   return useMemo(
