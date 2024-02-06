@@ -47,7 +47,7 @@ const Page = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        updateAdmin(adminId, values);
+        await updateAdmin(adminId, values);
 
         enqueueSnackbar('Admin was edited successfully!', {
           variant: 'success',

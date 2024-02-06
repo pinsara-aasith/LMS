@@ -61,7 +61,7 @@ const Page = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        updateCourse(courseId, values, file);
+        await updateCourse(courseId, values, file);
 
         enqueueSnackbar('Course was edited successfully!', {
           variant: 'success',
