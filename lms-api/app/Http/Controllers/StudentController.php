@@ -81,7 +81,7 @@ class StudentController extends Controller
             'contact_no' => 'required|string',
             'admission_date' => 'required|date',
             'batch' => 'required|integer',
-            'email' => $request->input('email'),
+            'email' => 'required|string',
             
             'nic_number' => 'required|string',
             'dob' => 'required|date',
