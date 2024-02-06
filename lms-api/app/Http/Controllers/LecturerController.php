@@ -50,6 +50,7 @@ class LecturerController extends Controller
             'dob' => $request->input('dob'),
 
             'faculty_id' => $request->input('faculty_id'),
+            'department_id' => $request->input('department_id'),
             'time_table_link' => $filePath
         ]);
 
