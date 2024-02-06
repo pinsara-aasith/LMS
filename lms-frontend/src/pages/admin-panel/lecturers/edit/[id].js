@@ -14,14 +14,31 @@ import { DragDropFileUpload } from 'src/components/dragAndDropFileUpload';
 import { getAllFaculties } from '../../faculties';
 import { getAllDepartments } from '../../departments';
 import { DatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 
-export function updateLecturer(id, data) {
-  return axios.put(`${BACKEND_URL}/api/lecturers/${id}`, {
-    name: data?.name,
-    description: data?.description
-  })
+export function updateLecturer(id, data, file) {
+  const formData = new FormData();
+  formData.append('first_name', data?.first_name);
+  formData.append('last_name', data?.last_name);
+  formData.append('email', data?.email);
+  formData.append('nic_number', data?.nic_number);
+  formData.append('dob', dayjs(data?.dob).format('YYYY-MM-DD'));
+  formData.append('user_name', data?.user_name);
+  formData.append('password', data?.password);
+  formData.append('country', data?.country);
+  formData.append('contact_no', data?.contact_no);
+  formData.append('city', data?.city);
+  formData.append('admission_date', data?.admission_date);
+  formData.append('batch', data?.batch);
+  formData.append('faculty_id', data?.faculty_id);
+  formData.append('department_id', data?.department_id);
+
+  if (file)
+    formData.append('file', file);
+
+  return axios.post(`${BACKEND_URL}/api/lecturers/${id}/edit`, formData)
 }
- 
+
 
 const Page = () => {
   const router = useRouter();
@@ -48,16 +65,26 @@ const Page = () => {
     },
     enableReinitialize: true,
     validationSchema: Yup.object({
-      name: Yup
+      first_name: Yup
         .string()
-        .required('name is required'),
-      description: Yup
+        .required('First name is required'), 
+         password: Yup
         .string()
-        .required('description is required')
+        .required('Password is required'),
+      last_name: Yup
+        .string()
+        .required('Last name is required'),
+      email: Yup
+        .string()
+        .email('Invalid email format')
+        .required('Email is required'),
+      faculty_id: Yup
+        .number()
+        .required('Faculty id is required'),
     }),
     onSubmit: async (values, helpers) => {
       try {
-        updateLecturer(lecturerId, values);
+        await updateLecturer(lecturerId, values, file);
 
         enqueueSnackbar('Lecturer was edited successfully!', {
           variant: 'success',
@@ -72,8 +99,9 @@ const Page = () => {
         setTimeout(() => router.push('/admin-panel/lecturers'), 400)
 
       } catch (err) {
+        console.log(err)
         enqueueSnackbar('Error occured!', {
-          variant: 'success',
+          variant: 'error',
           anchorOrigin: {
             vertical: 'bottom',
             horizontal: 'right',
@@ -92,9 +120,21 @@ const Page = () => {
     setLoading(true);
 
     axios.get(`${BACKEND_URL}/api/lecturers/${lecturerId}`).then((res) => {
+     
       formik.setValues({
-        name: res.data?.data['name'] ?? '',
-        description: res.data?.data['description'] ?? '',
+        first_name: res.data?.data['first_name'] ?? '',
+        last_name: res.data?.data['last_name'] ?? '',
+        email: res.data?.data['email'] ?? '',
+        nic_number: res.data?.data['nic_number'] ?? '',
+        dob: res.data?.data['dob'] ?? '',
+        user_name: res.data?.data?.user['user_name'] ?? '',
+        country: res.data?.data['country'] ?? '',
+        city: res.data?.data['city'] ?? '',
+        contact_no: res.data?.data['contact_no'] ?? '',
+        admission_date: res.data?.data['admission_date'] ?? '',
+        batch: res.data?.data['batch'] ?? 0,
+        faculty_id: res.data?.data['faculty_id'] ?? '',
+        department_id: res.data?.data['department_id'] ?? '',
       })
 
       setLoading(false)
@@ -146,12 +186,12 @@ const Page = () => {
 
             {loading && <LinearProgress />}
 
-            <Card sx={{ overflow: 'visible' }}>
+            {!loading && <Card sx={{ overflow: 'visible' }}>
               <CardHeader title="Edit Lecturer" />
 
               <CardContent>
-               
-              <form onSubmit={formik.handleSubmit}>
+
+                <form onSubmit={formik.handleSubmit}>
                   <Stack
                     direction="column"
                     justifyContent="space-between"
@@ -397,8 +437,8 @@ const Page = () => {
                     direction="row"
                     justifyContent="space-between"
                   >
-                   <FormControl>
-                      <FormLabel sx={{mb: '12px'}}>Upload Timetable image (Screenshot of google calendar)</FormLabel>
+                    <FormControl>
+                      <FormLabel sx={{ mb: '12px' }}>Upload Timetable image (Screenshot of google calendar)</FormLabel>
                       <DragDropFileUpload file={file} onFileChange={(file) => setFile(file)} />
                     </FormControl>
 
@@ -418,7 +458,7 @@ const Page = () => {
 
                 </form>
               </CardContent>
-            </Card>
+            </Card>}
           </Stack>
         </Container>
       </Box>

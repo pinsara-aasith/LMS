@@ -47,7 +47,7 @@ Route::prefix('lecturers')->group(function () {
     Route::get('/', [LecturerController::class, 'index'])->name('lecturers.index');
     Route::get('/{lecturer}', [LecturerController::class, 'show'])->name('lecturers.show');
     Route::post('/', [LecturerController::class, 'store'])->name('lecturers.store');
-    Route::put('/{lecturer}', [LecturerController::class, 'update'])->name('lecturers.update');
+    Route::post('/{lecturer}/edit', [LecturerController::class, 'update'])->name('lecturers.update');
     Route::delete('/{lecturer}', [LecturerController::class, 'destroy'])->name('lecturers.destroy');
 });
 
