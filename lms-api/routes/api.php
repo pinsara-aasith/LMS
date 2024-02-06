@@ -91,7 +91,7 @@ Route::prefix('courses')->group(function () {
     Route::get('/', [CourseController::class, 'index'])->name('courses.index');
     Route::get('/{course}', [CourseController::class, 'show'])->name('courses.show');
     Route::post('/', [CourseController::class, 'store'])->name('courses.store');
-    Route::put('/{course}', [CourseController::class, 'update'])->name('courses.update');
+    Route::post('/{course}/edit', [CourseController::class, 'update'])->name('courses.update');
     Route::delete('/{course}', [CourseController::class, 'destroy'])->name('courses.destroy');
 });
 

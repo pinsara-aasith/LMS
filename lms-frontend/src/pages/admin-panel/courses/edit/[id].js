@@ -18,12 +18,11 @@ export function updateCourse(id, data, file) {
   formData.append('name', data?.name);
   formData.append('code', data?.code);
   formData.append('department_id', data?.department_id);
-  formData.append('_method', 'PUT');
 
   if (file)
     formData.append('file', file);
 
-  return axios.put(`${BACKEND_URL}/api/courses/${id}`, formData)
+  return axios.post(`${BACKEND_URL}/api/courses/${id}/edit`, formData)
 }
 
 
