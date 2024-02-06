@@ -29,6 +29,7 @@ export function insertStudent(data) {
     admission_date: dayjs(Date(data?.admission_date)).format('YYYY-MM-DD'),
     batch:Number(data?.batch),
     faculty_id: data?.faculty_id,
+    course_id: data?.course_id,
     department_id: data?.department_id,
   })
 }

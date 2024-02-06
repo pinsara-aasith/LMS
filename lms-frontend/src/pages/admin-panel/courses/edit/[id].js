@@ -18,6 +18,7 @@ export function updateCourse(id, data, file) {
   formData.append('name', data?.name);
   formData.append('code', data?.code);
   formData.append('department_id', data?.department_id);
+  formData.append('_method', 'PUT');
 
   if (file)
     formData.append('file', file);
