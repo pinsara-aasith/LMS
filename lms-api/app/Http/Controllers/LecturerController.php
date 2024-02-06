@@ -29,6 +29,7 @@ class LecturerController extends Controller
             'contact_no' => 'required|string',
             'user_name' => 'required|string',
             'nic_number' => 'required|string',
+            'password' => 'required|string',
             'dob' => 'required|date',
             'faculty_id' => 'required|integer',
         ]);
@@ -59,7 +60,7 @@ class LecturerController extends Controller
             'name' => $fullName,
             'email' => $request->input('email'),
             'user_name' => $request->input('user_name'),
-            'password' => Hash::make('password'),
+            'password' => Hash::make($request->input('password')),
             'role' => 'lecturer',
         ]);
 
