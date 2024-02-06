@@ -27,6 +27,7 @@ class StudentController extends Controller
             'last_name' => 'required|string',
             'email' => 'required|string',
             'user_name' => 'required|string',
+            'password' => 'required|string',
             'contact_no' => 'required|string',
             'nic_number' => 'required|string',
             'dob' => 'required|date',
@@ -65,7 +66,7 @@ class StudentController extends Controller
             'name' => $fullName,
             'user_name' => $request->input('user_name'),
             'email' => $request->input('email'),
-            'password' => Hash::make('password'),
+            'password' => Hash::make($request->input('password')),
             'role' => 'student',
         ]);
 

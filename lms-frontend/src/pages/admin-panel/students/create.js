@@ -30,6 +30,7 @@ export function insertStudent(data) {
     batch:Number(data?.batch),
     faculty_id: data?.faculty_id,
     course_id: data?.course_id,
+    password: data?.password,
     department_id: data?.department_id,
   })
 }
