@@ -151,3 +151,4 @@ Route::prefix('feedbacks')->group(function () {
 });
 
 Route::middleware(['auth:sanctum'])->get('/me/subjects', [MySubjectController::class, 'index'])->name('mysubjects.index');
+Route::middleware(['auth:sanctum'])->get('/me/subjects/{subject}/grades', [MySubjectController::class, 'index'])->name('mysubjects.index');
