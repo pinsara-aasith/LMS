@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { Autocomplete, Backdrop, Box, Button, Card, CardContent, CardHeader, CircularProgress, Container, FormControl, InputLabel, LinearProgress, MenuItem, Select, Snackbar, Stack, SvgIcon, TextField, Typography } from '@mui/material';
+import { Autocomplete, Backdrop, Box, Button, Card, CardContent, CardHeader, CircularProgress, Container, FormControl, IconButton, InputLabel, LinearProgress, Link, MenuItem, Select, Snackbar, Stack, SvgIcon, TextField, Typography } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/common-panel/layout';
 import { StyledBreadCrumbs } from 'src/components/breadcrumbs';
 import { useFormik } from 'formik';
@@ -10,54 +10,74 @@ import { useSnackbar } from 'notistack';
 import { LoadingButton } from '@mui/lab';
 import axios from 'axios';
 import { BACKEND_URL } from 'src/apis/consts';
-import { getAllDepartments } from 'src/pages/admin-panel/departments';
+import { getAllSubjects } from '../../subjects';
+import { DragDropFileUpload } from 'src/components/dragAndDropFileUpload';
+import AttachFileIcon from '@heroicons/react/24/solid/PaperClipIcon';
 
-export function updateSubject(id, data) {
-  return axios.put(`${BACKEND_URL}/api/subjects/${id}`, {
-    name: data?.name,
-    code: data?.code,
-    department_id: data?.department_id
-  })
+export function updateAssignment(assignmentId, data, file) {
+  const formData = new FormData();
+  formData.append('title', data?.title);
+  formData.append('description', data?.description);
+  formData.append('subject_id', data?.subject_id);
+
+  if (file)
+    formData.append('file', file);
+
+  return axios.post(`${BACKEND_URL}/api/assignments/${assignmentId}/edit`, formData)
+
 }
-
 
 const Page = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const subjectId = router.query.id
-  const [loading, setLoading] = useState(true);
+  const [file, setFile] = useState(null);
 
-  const [departments, setDepartments] = useState([]);
+  const [subjects, setSubjects] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getAllDepartments().then(d => setDepartments(d));
+    getAllSubjects().then(d => setSubjects(d));
   }, [])
+
+  const assignmentId = router.query.id
+
+  useEffect(() => {
+    setLoading(true);
+
+    axios.get(`${BACKEND_URL}/api/assignments/${assignmentId}`).then((res) => {
+      formik.setValues({ ...res.data?.data })
+
+      setLoading(false)
+    })
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [assignmentId])
 
 
   const formik = useFormik({
     initialValues: {
-      name: '',
-      code: '',
-      department_id: ''
+      title: '',
+      description: '',
+      subject_id: '',
+      submit: null
     },
-    enableReinitialize: true,
     validationSchema: Yup.object({
-      name: Yup
+      title: Yup
         .string()
-        .required('name is required'),
-        code: Yup
-          .string()
-          .required('code is required'),
-      department_id: Yup
-        .number()
-        .required('department_id is required')
+        .required('title is required'),
+      description: Yup
+        .string()
+        .required('description is required'),
+      subject_id: Yup.
+        number()
+        .required('subject is required')
     }),
     onSubmit: async (values, helpers) => {
       try {
-        updateSubject(subjectId, values);
+        await updateAssignment(assignmentId, formik.values, file)
 
-        enqueueSnackbar('Subject was edited successfully!', {
+        enqueueSnackbar('Assignment was edited successfully!', {
           variant: 'success',
           anchorOrigin: {
             vertical: 'bottom',
@@ -67,11 +87,12 @@ const Page = () => {
           autoHideDuration: 2000
         })
 
-        setTimeout(() => router.push('/admin-panel/subjects'), 400)
+        setTimeout(() => router.push('/admin-panel/assignments'), 400)
 
       } catch (err) {
+        console.error(err);
         enqueueSnackbar('Error occured!', {
-          variant: 'success',
+          variant: 'error',
           anchorOrigin: {
             vertical: 'bottom',
             horizontal: 'right',
@@ -86,27 +107,11 @@ const Page = () => {
     }
   });
 
-  useEffect(() => {
-    setLoading(true);
-
-    axios.get(`${BACKEND_URL}/api/subjects/${subjectId}`).then((res) => {
-      formik.setValues({
-        name: res.data?.data['name'] ?? '',
-        code: res.data?.data['code'] ?? '',
-        department_id: res.data?.data['department_id'] ?? '',
-      })
-
-      setLoading(false)
-    })
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [subjectId])
-
   return (
     <>
       <Head>
         <title>
-          Subjects | E-LMS
+          Assignments | E-LMS
         </title>
       </Head>
       <Box
@@ -125,29 +130,26 @@ const Page = () => {
             >
               <Stack spacing={1}>
                 <Typography variant="h5">
-                  Subjects
+                  Assignments
                 </Typography>
 
                 <StyledBreadCrumbs sequence={[
                   {
-                    text: 'Subjects',
-                    linkUrl: '/admin-panel/subjects',
+                    text: 'Assignments',
+                    linkUrl: '/admin-panel/assignments',
                   },
                   {
-                    text: 'Edit',
-                    linkUrl: '/admin-panel/subjects/edit/',
+                    text: 'Add New',
+                    linkUrl: '/admin-panel/assignments/create',
                     active: true
                   },
                 ]} />
 
               </Stack>
+
             </Stack>
-
-            {loading && <LinearProgress />}
-
             <Card sx={{ overflow: 'visible' }}>
-              <CardHeader title="Edit Subject" />
-
+              <CardHeader title="Add New Assignment" />
               <CardContent>
                 <form onSubmit={formik.handleSubmit}>
                   <Stack
@@ -156,86 +158,107 @@ const Page = () => {
                     spacing={5}
                     sx={{ mb: 3 }}
                   >
+                    <DragDropFileUpload file={file} onFileChange={setFile} />
+                    {
+                      formik.values?.['file_path'] ? (
+                        <>
+                          <Typography variant="body2" sx={{ mt: 2 }} gutterBottom>
+
+                            <Link href={`${BACKEND_URL}/storage/${formik.values?.['file_path']}`} target="_blank" rel="noopener noreferrer">
+                              <IconButton color="primary" component="span">
+                                <AttachFileIcon />
+                              </IconButton>
+                              See uploaded file
+                            </Link>
+                          </Typography>
+                        </>
+                      ) : (
+                        <>
+                          <Typography variant="body2" sx={{ mt: 2 }} gutterBottom>
+                            No uploaded files
+                          </Typography>
+                        </>
+                      )
+                    }
                     <FormControl
                       variant="filled"
                       fullWidth
-
                     >
+
                       <TextField
                         fullWidth
-                        type="text"
-                        label="Name"
-                        name="name"
-                        error={!!(formik.touched.name && formik.errors.name)}
-                        helperText={formik.touched.name && formik.errors.name}
-                        value={formik.values.name}
+                        label="Select Subject"
+                        name="subject_id"
+                        required
+                        select
+                        SelectProps={{ native: true }}
+                        error={!!(formik.touched.subject_id && formik.errors.subject_id)}
+                        helperText={formik.touched.subject_id && formik.errors.subject_id}
+                        value={formik.values.subject_id}
                         onChange={formik.handleChange}
-                      />
-                    </FormControl>
-                    <FormControl
-                      variant="filled"
-                      fullWidth
-
-                    >
-                      <TextField
-                        fullWidth
-                        type="text"
-                        label="Subject Code"
-                        name="code"
-                        error={!!(formik.touched.code && formik.errors.code)}
-                        helperText={formik.touched.code && formik.errors.code}
-                        value={formik.values.code}
-                        onChange={formik.handleChange}
-                      />
-                    </FormControl>
-                    <FormControl
-                      variant="filled"
-                      fullWidth
-                    >
-                      <FormControl
-                        variant="filled"
-                        fullWidth
                       >
-                        <TextField
-                          fullWidth
-                          label="Select Department"
-                          name="department_id"
-                          required
-                          select
-                          SelectProps={{ native: true }}
-                          error={!!(formik.touched.department_id && formik.errors.department_id)}
-                          helperText={formik.touched.department_id && formik.errors.department_id}
-                          value={formik.values.department_id}
-                          onChange={formik.handleChange}
+                        <option
+                          key={''}
+                          value={null}
                         >
+                        </option>
+                        {subjects.map((f) => (
                           <option
-                            key={''}
-                            value={''}
+                            key={f.id}
+                            value={f.id}
                           >
+                            {f.name}
                           </option>
-                          {departments.map((f) => (
-                            <option
-                              key={f.id}
-                              value={f.id}
-                            >
-                              {f.name}
-                            </option>
-                          ))}
-                        </TextField>
-                      </FormControl>
+                        ))}
+                      </TextField>
+                    </FormControl>
+
+                    <FormControl
+                      variant="filled"
+                      fullWidth
+
+                    >
+                      <TextField
+                        fullWidth
+                        type="text"
+                        label="Title"
+                        name="title"
+                        error={!!(formik.touched.title && formik.errors.title)}
+                        helperText={formik.touched.title && formik.errors.title}
+                        value={formik.values.title}
+                        onChange={formik.handleChange}
+                      />
+                    </FormControl>
+
+                    <FormControl
+                      variant="filled"
+                      fullWidth
+                    >
+                      <TextField
+                        multiline
+                        rows={5}
+                        fullWidth
+                        type="text"
+                        label="Description"
+                        name="description"
+                        error={!!(formik.touched.description && formik.errors.description)}
+                        helperText={formik.touched.description && formik.errors.description}
+                        value={formik.values.description}
+                        onChange={formik.handleChange}
+                      />
                     </FormControl>
                   </Stack>
                   <Stack
                     direction={'row'}
                     justifyContent={'flex-end'}
                   >
-                    <LoadingButton
+                    <Button
                       variant="contained"
                       color="primary"
                       type="submit"
                     >
                       Submit
-                    </LoadingButton>
+                    </Button>
                   </Stack>
 
                 </form>

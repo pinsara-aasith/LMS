@@ -297,13 +297,18 @@ export const AssignmentCard = (props) => {
           direction="row"
           spacing={1}
         >
-          <SvgIcon
-            color="action"
-            fontSize="small"
+          <IconButton
+            color="primary"
+            aria-label="edit"
+            href={`/admin-panel/assignments/edit/${assignment.id}`}
+            LinkComponent={NextLink}
           >
-            <ArrowDownOnSquareIcon />
-          </SvgIcon>
-          
+            <SvgIcon>
+              <PencilIcon style={{ fontSize: 24 }} /> {/* Customize the icon */}
+            </SvgIcon>
+          </IconButton>
+
+
         </Stack>
       </Stack>
     </Card>
@@ -311,116 +316,116 @@ export const AssignmentCard = (props) => {
 };
 
 
-export const AssignmentsTable = (props) => {
-  const {
-    count = 0,
-    items = [],
-    onPageChange = () => { },
-    onRowsPerPageChange,
-    handleDelete,
-    page = 0,
-    rowsPerPage = 0,
-  } = props;
+// export const AssignmentsTable = (props) => {
+//   const {
+//     count = 0,
+//     items = [],
+//     onPageChange = () => { },
+//     onRowsPerPageChange,
+//     handleDelete,
+//     page = 0,
+//     rowsPerPage = 0,
+//   } = props;
 
-  return (
-    <Card>
-      <Scrollbar>
-        <Box sx={{ minWidth: 800 }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell width={170}>
-                  Assignment ID
-                </TableCell>
+//   return (
+//     <Card>
+//       <Scrollbar>
+//         <Box sx={{ minWidth: 800 }}>
+//           <Table>
+//             <TableHead>
+//               <TableRow>
+//                 <TableCell width={170}>
+//                   Assignment ID
+//                 </TableCell>
 
-                <TableCell>
-                  Name
-                </TableCell>
+//                 <TableCell>
+//                   Name
+//                 </TableCell>
 
-                <TableCell>
-                  Assignment Code
-                </TableCell>
+//                 <TableCell>
+//                   Assignment Code
+//                 </TableCell>
 
-                <TableCell>
-                  Department
-                </TableCell>
+//                 <TableCell>
+//                   Department
+//                 </TableCell>
 
-                <TableCell>
-                  Actions
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {items.map((assignment) => {
-                return (
-                  <TableRow
-                    hover
-                    key={assignment.id}
-                  >
-                    <TableCell>
-                      <Typography variant="subtitle2">
-                        {assignment.id}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
+//                 <TableCell>
+//                   Actions
+//                 </TableCell>
+//               </TableRow>
+//             </TableHead>
+//             <TableBody>
+//               {items.map((assignment) => {
+//                 return (
+//                   <TableRow
+//                     hover
+//                     key={assignment.id}
+//                   >
+//                     <TableCell>
+//                       <Typography variant="subtitle2">
+//                         {assignment.id}
+//                       </Typography>
+//                     </TableCell>
+//                     <TableCell>
 
-                      <Typography variant="subtitle2">
-                        {assignment.name}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
+//                       <Typography variant="subtitle2">
+//                         {assignment.name}
+//                       </Typography>
+//                     </TableCell>
+//                     <TableCell>
 
-                      <Typography variant="subtitle1">
-                        {assignment.code}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      {assignment.department.name}
-                    </TableCell>
+//                       <Typography variant="subtitle1">
+//                         {assignment.code}
+//                       </Typography>
+//                     </TableCell>
+//                     <TableCell>
+//                       {assignment.department.name}
+//                     </TableCell>
 
-                    <TableCell>
-                      <IconButton
-                        color="primary"
-                        aria-label="edit"
-                        href={`/admin-panel/assignments/edit/${assignment.id}`}
-                        LinkComponent={NextLink}
-                      >
-                        <SvgIcon>
-                          <PencilIcon style={{ fontSize: 24 }} /> {/* Customize the icon */}
-                        </SvgIcon>
-                      </IconButton>
+//                     <TableCell>
+//                       <IconButton
+//                         color="primary"
+//                         aria-label="edit"
+//                         href={`/admin-panel/assignments/edit/${assignment.id}`}
+//                         LinkComponent={NextLink}
+//                       >
+//                         <SvgIcon>
+//                           <PencilIcon style={{ fontSize: 24 }} /> {/* Customize the icon */}
+//                         </SvgIcon>
+//                       </IconButton>
 
-                      <IconButton
-                        color="primary"
-                        aria-label="remove"
-                        onClick={() => handleDelete(assignment)}
-                        LinkComponent={NextLink}
-                      >
-                        <SvgIcon>
-                          <TrashIcon style={{ fontSize: 24 }} /> {/* Customize the icon */}
-                        </SvgIcon>
-                      </IconButton>
-                    </TableCell>
+//                       <IconButton
+//                         color="primary"
+//                         aria-label="remove"
+//                         onClick={() => handleDelete(assignment)}
+//                         LinkComponent={NextLink}
+//                       >
+//                         <SvgIcon>
+//                           <TrashIcon style={{ fontSize: 24 }} /> {/* Customize the icon */}
+//                         </SvgIcon>
+//                       </IconButton>
+//                     </TableCell>
 
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </Box>
-      </Scrollbar>
-      <TablePagination
-        component="div"
-        count={count}
-        onPageChange={onPageChange}
-        onRowsPerPageChange={onRowsPerPageChange}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25]}
-      />
-    </Card>
-  );
-};
+//                   </TableRow>
+//                 );
+//               })}
+//             </TableBody>
+//           </Table>
+//         </Box>
+//       </Scrollbar>
+//       <TablePagination
+//         component="div"
+//         count={count}
+//         onPageChange={onPageChange}
+//         onRowsPerPageChange={onRowsPerPageChange}
+//         page={page}
+//         rowsPerPage={rowsPerPage}
+//         rowsPerPageOptions={[5, 10, 25]}
+//       />
+//     </Card>
+//   );
+// };
 
 Page.getLayout = (page) => (
   <DashboardLayout>

@@ -21,7 +21,6 @@ class AssignmentController extends Controller
         return response()->json(['data' => Assignment::with('subject')->find($assignment->id)]);
     }
 
-
     public function store(Request $request)
     {
         $request->validate([
@@ -46,6 +45,30 @@ class AssignmentController extends Controller
 
         $assignment->save();
         return response()->json(['message' => 'Ok', 'data' => $assignment], 201);
+    }
+
+
+    public function update(Request $request, Assignment $assignment)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'subject_id' => 'required',
+        ]);
+
+        $filePath = null;
+        if ($request->hasFile('file')) {
+            $filePath = $request->file('file')->store('assignments', 'public');    
+        }
+
+        $assignment->update([
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'file_path' => $filePath ??  $assignment->file_path,
+            'subject_id' => $request->input('subject_id'),
+        ]);
+
+        return response()->json(['message' => 'Ok', 'data' => $assignment->with('subject')]);
     }
 
     public function destroy(Assignment $assignment)

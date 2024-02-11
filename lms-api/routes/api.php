@@ -110,6 +110,8 @@ Route::middleware(['auth:sanctum'])->prefix('assignments')->group(function () {
     Route::put('/{assignment}', [AssignmentController::class, 'update'])->name('assignments.update');
     Route::delete('/{assignment}', [AssignmentController::class, 'destroy'])->name('assignments.destroy');
 
+    Route::post('/{assignment}/edit', [AssignmentController::class, 'update'])->name('assignments.update');
+
     Route::get('/{assignment}/submissions/', [AssignmentController::class, 'indexSubmissions'])->name('assignmentSubmissions.showAll');
     Route::post('/{assignment}/submissions/', [AssignmentSubmissionController::class, 'store'])->name('assignmentSubmissions.store');
 });
