@@ -134,7 +134,7 @@ const Page = () => {
                                   <Typography variant="subtitle2" sx={{mt: 2}} gutterBottom>
                                     Attached Files:
                                   </Typography>
-                                  <Link href={`${BACKEND_URL}/storage/${submission?.file_path}`} target="_blank" rel="noopener noreferrer">
+                                  <Link href={`${BACKEND_URL}/storage/${assignment?.file_path}`} target="_blank" rel="noopener noreferrer">
                                     <IconButton color="primary" component="span">
                                       <AttachFileIcon />
                                     </IconButton>
