@@ -77,46 +77,6 @@ const Page = () => {
 
     return fileName;
   };
-  const sampleAssignments = [
-    {
-      id: 1,
-      title: 'Assignment 1: Data Structures',
-      description: 'Implement various data structures and analyze their time complexity.',
-      file: { name: 'data_structures_assignment.pdf', url: '#' },
-      defaultExpanded: true,
-    },
-    {
-      id: 2,
-      title: 'Assignment 2: Database Design',
-      description: 'Design a relational database schema for a given scenario.',
-      file: { name: 'database_design_assignment.pdf', url: '#' },
-      defaultExpanded: true,
-    },
-    {
-      id: 3,
-      title: 'Assignment 3: Web Development',
-      description: 'Create a responsive web application using modern web development technologies.',
-      file: { name: 'web_development_assignment.pdf', url: '#' },
-    },
-    {
-      id: 4,
-      title: 'Assignment 4: Algorithms and Complexity',
-      description: 'Analyze the time and space complexity of various algorithms.',
-      file: { name: 'algorithms_assignment.pdf', url: '#' },
-    },
-    {
-      id: 5,
-      title: 'Assignment 5: Software Testing',
-      description: 'Develop and execute test cases for a software application.',
-      file: { name: 'software_testing_assignment.pdf', url: '#' },
-    },
-    {
-      id: 6,
-      title: 'Assignment 6: Mobile App Development',
-      description: 'Design and implement a mobile application for a specific platform.',
-      file: { name: 'mobile_app_assignment.pdf', url: '#' },
-    },
-  ];
 
   return (
     <>
@@ -174,7 +134,7 @@ const Page = () => {
                                   <Typography variant="subtitle2" sx={{mt: 2}} gutterBottom>
                                     Attached Files:
                                   </Typography>
-                                  <Link href={assignment.file_path} target="_blank" rel="noopener noreferrer">
+                                  <Link href={`${BACKEND_URL}/storage/${submission?.file_path}`} target="_blank" rel="noopener noreferrer">
                                     <IconButton color="primary" component="span">
                                       <AttachFileIcon />
                                     </IconButton>

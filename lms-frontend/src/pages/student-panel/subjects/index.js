@@ -12,6 +12,35 @@ export async function getAllSubjects() {
   return response.data?.['data']
 }
 
+function AssignmentGrade(assignment, assignmentGrade) {
+  return (
+    <Card sx={{ maxWidth: 345 }}>
+      <CardActionArea>
+        <CardMedia
+          component="img"
+          height="140"
+          image="/static/images/cards/contemplative-reptile.jpg"
+          alt="green iguana"
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            Lizard
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Lizards are a widespread group of squamate reptiles, with over 6,000
+            species, ranging across all continents except Antarctica
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+      <CardActions>
+        <Button size="small" color="primary">
+          Share
+        </Button>
+      </CardActions>
+    </Card>
+  );
+}
+
 const Page = () => {
   const [subjects, setSubjects] = useState([]);
 
@@ -20,68 +49,11 @@ const Page = () => {
       .then((ns) => { setSubjects(ns) })
   }, []);
 
-  const sampleSubjects = [
-    {
-      id: 1,
-      name: 'Data Structures and Algorithms',
-      code: 'CSE301',
-      course: 'Computer Science Engineering',
-    },
-    {
-      id: 2,
-      name: 'Database Management Systems',
-      code: 'CSE401',
-      course: 'Computer Science Engineering',
-    },
-    {
-      id: 3,
-      name: 'Computer Networks',
-      code: 'CSE501',
-      course: 'Computer Science Engineering',
-    },
-    {
-      id: 4,
-      name: 'Software Engineering',
-      code: 'CSE601',
-      course: 'Computer Science Engineering',
-    },
-    {
-      id: 5,
-      name: 'Artificial Intelligence',
-      code: 'CSE701',
-      course: 'Computer Science Engineering',
-    },
-    {
-      id: 6,
-      name: 'Web Development',
-      code: 'CSE801',
-      course: 'Computer Science Engineering',
-    },
-    {
-      id: 7,
-      name: 'Operating Systems',
-      code: 'CSE302',
-      course: 'Computer Science Engineering',
-    },
-    {
-      id: 8,
-      name: 'Computer Architecture',
-      code: 'CSE402',
-      course: 'Computer Science Engineering',
-    },
-    {
-      id: 9,
-      name: 'Cybersecurity',
-      code: 'CSE502',
-      course: 'Computer Science Engineering',
-    },
-  ];
-
   return (
     <>
       <Head>
         <title>
-          Feedbacks | E-LMS
+          Subjects | E-LMS
         </title>
       </Head>
 
