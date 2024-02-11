@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import Head from 'next/head';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
-import { Avatar, Box, Button, Card, CardContent, Container, Divider, Grid, IconButton, LinearProgress, Stack, SvgIcon, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
+import { Avatar, Box, Button, Card, CardContent, Container, Divider, Grid, IconButton, LinearProgress, Link, Stack, SvgIcon, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/common-panel/layout';
 import { BigSearch } from 'src/sections/big-search';
 import { applyPagination } from 'src/utils/apply-pagination';
@@ -18,6 +18,8 @@ import PencilIcon from '@heroicons/react/24/solid/PencilIcon';
 import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 import ClockIcon from '@heroicons/react/24/solid/ClockIcon';
 import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIcon';
+import { getFileDisplayName } from 'src/pages/lecturer-panel/assignments/[id]/viewUploadedWork';
+import AttachFileIcon from '@heroicons/react/24/solid/PaperClipIcon';
 
 export function deleteAssignment(assignmentId) {
   return axios.delete(`${BACKEND_URL}/api/assignments/${assignmentId}`)
@@ -205,7 +207,6 @@ export const AssignmentCard = (props) => {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        height: '100%',
         margin: '10px'
       }}
     >
@@ -220,7 +221,7 @@ export const AssignmentCard = (props) => {
           <Avatar
             src="/assets/errors/error-401.png"
             variant="square"
-            sx={{height: '140px', width: '140px'}}
+            sx={{ height: '140px', width: '140px' }}
           />
         </Box>
         <Typography
@@ -236,6 +237,32 @@ export const AssignmentCard = (props) => {
         >
           {assignment.description}
         </Typography>
+
+        <Typography variant="body2" sx={{ mt: 2 }} gutterBottom>
+          Attached Files:
+        </Typography>
+
+        {
+          assignment.file_path ? (
+            <>
+              <Typography variant="body2" sx={{ mt: 2 }} gutterBottom>
+
+                <Link href={`${BACKEND_URL}/storage/${assignment?.file_path}`} target="_blank" rel="noopener noreferrer">
+                  <IconButton color="primary" component="span">
+                    <AttachFileIcon />
+                  </IconButton>
+                  See uploaded file
+                </Link>
+              </Typography>
+            </>
+          ) : (
+            <>
+              <Typography variant="body2" sx={{ mt: 2 }} gutterBottom>
+                No uploaded files
+              </Typography>
+            </>
+          )
+        }
       </CardContent>
       <Box sx={{ flexGrow: 1 }} />
       <Divider />
@@ -262,7 +289,7 @@ export const AssignmentCard = (props) => {
             display="inline"
             variant="body2"
           >
-            {assignment.created_at}
+            {new Date(assignment.created_at).toLocaleString()}
           </Typography>
         </Stack>
         <Stack
@@ -276,13 +303,7 @@ export const AssignmentCard = (props) => {
           >
             <ArrowDownOnSquareIcon />
           </SvgIcon>
-          <Typography
-            color="text.secondary"
-            display="inline"
-            variant="body2"
-          >
-            {assignment.downloads} Downloads
-          </Typography>
+          
         </Stack>
       </Stack>
     </Card>

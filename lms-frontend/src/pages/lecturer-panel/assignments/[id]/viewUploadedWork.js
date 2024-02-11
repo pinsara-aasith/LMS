@@ -11,7 +11,7 @@ import { BACKEND_URL } from 'src/apis/consts';
 import { Paper, IconButton } from '@mui/material';
 import CloudUploadIcon from '@heroicons/react/24/solid/CloudArrowUpIcon';
 
-const getFileDisplayName = (filePath) => {
+export const getFileDisplayName = (filePath) => {
   const pathParts = filePath.split('/');
   const fileName = pathParts[pathParts.length - 1];
 

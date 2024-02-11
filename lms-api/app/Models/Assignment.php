@@ -9,7 +9,7 @@ class Assignment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description',  'subject_id'];
+    protected $fillable = ['title', 'description',  'subject_id', 'file_path'];
 
     public function subject()
     {
