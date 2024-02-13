@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('grade');
             $table->string('comment')->nullable();
-            $table->foreignId('assignment_submission_id')->constrained();
+            $table->foreignId('assignment_submission_id')->constrained()->onDelete('cascade');
 
             $table->foreignId('lecturer_id')->constrained();
             // Add other submission attributes as needed
