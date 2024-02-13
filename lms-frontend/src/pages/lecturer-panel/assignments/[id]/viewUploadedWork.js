@@ -7,7 +7,7 @@ import { StyledBreadCrumbs } from 'src/components/breadcrumbs';
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
 import axios from 'axios';
-import { BACKEND_URL } from 'src/apis/consts';
+import { BACKEND_URL, truncate } from 'src/apis/consts';
 import { Paper, IconButton } from '@mui/material';
 import CloudUploadIcon from '@heroicons/react/24/solid/CloudArrowUpIcon';
 
@@ -27,6 +27,7 @@ const SubmissionsTable = ({ submissions }) => {
             <TableCell>Student Name</TableCell>
             <TableCell>Submission Date & Time</TableCell>
             <TableCell>Grade</TableCell>
+            <TableCell>Comment</TableCell>
             <TableCell>File</TableCell>
             <TableCell>Actions</TableCell>
           </TableRow>
@@ -37,6 +38,8 @@ const SubmissionsTable = ({ submissions }) => {
               <TableCell>{submission?.student?.first_name + " " + submission?.student?.last_name}</TableCell>
               <TableCell>{new Date(submission?.created_at).toLocaleString()}</TableCell>
               <TableCell>{submission?.assignment_submission_grade?.grade}</TableCell>
+
+              <TableCell>{submission?.assignment_submission_grade?.comment ? truncate(submission?.assignment_submission_grade?.comment, 20) : 'N/A'}</TableCell>
 
               <TableCell> {!!submission?.file_path ? (
                 <a href={`${BACKEND_URL}/storage/${submission?.file_path}`} target="_blank" rel="noopener noreferrer">

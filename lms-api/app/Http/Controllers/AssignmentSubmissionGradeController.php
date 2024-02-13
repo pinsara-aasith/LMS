@@ -21,7 +21,7 @@ class AssignmentSubmissionGradeController extends Controller
         $assignmentSubmission->assignmentSubmissionGrade()->delete();
 
         $assignmentSubmissionGrade = AssignmentSubmissionGrade::create([
-            'comment' => $request->input('text'),
+            'comment' => $request->input('comment'),
             'grade' => $request->input('grade'),
             'assignment_submission_id' => $assignmentSubmission->id,
             'lecturer_id' => $user->userable->id,
