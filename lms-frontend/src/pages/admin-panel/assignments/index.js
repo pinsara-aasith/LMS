@@ -2,10 +2,9 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import Head from 'next/head';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
-import { Avatar, Box, Button, Card, CardContent, Container, Divider, Grid, IconButton, LinearProgress, Link, Stack, SvgIcon, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
+import { Avatar, Box, Button, Card, CardContent, Container, Divider, Grid, IconButton, LinearProgress, Link, Stack, SvgIcon, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/common-panel/layout';
 import { BigSearch } from 'src/sections/big-search';
-import { applyPagination } from 'src/utils/apply-pagination';
 import NextLink from 'next/link';
 import { StyledBreadCrumbs } from 'src/components/breadcrumbs';
 import { useConfirm } from 'material-ui-confirm';
@@ -30,24 +29,13 @@ export async function getAllAssignments() {
   return response.data?.['data']
 }
 
-const useAssignments = (data, page, rowsPerPage, search) => {
-  return useMemo(
-    () => {
-      const filtered = searchObjects(data, search)
-      return applyPagination(filtered, page, rowsPerPage);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [page, rowsPerPage, data, search]
-  );
-};
-
 const Page = () => {
   const [page, setPage] = useState(0);
   const [search, setSearch] = useState('');
   const [data, setData] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const assignments = useAssignments(data, page, rowsPerPage, search);
+  const assignments = data;
 
   const [loading, setLoading] = useState(true)
 
@@ -79,34 +67,6 @@ const Page = () => {
   }, [])
 
   const confirm = useConfirm()
-
-  const handleDelete = (assignment) => {
-    confirm({ description: `This will permanently delete the record` })
-      .then(async () => {
-        try {
-          setLoading(true)
-          await deleteAssignment(assignment.id)
-          console.log("Record was successfully deleted...")
-
-        } catch (e) {
-          console.error(e)
-        }
-
-        retrieveAndRefreshData()
-      })
-      .catch(() => {
-        enqueueSnackbar('Error occured', {
-          variant: 'error',
-          anchorOrigin: {
-            vertical: 'bottom',
-            horizontal: 'right',
-
-          },
-          autoHideDuration: 2000
-        })
-        console.log("Deletion cancelled.")
-      });
-  };
 
   return (
     <>
@@ -187,7 +147,7 @@ const Page = () => {
                   lg={4}
                   key={assignment.id}
                 >
-                  <AssignmentCard assignment={assignment} />
+                  <AssignmentCard retrieveAndRefreshData={retrieveAndRefreshData} loading={loading} setLoading={setLoading} assignment={assignment} />
                 </Grid>
               ))}
             </Grid>
@@ -200,7 +160,46 @@ const Page = () => {
 
 
 export const AssignmentCard = (props) => {
-  const { assignment } = props;
+  const { assignment, loading, setLoading, retrieveAndRefreshData } = props;
+  const { enqueueSnackbar } = useSnackbar()
+
+  const confirm = useConfirm()
+
+  const handleDelete = (assignment) => {
+    confirm({ description: `This will permanently delete the record` })
+      .then(async () => {
+        try {
+          setLoading(true)
+          await deleteAssignment(assignment.id)
+          console.log("Record was successfully deleted...")
+          enqueueSnackbar('Record was successfully deleted', {
+            variant: 'success',
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'right',
+
+            },
+            autoHideDuration: 2000
+          })
+        } catch (e) {
+          console.error(e)
+        }
+
+        retrieveAndRefreshData()
+      })
+      .catch(() => {
+        enqueueSnackbar('Error occured', {
+          variant: 'error',
+          anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'right',
+
+          },
+          autoHideDuration: 2000
+        })
+        console.log("Deletion cancelled.")
+      });
+  };
 
   return (
     <Card
@@ -308,6 +307,16 @@ export const AssignmentCard = (props) => {
             </SvgIcon>
           </IconButton>
 
+          <IconButton
+            color="primary"
+            aria-label="delete assignment"
+            LinkComponent={NextLink}
+            onClick={() => handleDelete(assignment)}
+          >
+            <SvgIcon>
+              <TrashIcon style={{ fontSize: 24 }} /> {/* Customize the icon */}
+            </SvgIcon>
+          </IconButton>
 
         </Stack>
       </Stack>
